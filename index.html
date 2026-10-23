@@ -343,6 +343,12 @@ details.check summary{cursor:pointer;font-weight:600}
 .footer-me{display:flex;flex-direction:column;gap:8px}
 .footer-me .nm{font:700 16px var(--body);color:var(--on-page)}
 @media (max-width:520px){.strip{flex-direction:column;align-items:stretch}.fila-btn{justify-content:center}.me{justify-content:center}}
+
+/* abas fixas no topo (computador e celular) */
+html{scroll-padding-top:72px}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:35;padding:10px 0;background:color-mix(in srgb,var(--page) 92%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 10px 14px -12px rgba(0,0,0,.45)}
+body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
+@media (max-width:640px){.tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin:0 -16px;padding:10px 16px}.tabs::-webkit-scrollbar{display:none}.tabs a{flex:none;font-size:13px;padding:8px 13px}}
 </style>
 </head>
 <body>
@@ -1271,5 +1277,6 @@ const h=(location.hash||"").slice(1).toLowerCase();
 if(UFNAME[h]) showUF(h);
 })();
 </script>
+<script>(function(){var t=document.querySelector('.tabs'),c=t&&t.querySelector('[aria-current]');if(c&&t.scrollWidth>t.clientWidth)t.scrollLeft=c.offsetLeft-(t.clientWidth-c.offsetWidth)/2;})();</script>
 </body>
 </html>
