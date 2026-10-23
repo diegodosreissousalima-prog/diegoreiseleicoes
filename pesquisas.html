@@ -219,6 +219,10 @@ td .win{display:inline-block;width:10px;height:10px;border-radius:50%;margin-rig
 .poll .rk{font:700 30px/1 var(--display);color:var(--muted)}
 .poll.best .rk{color:#b8860b}
 .poll .inst{font:700 20px/1.1 var(--display)}
+.ihead{display:flex;align-items:center;gap:10px;min-width:0}
+.ilogo{width:38px;height:38px;border-radius:10px;flex:none;display:grid;place-items:center;background:#fff;border:1px solid var(--line);overflow:hidden}
+.ilogo img{width:28px;height:28px;display:block}
+.ilogo.ini{color:#fff;border:0;font:800 14px var(--body);letter-spacing:.02em}
 .poll .meta{font:500 12px var(--mono);color:var(--muted);margin-top:3px}
 .poll .meta a{color:var(--muted)}
 .pbars{display:flex;flex-direction:column;gap:7px;min-width:0}
@@ -369,12 +373,24 @@ let DATA=null, real2=null, view=1;
 /* erro médio (pontos) entre pesquisa e resultado; acerto = 100 - erro */
 function score(p,r){ const err=(Math.abs(p.lula-r.lula)+Math.abs(p.flavio-r.flavio))/2; const ordemOk=(p.lula>p.flavio)===(r.lula>r.flavio)&&p.lula!==p.flavio; return {err,acc:Math.max(0,100-err),ordemOk,empate:p.lula===p.flavio}; }
 function bar(nm,cls,v,real){ return `<div class="pbar"><span class="nm ${cls}">${esc(nm)}</span><span class="track"><span class="fill ${cls}" style="width:${v}%"></span>${real!=null?`<span class="real" style="left:calc(${real}% - 1px)" title="Resultado: ${p1(real)}"></span>`:""}</span><span class="v">${p1(v)}</span></div>`; }
+/* Logotipo de cada instituto: ícone oficial do site do instituto (serviço de ícones do Google).
+   Sem site conhecido, ou se o ícone não carregar, mostra as iniciais. */
+const INST_SITE=[[/^datafolha/i,"datafolha.folha.uol.com.br"],[/^quaest/i,"quaest.com.br"],[/^atlas/i,"atlasintel.org"],[/^poderdata/i,"poder360.com.br"],[/^mda/i,"mdapesquisa.com.br"]];
+const INST_COR=["#0b5cad","#7a3db8","#c2410c","#047857","#b91c1c","#334155","#a16207","#0e7490"];
+function instLogo(nm){
+  const ini=String(nm).split(/[\s/]+/).filter(w=>/^[A-Za-zÀ-ú]/.test(w)).slice(0,2).map(w=>w[0]).join("").toUpperCase();
+  let h=0; for(const ch of String(nm)) h=(h*31+ch.charCodeAt(0))>>>0;
+  const site=(INST_SITE.find(([re])=>re.test(nm))||[])[1];
+  const tile=`<span class="ilogo ini" style="background:${INST_COR[h%INST_COR.length]}" aria-hidden="true">${esc(ini)}</span>`;
+  if(!site) return tile;
+  return `<span class="ilogo" aria-hidden="true" data-ini="${esc(ini)}" data-cor="${INST_COR[h%INST_COR.length]}"><img src="https://www.google.com/s2/favicons?domain=${site}&sz=64" alt="" width="28" height="28" loading="lazy" onerror="const s=this.parentNode;s.classList.add('ini');s.style.background=s.dataset.cor;s.textContent=s.dataset.ini"></span>`;
+}
 function card(p,i,r,best,showScore){
   const s=r?score(p,r):null;
   const metaBits=[p.campo&&("campo: "+p.campo), p.divulgacao&&("divulgada em "+p.divulgacao), p.entrevistas&&(fmt(p.entrevistas)+" entrevistas"), p.margem&&("margem ±"+String(p.margem).replace(".",",")+" p.p."), p.registro, p.base&&p.base!=="válidos"&&("base: "+p.base)].filter(Boolean);
   return `<article class="poll ${best?"best":""}">${best?`<span class="tagbest">Mais perto de 100% de acerto</span>`:""}
     <div class="rk">${i+1}º</div>
-    <div style="min-width:0"><div class="inst">${esc(p.instituto)}</div><div class="meta">${esc(metaBits.join(" · "))}${p.fonte?` · <a href="${esc(p.fonte)}" target="_blank" rel="noopener">fonte</a>`:""}</div></div>
+    <div style="min-width:0"><div class="ihead">${instLogo(p.instituto)}<div class="inst">${esc(p.instituto)}</div></div><div class="meta">${esc(metaBits.join(" · "))}${p.fonte?` · <a href="${esc(p.fonte)}" target="_blank" rel="noopener">fonte</a>`:""}</div></div>
     <div class="pbars">${bar("Lula","a",p.lula,r?r.lula:null)}${bar("Flávio Bolsonaro","b",p.flavio,r?r.flavio:null)}</div>
     <div class="pscore">${s&&showScore?`<div class="acc">${p1(s.acc)}</div><div class="err">acerto · erro médio ${s.err.toLocaleString("pt-BR",{maximumFractionDigits:2})} p.p.</div>${s.empate?`<span class="no-chip">indicou empate</span>`:s.ordemOk?`<span class="ok-chip">acertou quem ficou na frente</span>`:`<span class="no-chip">errou quem ficou na frente</span>`}`
       :`<div class="acc" style="color:${p.flavio>p.lula?"var(--b)":p.lula>p.flavio?"var(--a)":"var(--fg)"}">${p.flavio===p.lula?"Empate":(p.flavio>p.lula?"Flávio":"Lula")}</div><div class="err">${p.flavio===p.lula?"50% a 50%":"à frente por "+Math.abs(p.flavio-p.lula).toLocaleString("pt-BR",{maximumFractionDigits:1})+" p.p."}</div>`}</div>
