@@ -1,0 +1,27 @@
+{
+  "atualizado_em": "2026-10-23",
+  "nota": "Percentuais de votos válidos. Quando o instituto divulgou só votos totais, o válido foi calculado excluindo brancos, nulos e indecisos (marcado como calculado).",
+  "resultado_1t": { "lula": 45.16, "flavio": 47.03, "fonte": "TSE, resultado final do 1º turno (4/10/2026)" },
+  "turno1": [
+    { "instituto": "Vox Brasil", "campo": "reta final do 1º turno", "divulgacao": "3/10", "lula": 45.0, "flavio": 45.9, "base": "válidos", "registro": "", "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente" },
+    { "instituto": "Gerp", "campo": "reta final do 1º turno", "divulgacao": "3/10", "lula": 44.0, "flavio": 46.0, "base": "não informada (provavelmente totais)", "registro": "", "fonte": "https://www.brasilparalelo.com.br/noticias/veja-quais-pesquisas-erraram-o-resultado-do-primeiro-turno-das-eleicoes" },
+    { "instituto": "Quaest", "campo": "2 e 3/10", "divulgacao": "3/10", "lula": 46.0, "flavio": 45.0, "base": "válidos", "registro": "", "fonte": "https://mais.opovo.com.br/jornal/politica/2026/10/04/pesquisas-de-vespera-mostram-lula-e-flavio-bolsonaro-em-empate-tecnico.html" },
+    { "instituto": "PoderData/AYA", "campo": "véspera do 1º turno", "divulgacao": "3/10", "lula": 45.0, "flavio": 43.0, "base": "válidos", "registro": "", "fonte": "https://www.bnewssaopaulo.com.br/noticias/politica/poderdataaya-lula-tem-45-dos-votos-validos-no-1-turno-flavio-43.html" },
+    { "instituto": "AtlasIntel", "campo": "véspera do 1º turno", "divulgacao": "3/10", "lula": 47.0, "flavio": 44.1, "base": "válidos", "registro": "", "fonte": "https://www.cnnbrasil.com.br/eleicoes/atlas-lula-tem-47-dos-votos-validos-no-1o-turno-flavio-441/" },
+    { "instituto": "Futura Inteligência", "campo": "reta final do 1º turno", "divulgacao": "3/10", "lula": 42.6, "flavio": 44.8, "base": "não informada", "registro": "", "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente" },
+    { "instituto": "Datafolha", "campo": "3/10", "divulgacao": "3/10", "lula": 45.0, "flavio": 42.0, "base": "válidos", "registro": "", "fonte": "https://www.opovo.com.br/noticias/brasil/2026/10/04/datafolha-lula-tem-45-e-flavio-42-dos-votos-validos.html" },
+    { "instituto": "MDA/CNT", "campo": "30/9 a 2/10", "divulgacao": "3/10", "lula": 47.8, "flavio": 42.1, "base": "válidos", "registro": "", "fonte": "https://mais.opovo.com.br/jornal/politica/2026/10/04/pesquisas-de-vespera-mostram-lula-e-flavio-bolsonaro-em-empate-tecnico.html" }
+  ],
+  "turno2_principais": [
+    { "instituto": "Datafolha", "campo": "20 a 22/10", "divulgacao": "22/10", "lula": 50.0, "flavio": 50.0, "base": "válidos", "entrevistas": 2520, "margem": 2.0, "registro": "BR-09709/2026", "fonte": "https://www.cnnbrasil.com.br/eleicoes/datafolha-flavio-e-lula-empatam-em-50-de-votos-validos-no-2o-turno/" },
+    { "instituto": "Quaest", "campo": "17 a 20/10", "divulgacao": "21/10", "lula": 49.4, "flavio": 50.6, "base": "válidos (calculado a partir de 44% × 45% dos votos totais)", "entrevistas": 2154, "margem": 2.0, "registro": "BR-08535/2026", "fonte": "https://www.metropoles.com/brasil/quaest-flavio-bolsonaro-tem-45-e-lula-44-no-2o-turno" },
+    { "instituto": "AtlasIntel/Bloomberg", "campo": "13 a 18/10", "divulgacao": "19/10", "lula": 48.9, "flavio": 51.1, "base": "válidos", "entrevistas": 4998, "margem": null, "registro": "", "fonte": "https://www.congressoemfoco.com.br/noticia/123359/atlasintel-vantagem-de-flavio-cai-de-5-4-para-2-2-pontos-em-10-dias" },
+    { "instituto": "Vox Brasil", "campo": "17 a 23/10", "divulgacao": "23/10", "lula": 50.6, "flavio": 49.4, "base": "válidos", "entrevistas": null, "margem": null, "registro": "", "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente" },
+    { "instituto": "PoderData/AYA", "campo": "13 a 15/10", "divulgacao": "16/10", "lula": 50.0, "flavio": 50.0, "base": "válidos", "entrevistas": 3000, "margem": 1.8, "registro": "BR-04258/2026", "fonte": "https://tribunadejundiai.com.br/politica/eleicoes-2026/poderdata-segundo-turno-diferenca-entre-flavio-e-lula-desaparece-e-pesquisa-aponta-empate/" }
+  ],
+  "turno2_outros": [
+    { "instituto": "Gerp", "campo": "19 a 21/10", "divulgacao": "22/10", "lula": 47.0, "flavio": 53.0, "base": "válidos", "registro": "", "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente" },
+    { "instituto": "Futura Inteligência", "campo": "19 e 20/10", "divulgacao": "21/10", "lula": 48.9, "flavio": 51.1, "base": "válidos", "registro": "", "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente" },
+    { "instituto": "Veritá", "campo": "15 a 19/10", "divulgacao": "20/10", "lula": 49.3, "flavio": 50.7, "base": "válidos", "registro": "", "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente" }
+  ]
+}

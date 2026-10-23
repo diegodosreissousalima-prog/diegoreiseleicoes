@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pesquisas · Análise Diego Reis</title>
+<meta name="description" content="As pesquisas para presidente comparadas com o resultado das urnas: quem mais acertou o 1º turno, as últimas pesquisas do 2º turno e o instituto mais confiável. Análise – Diego R. S. Lima.">
+<meta name="theme-color" content="#0b5d3b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cmask id='m'%3E%3Crect width='120' height='120' fill='white'/%3E%3Cpath d='M-4 46H44V30L74 60 44 90V74H-4Z'/%3E%3C/mask%3E%3Cpath mask='url(%23m)' fill='%23e02a46' d='M24 8H58A52 52 0 0 1 58 112H24Q12 112 12 100V20Q12 8 24 8Z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Poppins:wght@500;600&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: mesma identidade do site de apuração — resumo dos dois turnos no topo, gráfico 1º×2º, tabela por estado/cidade */
+:root{
+  --page:#0b5d3b; --page-2:#063a25; --page-glow:rgba(255,214,0,.16); --on-page:#f4fbf7; --on-page-muted:#bfe0cf;
+  --bg:#f3f5f4; --surface:#ffffff; --line:#d9dfdc; --fg:#15201c; --muted:#5d6b66;
+  --a:#d42a2a; --b:#1f5fd1; --a-soft:#f6d0cf; --b-soft:#d2def7; --o:#8a8f8c; --empty:#e2e7e4; --up:#178a4c; --down:#b3261e;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",Roboto,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --page:#06281a; --page-2:#03150d; --page-glow:rgba(255,214,0,.08); --on-page:#eaf5ef; --on-page-muted:#94b8a6;
+  --bg:#0f1513; --surface:#161e1b; --line:#2a3531; --fg:#e8eeeb; --muted:#97a6a0;
+  --a:#ff5a52; --b:#5b8dff; --a-soft:#4a1d1c; --b-soft:#1b2a4d; --o:#7d8783; --empty:#26302c; --up:#3fcf83; --down:#ff6b5b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --page:#06281a; --page-2:#03150d; --page-glow:rgba(255,214,0,.08); --on-page:#eaf5ef; --on-page-muted:#94b8a6;
+  --bg:#0f1513; --surface:#161e1b; --line:#2a3531; --fg:#e8eeeb; --muted:#97a6a0;
+  --a:#ff5a52; --b:#5b8dff; --a-soft:#4a1d1c; --b-soft:#1b2a4d; --o:#7d8783; --empty:#26302c; --up:#3fcf83; --down:#ff6b5b; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--page-2)}
+body{margin:0;color:var(--fg);font:16px/1.45 var(--body);min-height:100vh;
+  background:radial-gradient(1200px 600px at 85% -10%,var(--page-glow),transparent 60%),linear-gradient(170deg,var(--page),var(--page-2)) fixed;background-color:var(--page);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+a{color:inherit}
+button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #ffdf00;outline-offset:2px}
+
+.brand{display:flex;align-items:center;justify-content:space-between;gap:14px 20px;flex-wrap:wrap;border-bottom:1px solid color-mix(in srgb,var(--on-page) 30%,transparent);padding-bottom:16px}
+.logo-dr{display:flex;align-items:center;gap:14px;min-width:0;text-decoration:none}
+.dr-mark{width:clamp(48px,7vw,64px);height:auto;flex:none;filter:drop-shadow(0 4px 10px rgba(0,0,0,.25))}
+.dr-words{display:flex;flex-direction:column;gap:4px}
+.dr-name{font:600 clamp(26px,4.4vw,38px)/1 "Poppins",var(--body);letter-spacing:-.02em;color:var(--on-page)}
+.dr-tag{font:500 clamp(10px,1.4vw,12px)/1 "Poppins",var(--body);letter-spacing:.32em;text-transform:uppercase;color:#ffb8c3}
+.back{display:inline-flex;align-items:center;gap:8px;background:#ffdf00;color:#1b2a12;text-decoration:none;font:700 15px var(--body);padding:10px 16px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.2)}
+.back:hover{background:#ffe94d}
+header{color:var(--on-page)}
+.kick{font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--on-page-muted)}
+h1{font:700 clamp(30px,5.4vw,48px)/1.02 var(--display);margin:4px 0 6px;text-wrap:balance}
+.lede{max-width:70ch;color:var(--on-page-muted);margin:0}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(14px,2.5vw,22px);display:flex;flex-direction:column;gap:14px;min-width:0}
+.label{font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h2{font:700 26px/1.1 var(--display);margin:0;text-wrap:balance}
+.sub{font-size:14px;color:var(--muted)}
+.msg{font-size:14px;color:var(--muted);padding:10px 12px;border:1px dashed var(--line);border-radius:8px}
+
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;align-items:end}
+.controls label{display:flex;flex-direction:column;gap:6px;font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:0}
+select,input[type=search]{font:16px var(--body);padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);width:100%;min-width:0}
+.status{font:500 12px var(--mono);color:var(--muted)}
+.prog{height:6px;border-radius:3px;background:var(--empty);overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#009c3b,#ffdf00);transition:width .4s}
+
+/* resumo por candidato */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:700px){.duo{grid-template-columns:1fr}}
+.cand{border-radius:12px;padding:14px 16px;background:var(--bg);border-top:6px solid currentColor;display:flex;flex-direction:column;gap:10px;min-width:0}
+.cand.a{color:var(--a)} .cand.b{color:var(--b)}
+.cand .nm{font:700 26px/1 var(--display);color:var(--fg)}
+.cand .pty{font:500 12px var(--mono);color:var(--muted)}
+.turns{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:8px}
+.turn .k{font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.turn .v{font:700 clamp(30px,5vw,44px)/1 var(--display);font-variant-numeric:tabular-nums}
+.turn .n{font:500 12px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.turn.t1 .v{color:var(--fg);opacity:.8}
+.arrow{font:700 28px var(--display);color:var(--muted);padding-bottom:16px}
+.delta{display:flex;flex-wrap:wrap;gap:8px}
+.pill{display:inline-flex;gap:6px;align-items:baseline;border-radius:999px;padding:4px 10px;font:600 13px var(--body);background:var(--surface);border:1px solid var(--line);color:var(--fg);font-variant-numeric:tabular-nums}
+.pill b.up{color:var(--up)} .pill b.down{color:var(--down)}
+.flow{display:flex;flex-direction:column;gap:8px}
+.flowbar{display:flex;height:22px;border-radius:6px;overflow:hidden;background:var(--empty)}
+.flowbar i{display:block;height:100%}
+.flowbar .fa{background:var(--a)} .flowbar .fb{background:var(--b)} .flowbar .fo{background:var(--o)}
+.flowleg{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted)}
+.flowleg span{display:inline-flex;align-items:center;gap:6px}
+.flowleg i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.fact{border-top:1px solid var(--line);padding-top:8px}
+.fact .v{font:600 24px var(--display);font-variant-numeric:tabular-nums}
+.fact .k{font-size:12px;color:var(--muted)}
+
+/* gráfico 1º × 2º */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--surface);color:var(--fg);font:600 13px var(--body);padding:8px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--surface)}
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart .gl{stroke:var(--line);stroke-width:1}
+.chart .diag{stroke:var(--muted);stroke-dasharray:5 5;stroke-width:1.2}
+.chart .ax{fill:var(--muted);font:500 11px var(--mono)}
+.chart .axt{fill:var(--muted);font:600 12px var(--body)}
+.chart .zone{fill:var(--muted);font:600 12px var(--body);opacity:.8}
+.chart .pa{fill:var(--a);fill-opacity:.55;stroke:var(--a);stroke-width:1}
+.chart .pb{fill:var(--b);fill-opacity:.55;stroke:var(--b);stroke-width:1}
+.chart .pl{fill:var(--fg);font:600 11px var(--body);paint-order:stroke;stroke:var(--surface);stroke-width:3px}
+.chart circle{cursor:pointer}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font:500 12px var(--body);box-shadow:0 6px 16px rgba(0,0,0,.15);white-space:nowrap;z-index:2}
+
+/* destaques */
+.tops{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:700px){.tops{grid-template-columns:1fr}}
+.top h3{margin:0 0 6px;font:700 18px var(--display)}
+.top.a h3{color:var(--a)} .top.b h3{color:var(--b)}
+.top ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px}
+.top li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;font-size:14px;padding:5px 0;border-bottom:1px solid var(--line)}
+.top li .i{font:500 11px var(--mono);color:var(--muted)}
+.top li .d{font:700 14px var(--body);font-variant-numeric:tabular-nums}
+.top.a li .d{color:var(--a)} .top.b li .d{color:var(--b)}
+
+/* tabela */
+.tb{overflow:auto;max-height:620px;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums;min-width:960px}
+th{position:sticky;top:0;background:var(--surface);text-align:right;font:600 11px var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:9px 8px;border-bottom:1px solid var(--line);z-index:1;vertical-align:bottom}
+th:first-child,td:first-child,th.l,td.l{text-align:left}
+th .g{display:block;font-size:10px;letter-spacing:.1em}
+th.a{color:var(--a)} th.b{color:var(--b)}
+td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:right}
+tbody tr:hover{background:var(--bg)}
+td.sep,th.sep{border-left:1px solid var(--line)}
+.up{color:var(--up);font-weight:700} .down{color:var(--down);font-weight:700}
+.chip{display:inline-block;font:700 11px var(--body);padding:2px 8px;border-radius:999px;color:#fff;white-space:nowrap}
+.chip.a{background:var(--a)} .chip.b{background:var(--b)} .chip.m{background:var(--o)}
+.note{font-size:13px;color:var(--muted);max-width:90ch}
+footer{font-size:13px;color:var(--on-page-muted);display:flex;flex-direction:column;gap:4px}
+
+/* WhatsApp */
+.wa-float{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:inline-flex;align-items:center;gap:8px;
+  background:#1faa55;color:#fff;text-decoration:none;font:700 15px var(--body);padding:12px 16px;border-radius:999px;box-shadow:0 8px 22px rgba(0,0,0,.3)}
+.wa-float:hover{background:#178f47}
+.wa-float:focus-visible{outline:3px solid #ffdf00;outline-offset:3px}
+@media (max-width:520px){.wa-float .t{display:none}.wa-float{padding:14px}}
+.wa-line{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.wa-line a{display:inline-flex;align-items:center;gap:6px;background:#1faa55;color:#fff;text-decoration:none;font:700 14px var(--body);padding:7px 14px;border-radius:999px}
+.wa-line .num{font:600 15px var(--body);color:var(--on-page);user-select:all}
+.resetbtn{align-self:end;height:44px;border:0;border-radius:10px;background:#ffdf00;color:#1b2a12;font:700 15px var(--body);cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.15);padding:0 18px}
+.resetbtn:hover{background:#ffe94d}
+.resetbtn:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.citybox{display:flex;flex-direction:column;gap:6px;min-width:0;position:relative}
+.citylist{position:absolute;left:0;right:0;top:76px;z-index:20;margin:0;padding:4px;list-style:none;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.22);max-height:320px;overflow:auto}
+.citylist li{padding:9px 12px;border-radius:7px;cursor:pointer;display:flex;justify-content:space-between;gap:8px;font-size:15px}
+.citylist li[aria-selected="true"],.citylist li:hover{background:color-mix(in srgb,#f2b705 22%,var(--surface))}
+.citylist li .cap{font:500 11px var(--mono);color:var(--muted)}
+.citylist li mark{background:none;color:inherit;font-weight:700;text-decoration:underline}
+.citylist .none{color:var(--muted);cursor:default}
+.citybox label{display:flex;flex-direction:column;gap:6px;font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.citybox input{font:16px var(--body);padding:10px 12px;border:2px solid #f2b705;border-radius:8px;background:var(--bg);color:var(--fg);width:100%}
+.clearbtn{align-self:flex-start;border:0;background:none;color:var(--b);font:600 13px var(--body);padding:2px 0;cursor:pointer;text-decoration:underline}
+tbody tr.cur{background:color-mix(in srgb,#f2b705 18%,var(--surface));font-weight:700}
+tbody tr[data-key]{cursor:pointer}
+.chart circle.sel{stroke:var(--fg);stroke-width:2.5;fill-opacity:.9}
+.chart .ring{fill:none;stroke:#f2b705;stroke-width:3}
+.cand-head{display:flex;align-items:center;gap:12px}
+.rankb{flex:none;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font:700 26px/1 var(--display);background:var(--surface);color:var(--muted);border:2px solid var(--line)}
+.cand.first .rankb{background:currentColor;border-color:currentColor}
+.cand.first .rankb{color:inherit}
+.cand.first .rankb{-webkit-text-fill-color:#fff}
+.cand.first{box-shadow:0 0 0 2px color-mix(in srgb,currentColor 35%,transparent)}
+@media (prefers-reduced-motion:reduce){.prog i{transition:none}}
+
+/* abas */
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tabs a{text-decoration:none;font:700 14px var(--body);padding:9px 16px;border-radius:999px;color:var(--on-page);border:1px solid color-mix(in srgb,var(--on-page) 35%,transparent)}
+.tabs a:hover{background:color-mix(in srgb,var(--on-page) 12%,transparent)}
+.tabs a[aria-current="page"]{background:#ffdf00;color:#1b2a12;border-color:#ffdf00}
+/* tabelas por estado */
+.stbl{overflow:auto;border:1px solid var(--line);border-radius:10px}
+.stbl table{min-width:640px}
+.stbl td.bar{width:38%;min-width:180px}
+.sbar{display:flex;height:16px;border-radius:4px;overflow:hidden;background:var(--empty)}
+.sbar i{display:block;height:100%}
+.sbar .a{background:var(--a)} .sbar .b{background:var(--b)} .sbar .o{background:var(--o)}
+tr.total td{font-weight:700;background:var(--bg)}
+td .win{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+/* mapa de cidades */
+.mapwrap{position:relative;width:100%;max-width:760px;margin:0 auto}
+.mapwrap canvas{display:block;width:100%;height:auto;touch-action:manipulation}
+.maptools{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+.maptools label{display:flex;flex-direction:column;gap:6px;font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:200px}
+.loadbtn{height:44px;border:0;border-radius:10px;background:#ffdf00;color:#1b2a12;font:700 15px var(--body);cursor:pointer;padding:0 18px;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.loadbtn:hover{background:#ffe94d}
+.loadbtn[disabled]{opacity:.55;cursor:default}
+.mapcount{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.mapcount .box{border-radius:10px;padding:10px 14px;background:var(--bg);border-left:6px solid}
+.mapcount .box.a{border-color:var(--a)} .mapcount .box.b{border-color:var(--b)}
+.mapcount .n{font:700 34px/1 var(--display);font-variant-numeric:tabular-nums}
+.mapcount .a .n{color:var(--a)} .mapcount .b .n{color:var(--b)}
+.mapcount .t{font-size:13px;color:var(--muted)}
+.brstate{width:100%;max-width:640px;margin:0 auto;display:block;height:auto}
+.brstate path{stroke:var(--surface);stroke-width:1}
+.testbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:#b3261e;color:#fff;text-align:center;font:700 13px var(--body);padding:8px 12px;letter-spacing:.04em;margin:-20px calc(-1*max(16px,env(safe-area-inset-left,0px))) 12px}
+
+/* pesquisas */
+.filt{align-self:flex-start;display:inline-flex;flex-wrap:wrap;border:2px solid #ffdf00;border-radius:12px;overflow:hidden;background:var(--surface)}
+.filt button{border:0;background:none;color:var(--fg);font:700 15px var(--body);padding:11px 18px;cursor:pointer}
+.filt button[aria-pressed="true"]{background:#ffdf00;color:#1b2a12}
+.updline{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;color:var(--on-page-muted);font:500 13px var(--mono)}
+.updline b{color:var(--on-page)}
+.polls{display:flex;flex-direction:column;gap:12px}
+.poll{display:grid;grid-template-columns:44px minmax(0,1.3fr) minmax(0,2fr) minmax(0,1fr);gap:14px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--surface);position:relative}
+@media (max-width:760px){.poll{grid-template-columns:40px minmax(0,1fr)}.poll .pbars,.poll .pscore{grid-column:1/-1}}
+.poll.best{border:3px solid #f2b705;box-shadow:0 0 0 5px color-mix(in srgb,#f2b705 22%,transparent);padding:12px 14px}
+.poll.best .tagbest{position:absolute;top:-13px;left:14px;background:#f2b705;color:#1b2a12;font:700 12px var(--body);padding:3px 10px;border-radius:999px;letter-spacing:.03em}
+.poll .rk{font:700 30px/1 var(--display);color:var(--muted)}
+.poll.best .rk{color:#b8860b}
+.poll .inst{font:700 20px/1.1 var(--display)}
+.poll .meta{font:500 12px var(--mono);color:var(--muted);margin-top:3px}
+.poll .meta a{color:var(--muted)}
+.pbars{display:flex;flex-direction:column;gap:7px;min-width:0}
+.pbar{display:grid;grid-template-columns:118px minmax(0,1fr) 64px;gap:8px;align-items:center;font-size:13px}
+.pbar .nm{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pbar .nm.a{color:var(--a)} .pbar .nm.b{color:var(--b)}
+.pbar .track{position:relative;height:14px;background:var(--empty);border-radius:4px}
+.pbar .fill{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
+.pbar .fill.a{background:var(--a)} .pbar .fill.b{background:var(--b)}
+.pbar .real{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--fg);border-radius:2px}
+.pbar .v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.pscore{display:flex;flex-direction:column;align-items:flex-end;gap:4px;text-align:right}
+.pscore .acc{font:700 30px/1 var(--display);font-variant-numeric:tabular-nums}
+.pscore .err{font:500 12px var(--mono);color:var(--muted)}
+.ok-chip,.no-chip{display:inline-block;font:700 11px var(--body);padding:3px 9px;border-radius:999px}
+.ok-chip{background:color-mix(in srgb,var(--up) 18%,var(--surface));color:var(--up)}
+.no-chip{background:color-mix(in srgb,var(--down) 14%,var(--surface));color:var(--down)}
+.realbox{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;border-radius:10px;background:var(--bg);padding:12px 14px;font-size:14px}
+.realbox .k{font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.realbox b.a{color:var(--a)} .realbox b.b{color:var(--b)}
+.realbox .mk{display:inline-block;width:3px;height:14px;background:var(--fg);vertical-align:middle;margin-right:4px;border-radius:2px}
+details.more{border-top:1px solid var(--line);padding-top:10px}
+details.more summary{cursor:pointer;font-weight:700}
+.avg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.avg .box{border-radius:10px;padding:12px 14px;background:var(--bg);border-left:6px solid}
+.avg .a{border-color:var(--a)} .avg .b{border-color:var(--b)}
+.avg .n{font:700 36px/1 var(--display);font-variant-numeric:tabular-nums}
+.avg .a .n{color:var(--a)} .avg .b .n{color:var(--b)}
+.avg .t{font-size:13px;color:var(--muted)}
+.winner{border:3px solid var(--up);border-radius:14px;padding:16px 18px;background:color-mix(in srgb,var(--up) 8%,var(--surface));display:flex;flex-direction:column;gap:6px}
+.winner .k{font:700 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--up)}
+.winner .nm{font:700 clamp(28px,5vw,40px)/1 var(--display)}
+.testbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:#b3261e;color:#fff;text-align:center;font:700 13px var(--body);padding:8px 12px;letter-spacing:.04em;margin:-20px calc(-1*max(16px,env(safe-area-inset-left,0px))) 12px}
+
+/* contato-fila */
+.strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px}
+.fila-btn{display:inline-flex;align-items:center;gap:10px;background:#ffdf00;color:#1b2a12;text-decoration:none;padding:10px 18px 10px 14px;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.22);font:700 15px var(--body);line-height:1.15}
+.fila-btn small{display:block;font:500 12px var(--body);opacity:.85}
+.fila-btn:hover{filter:brightness(1.05);transform:translateY(-1px)}
+.fila-btn:focus-visible,.me a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.me{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.me .who{font:700 14px var(--body);color:var(--on-page);margin-right:2px}
+.me a{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:#fff;font:700 13px var(--body);padding:7px 12px;border-radius:999px}
+.me a.wa{background:#1faa55}.me a.wa:hover{background:#178f47}
+.me a.ig{background:linear-gradient(45deg,#f58529,#dd2a7b 55%,#8134af)}.me a.ig:hover{filter:brightness(1.08)}
+.footer-me{display:flex;flex-direction:column;gap:8px}
+.footer-me .nm{font:700 16px var(--body);color:var(--on-page)}
+@media (max-width:520px){.strip{flex-direction:column;align-items:stretch}.fila-btn{justify-content:center}.me{justify-content:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <a class="logo-dr" href="./" aria-label="Diego Reis · Análise eleitoral · voltar à apuração">
+      <svg class="dr-mark" viewBox="0 0 120 120" aria-hidden="true">
+        <defs>
+          <mask id="dr-cut"><rect width="120" height="120" fill="#fff"/><path d="M-4 46 H44 V30 L74 60 L44 90 V74 H-4 Z" fill="#000"/></mask>
+          <linearGradient id="dr-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0465e"/><stop offset="1" stop-color="#d6203d"/></linearGradient>
+        </defs>
+        <path mask="url(#dr-cut)" fill="url(#dr-g)" d="M24 8 H58 A52 52 0 0 1 58 112 H24 Q12 112 12 100 V20 Q12 8 24 8 Z"/>
+      </svg>
+      <div class="dr-words"><div class="dr-name">Diego Reis</div><div class="dr-tag">Análise eleitoral</div></div>
+    </a>
+  </div>
+
+  <nav class="tabs" aria-label="Páginas do site">
+    <a href="./">Apuração ao vivo</a>
+    <a href="analise.html">1º × 2º turno</a>
+    <a href="graficos.html">Gráficos</a>
+    <a href="pesquisas.html" aria-current="page">Pesquisas</a>
+    <a href="governador.html">Governador</a>
+  </nav>
+  <div class="strip" data-contato><a class="fila-btn" href="https://cajuinalab.tre-pi.jus.br/kiwi/filas/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="7" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="19" cy="7" r="2"/><path d="M2.5 16v-2a2.5 2.5 0 0 1 5 0v2M9.5 16v-2a2.5 2.5 0 0 1 5 0v2M16.5 16v-2a2.5 2.5 0 0 1 5 0v2M3 20h18"/></g></svg><span>Fila de espera nas seções · PI<small>Consulte sua zona e seção no Kiwi do TRE-PI · 9h às 15h</small></span></a><div class="me"><span class="who">Diego Reis</span><a class="wa" href="https://wa.me/5586998096932?text=Ol%C3%A1%2C%20Diego%21%20Vim%20pelo%20site%20das%20elei%C3%A7%C3%B5es." target="_blank" rel="noopener" aria-label="WhatsApp de Diego Reis, (86) 99809-6932"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M9 9.5c.3 1.9 2.4 4.1 4.6 4.7l1.1-1.2 1.6.8c-.2 1-1.1 1.7-2.2 1.6C11 15 8.8 12.7 8.5 10.6c-.1-1 .6-1.9 1.6-2.1l.8 1.6z"/></svg>(86) 99809-6932</a><a class="ig" href="https://www.instagram.com/diegosousa1998/" target="_blank" rel="noopener" aria-label="Instagram de Diego Reis, @diegosousa1998"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor"/></svg>@diegosousa1998</a></div></div>
+
+  <header>
+    <div class="kick">Presidente da República · Lula × Flávio Bolsonaro</div>
+    <h1>As pesquisas e as urnas</h1>
+    <p class="lede">Quem mais acertou o 1º turno e o que dizem as últimas pesquisas do 2º. Depois da apuração, o site aponta o instituto mais confiável.</p>
+    <div class="updline" style="margin-top:12px"><span>Pesquisas atualizadas em <b id="upd">—</b></span><span>Percentuais de votos válidos</span></div>
+  </header>
+
+  <div class="filt" role="group" aria-label="Escolha o turno">
+    <button id="f1" aria-pressed="true">Projeções do 1º turno</button><button id="f2" aria-pressed="false">Projeções do 2º turno</button>
+  </div>
+
+  <section class="card" id="v1">
+    <div><div class="label">1º turno · 4 de outubro</div><h2>As 5 pesquisas que mais se aproximaram do resultado</h2></div>
+    <div class="realbox" id="real1"></div>
+    <div class="polls" id="list1"></div>
+    <details class="more"><summary>Outros institutos</summary><div class="polls" id="other1" style="margin-top:12px"></div></details>
+    <p class="note" style="margin:0">Como medimos o acerto: diferença média, em pontos percentuais, entre o que o instituto publicou para Lula e Flávio Bolsonaro e o resultado oficial do TSE em votos válidos. Acerto = 100 menos essa diferença. A linha preta em cada barra marca o resultado das urnas. Análise – Diego R. S. Lima.</p>
+  </section>
+
+  <section class="card" id="v2" hidden>
+    <div><div class="label">2º turno · 25 de outubro</div><h2>Últimas pesquisas dos 5 principais institutos</h2></div>
+    <div id="win2"></div>
+    <div class="avg" id="avg2"></div>
+    <div class="realbox" id="real2"></div>
+    <div class="polls" id="list2"></div>
+    <details class="more"><summary>Outros institutos</summary><div class="polls" id="other2" style="margin-top:12px"></div></details>
+    <p class="note" style="margin:0" id="note2"></p>
+  </section>
+
+  <footer>
+    <div class="footer-me" data-contato><span class="nm">Diego dos Reis Sousa Lima · Diego Reis</span><div class="me"><a class="wa" href="https://wa.me/5586998096932?text=Ol%C3%A1%2C%20Diego%21%20Vim%20pelo%20site%20das%20elei%C3%A7%C3%B5es." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M9 9.5c.3 1.9 2.4 4.1 4.6 4.7l1.1-1.2 1.6.8c-.2 1-1.1 1.7-2.2 1.6C11 15 8.8 12.7 8.5 10.6c-.1-1 .6-1.9 1.6-2.1l.8 1.6z"/></svg>WhatsApp (86) 99809-6932</a><a class="ig" href="https://www.instagram.com/diegosousa1998/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor"/></svg>Instagram @diegosousa1998</a></div></div>
+    <span>Fonte: arquivos públicos de divulgação do Tribunal Superior Eleitoral (resultados.tse.jus.br), eleições 6257 (1º turno) e 6258 (2º turno). Localização das cidades: base aberta Municípios Brasileiros (licença MIT). Site independente.</span>
+  </footer>
+</div>
+<a class="wa-float" href="https://wa.me/5586998096932?text=Ol%C3%A1%2C%20Diego%21%20Vim%20pelo%20site%20das%20elei%C3%A7%C3%B5es." target="_blank" rel="noopener" aria-label="Falar com Diego Reis no WhatsApp, (86) 99809-6932"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M9 9.5c.3 1.9 2.4 4.1 4.6 4.7l1.1-1.2 1.6.8c-.2 1-1.1 1.7-2.2 1.6C11 15 8.8 12.7 8.5 10.6c-.1-1 .6-1.9 1.6-2.1l.8 1.6z"/></svg><span class="t">WhatsApp</span></a>
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n||0).toLocaleString("pt-BR");
+const p1=n=>Number(n).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:2})+"%";
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const num=s=>Number(String(s??"0").replace(",","."))||0;
+/* ===== Conexão com o TSE =====
+   Modo normal: dados oficiais (resultados.tse.jus.br).
+   Modo de teste: abra a página com ?teste=simulado para usar os arquivos do simulado oficial do TSE.
+   Primeiro tenta direto no TSE; se o navegador bloquear (CORS), usa as rotas /tse/ e /tse-sim/ do próprio site (arquivo _redirects). */
+const TESTE=/[?&]teste=simulado\b/.test(location.search);
+const ROUTES={"https://resultados.tse.jus.br":"/tse","https://resultados-sim.tse.jus.br":"/tse-sim"};
+const BASE= TESTE ? "https://resultados-sim.tse.jus.br/simulado/simulado2026/ele2026" : "https://resultados.tse.jus.br/oficial/ele2026";
+const E1=TESTE?"22409":"6257", E2=TESTE?"22410":"6258", G1=TESTE?"22411":"6259", G2=TESTE?"22412":"6260";
+const OPEN_AT= TESTE ? 0 : Date.UTC(2026,9,25,19,55);   // 2º turno divulgado a partir das 17h de Brasília de 25/10
+const open2=()=>Date.now()>=OPEN_AT;
+let viaProxy=false; try{ viaProxy=sessionStorage.getItem("tse-proxy")==="1"; }catch(e){}
+const canProxy=location.protocol.startsWith("http");
+const viaRoute=u=>{ for(const h in ROUTES) if(u.startsWith(h)) return ROUTES[h]+u.slice(h.length); return u; };
+const isTSE=u=>Object.keys(ROUTES).some(h=>u.startsWith(h));
+async function tseFetch(u){
+  if(viaProxy&&canProxy) return fetch(viaRoute(u),{cache:"no-cache"});
+  try{ return await fetch(u,{cache:"no-cache"}); }
+  catch(e){
+    if(!canProxy||!isTSE(u)) throw e;
+    viaProxy=true; try{ sessionStorage.setItem("tse-proxy","1"); }catch(_){}
+    return fetch(viaRoute(u),{cache:"no-cache"});
+  }
+}
+async function getJSON(u){ try{ const r=await tseFetch(u); if(!r.ok) return null; return await r.json(); }catch(e){ return null; } }
+const pad=n=>String(n).padStart(6,"0");
+const url=(ele,abr,cargo="0001")=>`${BASE}/${ele}/dados/${abr.slice(0,2)}/${abr}-c${cargo}-e${pad(ele)}-u.json`;
+const _SMALL=new Set(["de","da","do","das","dos","e"]);
+const nameCase=s=>{ s=String(s||""); if(s!==s.toUpperCase()) return s; return s.toLowerCase().split(" ").map((w,i)=>i&&_SMALL.has(w)?w:w.charAt(0).toUpperCase()+w.slice(1)).join(" "); };
+function testBanner(){ if(!TESTE) return; const b=document.createElement("div"); b.className="testbar"; b.textContent="MODO DE TESTE · dados do simulado oficial do TSE, não são resultados reais"; document.body.prepend(b); }
+
+let DATA=null, real2=null, view=1;
+/* erro médio (pontos) entre pesquisa e resultado; acerto = 100 - erro */
+function score(p,r){ const err=(Math.abs(p.lula-r.lula)+Math.abs(p.flavio-r.flavio))/2; const ordemOk=(p.lula>p.flavio)===(r.lula>r.flavio)&&p.lula!==p.flavio; return {err,acc:Math.max(0,100-err),ordemOk,empate:p.lula===p.flavio}; }
+function bar(nm,cls,v,real){ return `<div class="pbar"><span class="nm ${cls}">${esc(nm)}</span><span class="track"><span class="fill ${cls}" style="width:${v}%"></span>${real!=null?`<span class="real" style="left:calc(${real}% - 1px)" title="Resultado: ${p1(real)}"></span>`:""}</span><span class="v">${p1(v)}</span></div>`; }
+function card(p,i,r,best,showScore){
+  const s=r?score(p,r):null;
+  const metaBits=[p.campo&&("campo: "+p.campo), p.divulgacao&&("divulgada em "+p.divulgacao), p.entrevistas&&(fmt(p.entrevistas)+" entrevistas"), p.margem&&("margem ±"+String(p.margem).replace(".",",")+" p.p."), p.registro, p.base&&p.base!=="válidos"&&("base: "+p.base)].filter(Boolean);
+  return `<article class="poll ${best?"best":""}">${best?`<span class="tagbest">Mais perto de 100% de acerto</span>`:""}
+    <div class="rk">${i+1}º</div>
+    <div style="min-width:0"><div class="inst">${esc(p.instituto)}</div><div class="meta">${esc(metaBits.join(" · "))}${p.fonte?` · <a href="${esc(p.fonte)}" target="_blank" rel="noopener">fonte</a>`:""}</div></div>
+    <div class="pbars">${bar("Lula","a",p.lula,r?r.lula:null)}${bar("Flávio Bolsonaro","b",p.flavio,r?r.flavio:null)}</div>
+    <div class="pscore">${s&&showScore?`<div class="acc">${p1(s.acc)}</div><div class="err">acerto · erro médio ${s.err.toLocaleString("pt-BR",{maximumFractionDigits:2})} p.p.</div>${s.empate?`<span class="no-chip">indicou empate</span>`:s.ordemOk?`<span class="ok-chip">acertou quem ficou na frente</span>`:`<span class="no-chip">errou quem ficou na frente</span>`}`
+      :`<div class="acc" style="color:${p.flavio>p.lula?"var(--b)":p.lula>p.flavio?"var(--a)":"var(--fg)"}">${p.flavio===p.lula?"Empate":(p.flavio>p.lula?"Flávio":"Lula")}</div><div class="err">${p.flavio===p.lula?"50% a 50%":"à frente por "+Math.abs(p.flavio-p.lula).toLocaleString("pt-BR",{maximumFractionDigits:1})+" p.p."}</div>`}</div>
+  </article>`;
+}
+function realBox(r,label){ return `<span class="k">${label}</span><span><span class="mk"></span><b class="b">Flávio Bolsonaro ${p1(r.flavio)}</b></span><span><span class="mk"></span><b class="a">Lula ${p1(r.lula)}</b></span><span class="note" style="margin:0">${esc(r.fonte||"")}</span>`; }
+function render1(){
+  const r=DATA.resultado_1t, all=DATA.turno1.map(p=>({p,s:score(p,r)})).sort((x,y)=>x.s.err-y.s.err);
+  $("real1").innerHTML=realBox(r,"Resultado oficial do 1º turno");
+  $("list1").innerHTML=all.slice(0,5).map((o,i)=>card(o.p,i,r,i===0,true)).join("");
+  $("other1").innerHTML=all.slice(5).map((o,i)=>card(o.p,i+5,r,false,true)).join("")||`<div class="msg">Nenhum outro instituto.</div>`;
+}
+function render2(){
+  const main=DATA.turno2_principais||[], other=DATA.turno2_outros||[];
+  const avgL=main.reduce((s,p)=>s+p.lula,0)/(main.length||1), avgF=main.reduce((s,p)=>s+p.flavio,0)/(main.length||1);
+  $("avg2").innerHTML=`<div class="box b"><div class="t">Média das 5 pesquisas · Flávio Bolsonaro</div><div class="n">${p1(avgF)}</div></div><div class="box a"><div class="t">Média das 5 pesquisas · Lula</div><div class="n">${p1(avgL)}</div></div>`;
+  const final=real2&&real2.final, r=real2&&real2.pst>0?real2:null;
+  if(r){
+    $("real2").hidden=false;
+    $("real2").innerHTML=realBox({lula:r.lula,flavio:r.flavio,fonte:final?"TSE · resultado final":`TSE · parcial com ${p1(r.pst)} das seções apuradas`}, final?"Resultado oficial do 2º turno":"Apuração em andamento");
+    const ranked=main.concat(other).map(p=>({p,s:score(p,r)})).sort((x,y)=>x.s.err-y.s.err);
+    const mainR=main.map(p=>({p,s:score(p,r)})).sort((x,y)=>x.s.err-y.s.err);
+    $("list2").innerHTML=mainR.map((o,i)=>card(o.p,i,r,i===0,true)).join("");
+    $("other2").innerHTML=other.map(p=>({p,s:score(p,r)})).sort((x,y)=>x.s.err-y.s.err).map((o,i)=>card(o.p,i+main.length,r,false,true)).join("");
+    const b=ranked[0], winnerName=r.flavio>r.lula?"Flávio Bolsonaro":"Lula";
+    const hits=ranked.filter(o=>o.s.ordemOk).map(o=>o.p.instituto);
+    $("win2").innerHTML= final ? `<div class="winner"><div class="k">Instituto mais confiável no 2º turno</div><div class="nm">${esc(b.p.instituto)}</div>
+        <div>Ficou a ${b.s.err.toLocaleString("pt-BR",{maximumFractionDigits:2})} ponto(s) do resultado oficial (acerto de ${p1(b.s.acc)}). ${hits.length?`Acertaram que ${esc(winnerName)} venceria: ${esc(hits.join(", "))}.`:`Nenhum instituto indicou ${esc(winnerName)} à frente.`}</div></div>`
+      : `<div class="msg">Com a apuração em andamento, a comparação abaixo é parcial. O instituto mais confiável é apontado aqui quando o TSE concluir a totalização.</div>`;
+    $("note2").textContent="Acerto = 100 menos a diferença média, em pontos, entre a pesquisa e o resultado do TSE em votos válidos. Análise – Diego R. S. Lima.";
+  } else {
+    $("real2").hidden=true; $("win2").innerHTML="";
+    $("list2").innerHTML=main.map((p,i)=>card(p,i,null,false,false)).join("");
+    $("other2").innerHTML=other.map((p,i)=>card(p,i+main.length,null,false,false)).join("");
+    $("note2").textContent="Ordem por data de divulgação mais recente. Depois da apuração, esta lista passa a ser ordenada pelo acerto e o site indica o instituto mais confiável. Análise – Diego R. S. Lima.";
+  }
+}
+async function loadReal2(){
+  if(!open2()) return;
+  const j=await getJSON(url(E2,"br"));
+  if(!j) return;
+  let a=0,b=0; ((j.carg||[])[0]?.agr||[]).forEach(g=>(g.par||[]).forEach(p=>(p.cand||[]).forEach(c=>{ if(String(c.n)==="13") a=+(c.vap||0); if(String(c.n)==="22") b=+(c.vap||0); })));
+  // no simulado os números de urna são outros: usa os dois primeiros colocados
+  if(TESTE&&a+b===0){ const cs=[]; ((j.carg||[])[0]?.agr||[]).forEach(g=>(g.par||[]).forEach(p=>(p.cand||[]).forEach(c=>cs.push(+(c.vap||0))))); cs.sort((x,y)=>y-x); a=cs[0]||0; b=cs[1]||0; }
+  if(a+b===0) return;
+  real2={lula:a/(a+b)*100, flavio:b/(a+b)*100, pst:num(j.s?.pstn??j.s?.pst), final:j.and==="f"};
+  render2();
+}
+function setView(v){ view=v; $("f1").setAttribute("aria-pressed",String(v===1)); $("f2").setAttribute("aria-pressed",String(v===2)); $("v1").hidden=v!==1; $("v2").hidden=v!==2; try{ history.replaceState(null,"",location.pathname+location.search+(v===2?"#segundo":"")); }catch(_){} }
+$("f1").onclick=()=>setView(1); $("f2").onclick=()=>setView(2);
+(async()=>{
+  testBanner();
+  try{ const r=await fetch("pesquisas.json",{cache:"no-cache"}); DATA=await r.json(); }catch(e){ DATA=null; }
+  if(!DATA){ $("list1").innerHTML=`<div class="msg">Não foi possível carregar as pesquisas agora. Recarregue a página.</div>`; return; }
+  const [y,m,d]=String(DATA.atualizado_em||"").split("-"); $("upd").textContent=d?`${d}/${m}/${y}`:"—";
+  render1(); render2();
+  if(location.hash==="#segundo"||open2()) setView(2);
+  loadReal2(); setInterval(loadReal2,60000);
+})();
+})();
+</script>
+</body>
+</html>
