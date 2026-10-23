@@ -229,6 +229,9 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
 .gchips button{border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:999px;padding:8px 14px;font:700 14px var(--body);cursor:pointer}
 .gchips button[aria-pressed="true"]{background:#ffdf00;border-color:#ffdf00;color:#1b2a12}
 body.gov{--a:#ea580c;--b:#7c3aed}
+
+.cfoto{width:56px;height:70px;border-radius:10px;object-fit:cover;object-position:top;background:var(--bg);border:1px solid var(--line);flex:none;display:grid;place-items:center;font:800 16px var(--body);color:var(--muted)}
+@media (max-width:420px){.cfoto{width:46px;height:58px}}
 </style>
 </head>
 <body>
@@ -441,10 +444,20 @@ const EL=()=>cargo==="g"?{e1:G1,e2:G2,c:"0003"}:{e1:E1,e2:E2,c:"0001"};
 async function loadFinalists(uf){
   if(GF[uf]) return GF[uf];
   const j=await getJSON(url(G1,uf,"0003")); if(!j) return null;
-  const cs=[]; ((j.carg||[])[0]?.agr||[]).forEach(g=>(g.par||[]).forEach(p=>(p.cand||[]).forEach(c=>cs.push({n:String(c.n),pt:p.sg||"",nm:nameCase(c.nmu||c.nm),v:+(c.vap||0),st:String(c.st||"")}))));
+  const cs=[]; ((j.carg||[])[0]?.agr||[]).forEach(g=>(g.par||[]).forEach(p=>(p.cand||[]).forEach(c=>cs.push({n:String(c.n),sq:c.sqcand||null,pt:p.sg||"",nm:nameCase(c.nmu||c.nm),v:+(c.vap||0),st:String(c.st||"")}))));
   let fin=cs.filter(c=>/2º turno/i.test(c.st)); if(fin.length<2) fin=cs.slice().sort((a,b)=>b.v-a.v).slice(0,2);
   fin.sort((a,b)=>b.v-a.v);
-  return GF[uf]={keys:fin.map(c=>c.n),nm:fin.map(c=>c.nm),pt:fin.map(c=>c.pt)};
+  return GF[uf]={keys:fin.map(c=>c.n),nm:fin.map(c=>c.nm),pt:fin.map(c=>c.pt),sq:fin.map(c=>c.sq)};
+}
+/* foto de urna: presidente (fotos do site) e governador (TSE) */
+function fotoOf(k,nm){
+  const ini=String(nm||"").split(" ").filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join("").toUpperCase();
+  const tile=`<span class="cfoto ini" aria-hidden="true">${esc(ini)}</span>`;
+  let src="";
+  if(cargo!=="g") src= k==="a"?"img/lula.webp":"img/flavio.webp";
+  else { const f=GF[scope], sq=f&&f.sq[k==="a"?0:1]; if(sq) src=`${BASE}/${G1}/fotos/${scope}/${sq}.jpeg`; }
+  if(!src) return tile;
+  return `<img class="cfoto" src="${src}" alt="Foto de urna de ${esc(nm)}" loading="lazy" onerror="this.outerHTML='${tile.replace(/"/g,"&quot;")}'">`;
 }
 function ptyOf(k){ if(cargo!=="g") return k==="a"?"PT · 13":"PL · 22"; const f=GF[scope]; if(!f) return ""; const i=k==="a"?0:1; return [f.pt[i],f.keys[i]].filter(Boolean).join(" · ");
 }
@@ -622,7 +635,7 @@ function renderSummary(all){
   const side=(k,cls)=>{
     const nm=k==="a"?NM.a:NM.b, p1=k==="a"?T.p1a:T.p1b, p2=k==="a"?T.p2a:T.p2b, v1=k==="a"?T.t1.a:T.t1.b, v2=T.ok2?(k==="a"?T.t2.a:T.t2.b):0, d=k==="a"?T.dpa:T.dpb, dv=k==="a"?T.da:T.db, cap=k==="a"?T.ca:T.cb;
     const pos=order.indexOf(k)+1, tie=refA===refB;
-    return `<div class="cand ${cls} ${pos===1&&!tie?"first":""}" data-k="${k}"><div class="cand-head"><div class="rankb" aria-label="${tie?"empate":pos+"º lugar"}">${tie?"=":pos+"º"}</div><div><div class="nm">${esc(nm)}</div><div class="pty">${esc(ptyOf(k))} · ${tie?"empate":pos+"º lugar"} ${T.ok2?"no 2º turno":"no 1º turno"}</div></div></div>
+    return `<div class="cand ${cls} ${pos===1&&!tie?"first":""}" data-k="${k}"><div class="cand-head"><div class="rankb" aria-label="${tie?"empate":pos+"º lugar"}">${tie?"=":pos+"º"}</div>${fotoOf(k,nm)}<div><div class="nm">${esc(nm)}</div><div class="pty">${esc(ptyOf(k))} · ${tie?"empate":pos+"º lugar"} ${T.ok2?"no 2º turno":"no 1º turno"}</div></div></div>
       <div class="turns"><div class="turn t1"><div class="k">1º turno</div><div class="v">${pct(p1)}</div><div class="n">${fmt(v1)} votos</div></div>
       <div class="arrow" aria-hidden="true">→</div>
       <div class="turn"><div class="k">2º turno</div><div class="v">${T.ok2?pct(p2):"—"}</div><div class="n">${T.ok2?fmt(v2)+" votos":"a partir das 17h de 25/10"}</div></div></div>
