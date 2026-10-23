@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Pesquisas · Análise Diego Reis</title>
+<title>Projeção · Análise Diego Reis</title>
 <meta name="description" content="As pesquisas para presidente comparadas com o resultado das urnas: quem mais acertou o 1º turno, as últimas pesquisas do 2º turno e o instituto mais confiável. Análise – Diego R. S. Lima.">
 <meta name="theme-color" content="#0b5d3b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cmask id='m'%3E%3Crect width='120' height='120' fill='white'/%3E%3Cpath d='M-4 46H44V30L74 60 44 90V74H-4Z'/%3E%3C/mask%3E%3Cpath mask='url(%23m)' fill='%23e02a46' d='M24 8H58A52 52 0 0 1 58 112H24Q12 112 12 100V20Q12 8 24 8Z'/%3E%3C/svg%3E">
@@ -209,6 +209,19 @@ td .win{display:inline-block;width:10px;height:10px;border-radius:50%;margin-rig
 .filt{align-self:flex-start;display:inline-flex;flex-wrap:wrap;border:2px solid #ffdf00;border-radius:12px;overflow:hidden;background:var(--surface)}
 .filt button{border:0;background:none;color:var(--fg);font:700 15px var(--body);padding:11px 18px;cursor:pointer}
 .filt button[aria-pressed="true"]{background:#ffdf00;color:#1b2a12}
+.filt.cargo{border-color:#fff}
+.filt.cargo button[aria-pressed="true"]{background:#fff;color:#1b2a12}
+.filt.cargo button{font-size:16px;padding:12px 22px}
+.govlist{display:flex;flex-direction:column;gap:22px}
+.gstate{display:flex;flex-direction:column;gap:10px;scroll-margin-top:80px}
+.gstate h3{font:700 24px/1.1 var(--display);margin:0}
+.gstate .vs{font-size:14px;color:var(--muted)}
+.gstate .vs b.a{color:var(--g1,#c2410c)}.gstate .vs b.b{color:var(--g2,#6d28d9)}
+.gchips{display:flex;flex-wrap:wrap;gap:8px}
+.gchips a{text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font:700 13px var(--body);color:var(--fg);background:var(--bg)}
+.gchips a:hover{border-color:#ffdf00}
+.gstate .fill.ga{background:#ea580c}.gstate .fill.gb{background:#7c3aed}
+.gstate .nm.ga{color:#c2410c}.gstate .nm.gb{color:#6d28d9}
 .updline{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;color:var(--on-page-muted);font:500 13px var(--mono)}
 .updline b{color:var(--on-page)}
 .polls{display:flex;flex-direction:column;gap:12px}
@@ -279,6 +292,14 @@ html{scroll-padding-top:72px}
 .tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:35;padding:10px 0;background:color-mix(in srgb,var(--page) 92%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 10px 14px -12px rgba(0,0,0,.45)}
 body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
 @media (max-width:640px){.tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin:0 -16px;padding:10px 16px}.tabs::-webkit-scrollbar{display:none}.tabs a{flex:none;font-size:13px;padding:8px 13px}}
+
+/* logo pequena na barra fixa, aparece ao rolar */
+.tabs{align-items:center}
+.tabs-logo{display:none!important;align-items:center;gap:6px;text-decoration:none!important;border:0!important;padding:0 6px 0 0!important;background:none!important;color:var(--on-page)!important;font:800 15px var(--display,inherit)!important;white-space:nowrap}
+.tabs.stuck .tabs-logo{display:inline-flex!important;animation:tlg .25s ease}
+@keyframes tlg{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+@media (max-width:640px){.tabs-logo span{display:none}}
+@media (prefers-reduced-motion:reduce){.tabs.stuck .tabs-logo{animation:none}}
 </style>
 </head>
 <body>
@@ -297,22 +318,27 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
   </div>
 
   <nav class="tabs" aria-label="Páginas do site">
+    <a class="tabs-logo" href="./" aria-label="Diego Reis, início" tabindex="-1"><svg viewBox="0 0 120 120" width="26" height="26" aria-hidden="true"><defs><mask id="dr-cut-mini"><rect width="120" height="120" fill="#fff"/><path d="M-4 46 H44 V30 L74 60 L44 90 V74 H-4 Z" fill="#000"/></mask></defs><path mask="url(#dr-cut-mini)" fill="#e23350" d="M24 8 H58 A52 52 0 0 1 58 112 H24 Q12 112 12 100 V20 Q12 8 24 8 Z"/></svg><span>Diego Reis</span></a>
     <a href="./">Apuração ao vivo</a>
     <a href="analise.html">1º × 2º turno</a>
     <a href="graficos.html">Gráficos</a>
-    <a href="pesquisas.html" aria-current="page">Pesquisas</a>
+    <a href="pesquisas.html" aria-current="page">Projeção</a>
     <a href="governador.html">Governador</a>
   </nav>
   <div class="strip" data-contato><a class="fila-btn" href="https://cajuinalab.tre-pi.jus.br/kiwi/filas/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="7" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="19" cy="7" r="2"/><path d="M2.5 16v-2a2.5 2.5 0 0 1 5 0v2M9.5 16v-2a2.5 2.5 0 0 1 5 0v2M16.5 16v-2a2.5 2.5 0 0 1 5 0v2M3 20h18"/></g></svg><span>Fila de espera nas seções · PI<small>Consulte sua zona e seção no Kiwi do TRE-PI · 9h às 15h</small></span></a></div>
 
   <header>
-    <div class="kick">Presidente da República · Lula × Flávio Bolsonaro</div>
+    <div class="kick" id="kick">Presidente da República · Lula × Flávio Bolsonaro</div>
     <h1>As pesquisas e as urnas</h1>
     <p class="lede">Quem mais acertou o 1º turno e o que dizem as últimas pesquisas do 2º. Depois da apuração, o site aponta o instituto mais confiável.</p>
     <div class="updline" style="margin-top:12px"><span>Pesquisas atualizadas em <b id="upd">—</b></span><span>Percentuais de votos válidos</span></div>
   </header>
 
-  <div class="filt" role="group" aria-label="Escolha o turno">
+  <div class="filt cargo" role="group" aria-label="Escolha o cargo">
+    <button id="fp" aria-pressed="true">Presidente</button><button id="fg" aria-pressed="false">Governador</button>
+  </div>
+
+  <div class="filt" id="fturno" role="group" aria-label="Escolha o turno">
     <button id="f1" aria-pressed="true">Projeções do 1º turno</button><button id="f2" aria-pressed="false">Projeções do 2º turno</button>
   </div>
 
@@ -332,6 +358,14 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
     <div class="polls" id="list2"></div>
     <details class="more"><summary>Outros institutos</summary><div class="polls" id="other2" style="margin-top:12px"></div></details>
     <p class="note" style="margin:0" id="note2"></p>
+  </section>
+
+  <section class="card" id="vg" hidden>
+    <div><div class="label">Governador · 2º turno · 25 de outubro</div><h2>Pesquisas nos estados com 2º turno</h2></div>
+    <div id="wing"></div>
+    <div class="gchips" id="gchips"></div>
+    <div id="govlist" class="govlist"></div>
+    <p class="note" style="margin:0" id="noteg"></p>
   </section>
 
   <footer>
@@ -452,17 +486,86 @@ async function loadReal2(){
 }
 function setView(v){ view=v; $("f1").setAttribute("aria-pressed",String(v===1)); $("f2").setAttribute("aria-pressed",String(v===2)); $("v1").hidden=v!==1; $("v2").hidden=v!==2; try{ history.replaceState(null,"",location.pathname+location.search+(v===2?"#segundo":"")); }catch(_){} }
 $("f1").onclick=()=>setView(1); $("f2").onclick=()=>setView(2);
+/* ===== Governador: pesquisas de 2º turno nos estados ===== */
+let realG={}, vcargo="p";
+const normTxt=t=>String(t||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+function gScore(q,r){ return score({lula:q.a,flavio:q.b},{lula:r.a,flavio:r.b}); }
+function gBar(nm,cls,v,real){ return bar(nm,cls,v,real); }
+function gCard(e,q,i,r,best){
+  const s=r?gScore(q,r):null;
+  const metaBits=[q.campo&&("campo: "+q.campo), q.divulgacao&&("divulgada em "+q.divulgacao), q.entrevistas&&(fmt(q.entrevistas)+" entrevistas"), q.margem&&("margem ±"+String(q.margem).replace(".",",")+" p.p."), q.registro, q.base&&q.base!=="válidos"&&("base: "+q.base)].filter(Boolean);
+  const lead=q.a===q.b?null:(q.a>q.b?e.a.nm:e.b.nm);
+  const right= s ? `<div class="acc">${p1(s.acc)}</div><div class="err">acerto · erro médio ${s.err.toLocaleString("pt-BR",{maximumFractionDigits:2})} p.p.</div>${s.empate?`<span class="no-chip">indicou empate</span>`:s.ordemOk?`<span class="ok-chip">acertou quem ficou na frente</span>`:`<span class="no-chip">errou quem ficou na frente</span>`}`
+    : `<div class="acc" style="font-size:22px">${lead?esc(lead.split(" ").slice(-1)[0]):"Empate"}</div><div class="err">${lead?"à frente por "+Math.abs(q.a-q.b).toLocaleString("pt-BR",{maximumFractionDigits:1})+" p.p.":"50% a 50%"}</div>`;
+  return `<article class="poll ${best?"best":""}">${best?`<span class="tagbest">Mais perto de 100% de acerto</span>`:""}
+    <div class="rk">${i+1}º</div>
+    <div style="min-width:0"><div class="ihead">${instLogo(q.instituto)}<div class="inst">${esc(q.instituto)}</div></div><div class="meta">${esc(metaBits.join(" · "))}${q.fonte?` · <a href="${esc(q.fonte)}" target="_blank" rel="noopener">fonte</a>`:""}</div></div>
+    <div class="pbars">${gBar(e.a.nm,"ga",q.a,r?r.a:null)}${gBar(e.b.nm,"gb",q.b,r?r.b:null)}</div>
+    <div class="pscore">${right}</div></article>`;
+}
+function renderG(){
+  const G=DATA&&DATA.governador; if(!G){ $("govlist").innerHTML=`<div class="msg">As pesquisas para governador ainda não foram carregadas.</div>`; return; }
+  const est=G.estados||[];
+  $("gchips").innerHTML=est.map(e=>`<a href="#gov-${e.uf}">${esc(e.estado)}</a>`).join("");
+  const perInst={}; let finals=0, withPolls=0;
+  $("govlist").innerHTML=est.map(e=>{
+    const r=realG[e.uf]&&realG[e.uf].pst>0?realG[e.uf]:null;
+    const polls=(e.pesquisas||[]).map(q=>({q,s:r?gScore(q,r):null}));
+    if(r) polls.sort((x,y)=>x.s.err-y.s.err);
+    if(polls.length) withPolls++;
+    if(r&&r.final&&polls.length){ finals++; polls.forEach(o=>{ const k=o.q.instituto; (perInst[k]=perInst[k]||[]).push(o.s.err); }); }
+    const avgA=polls.length?polls.reduce((t,o)=>t+o.q.a,0)/polls.length:null;
+    const realHTML= r ? `<div class="realbox"><span class="k">${r.final?"Resultado oficial":"Apuração em andamento · "+p1(r.pst)+" das seções"}</span><span><span class="mk"></span><b>${esc(e.a.nm)} ${p1(r.a)}</b></span><span><span class="mk"></span><b>${esc(e.b.nm)} ${p1(r.b)}</b></span>${r.final?`<span class="ok-chip">Eleito(a): ${esc(r.a>r.b?e.a.nm:e.b.nm)}</span>`:""}</div>` : "";
+    return `<div class="gstate" id="gov-${e.uf}">
+      <div><h3>${esc(e.estado)}</h3><div class="vs"><b class="a">${esc(e.a.nm)}</b> (${esc(e.a.partido)}) × <b class="b">${esc(e.b.nm)}</b> (${esc(e.b.partido)})${avgA!=null&&!r?` · média das pesquisas: ${esc(e.a.nm.split(" ").slice(-1)[0])} ${p1(avgA)} × ${esc(e.b.nm.split(" ").slice(-1)[0])} ${p1(100-avgA)}`:""}</div></div>
+      ${realHTML}
+      ${polls.length?`<div class="polls">${polls.map((o,i)=>gCard(e,o.q,i,r,!!(r&&r.final&&i===0))).join("")}</div>`:`<div class="msg">${esc(e.aviso||"Nenhuma pesquisa de 2º turno encontrada.")}</div>`}
+    </div>`;
+  }).join("");
+  const ranking=Object.entries(perInst).map(([k,v])=>({k,err:v.reduce((a,b)=>a+b,0)/v.length,n:v.length})).sort((x,y)=>x.err-y.err);
+  if(finals&&finals===withPolls&&ranking.length){
+    const b=ranking[0];
+    $("wing").innerHTML=`<div class="winner"><div class="k">Instituto mais confiável nos governos estaduais</div><div class="nm">${esc(b.k)}</div><div>Erro médio de ${b.err.toLocaleString("pt-BR",{maximumFractionDigits:2})} ponto(s) nos ${b.n} estado(s) em que pesquisou (acerto de ${p1(100-b.err)}).${ranking.length>1?" Depois: "+ranking.slice(1).map(o=>`${esc(o.k)} (${p1(100-o.err)})`).join(", ")+".":""}</div></div>`;
+  } else if(Object.keys(realG).length){
+    $("wing").innerHTML=`<div class="msg">Com a apuração em andamento, a comparação é parcial. O instituto mais confiável para governador é apontado aqui quando o TSE concluir a totalização em todos os estados.</div>`;
+  } else $("wing").innerHTML="";
+  $("noteg").textContent="Percentuais de votos válidos. Quando o instituto divulgou só votos totais, o válido foi calculado excluindo brancos, nulos e indecisos. Depois da apuração, cada estado mostra o resultado oficial do TSE e a pesquisa que mais acertou. Análise – Diego R. S. Lima.";
+}
+async function loadRealG(){
+  if(!open2()||!DATA||!DATA.governador) return;
+  await Promise.all(DATA.governador.estados.map(async e=>{
+    const j=await getJSON(url(G2,e.uf,"0003")); if(!j) return;
+    const cs=[]; ((j.carg||[])[0]?.agr||[]).forEach(g=>(g.par||[]).forEach(p=>(p.cand||[]).forEach(c=>cs.push({nm:normTxt((c.nmu||"")+" "+(c.nm||"")),v:+(c.vap||0)}))));
+    let a=cs.find(c=>c.nm.includes(normTxt(e.a.chave))), b=cs.find(c=>c.nm.includes(normTxt(e.b.chave)));
+    if((!a||!b)&&TESTE){ cs.sort((x,y)=>y.v-x.v); a=cs[0]; b=cs[1]; }
+    if(!a||!b||a.v+b.v===0) return;
+    realG[e.uf]={a:a.v/(a.v+b.v)*100,b:b.v/(a.v+b.v)*100,pst:num(j.s?.pstn??j.s?.pst),final:j.and==="f"};
+  }));
+  if(vcargo==="g") renderG();
+}
+function setCargo(c){
+  vcargo=c; $("fp").setAttribute("aria-pressed",String(c==="p")); $("fg").setAttribute("aria-pressed",String(c==="g"));
+  $("fturno").hidden=c!=="p"; $("vg").hidden=c!=="g";
+  if(c==="g"){ $("v1").hidden=true; $("v2").hidden=true; $("kick").textContent="Governador · estados com 2º turno"; renderG(); try{ history.replaceState(null,"",location.pathname+location.search+"#governador"); }catch(e){} }
+  else { $("kick").textContent="Presidente da República · Lula × Flávio Bolsonaro"; setView(view); }
+}
+$("fp").onclick=()=>setCargo("p"); $("fg").onclick=()=>setCargo("g");
+
 (async()=>{
   testBanner();
   try{ const r=await fetch("pesquisas.json",{cache:"no-cache"}); DATA=await r.json(); }catch(e){ DATA=null; }
   if(!DATA){ $("list1").innerHTML=`<div class="msg">Não foi possível carregar as pesquisas agora. Recarregue a página.</div>`; return; }
   const [y,m,d]=String(DATA.atualizado_em||"").split("-"); $("upd").textContent=d?`${d}/${m}/${y}`:"—";
   render1(); render2();
-  if(location.hash==="#segundo"||open2()) setView(2);
+  const H0=location.hash;
+  if(H0==="#segundo"||open2()) setView(2);
+  if(H0==="#governador"||/^#gov-/.test(H0)){ const h=H0; setCargo("g"); if(/^#gov-/.test(h)) setTimeout(()=>{ const el=document.querySelector(h); if(el) el.scrollIntoView(); },50); }
   loadReal2(); setInterval(loadReal2,60000);
+  loadRealG(); setInterval(loadRealG,60000);
 })();
 })();
 </script>
 <script>(function(){var t=document.querySelector('.tabs'),c=t&&t.querySelector('[aria-current]');if(c&&t.scrollWidth>t.clientWidth)t.scrollLeft=c.offsetLeft-(t.clientWidth-c.offsetWidth)/2;})();</script>
+<script>(function(){var t=document.querySelector('.tabs');if(!t||!('IntersectionObserver' in window))return;var s=document.createElement('div');s.style.cssText='height:1px;margin-bottom:-1px';t.parentNode.insertBefore(s,t);new IntersectionObserver(function(e){var st=!e[0].isIntersecting&&e[0].boundingClientRect.top<0;t.classList.toggle('stuck',st);var l=t.querySelector('.tabs-logo');if(l)l.tabIndex=st?0:-1;}).observe(s);})();</script>
 </body>
 </html>

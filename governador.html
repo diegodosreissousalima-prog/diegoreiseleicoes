@@ -259,6 +259,14 @@ html{scroll-padding-top:72px}
 .tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:35;padding:10px 0;background:color-mix(in srgb,var(--page) 92%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 10px 14px -12px rgba(0,0,0,.45)}
 body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
 @media (max-width:640px){.tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin:0 -16px;padding:10px 16px}.tabs::-webkit-scrollbar{display:none}.tabs a{flex:none;font-size:13px;padding:8px 13px}}
+
+/* logo pequena na barra fixa, aparece ao rolar */
+.tabs{align-items:center}
+.tabs-logo{display:none!important;align-items:center;gap:6px;text-decoration:none!important;border:0!important;padding:0 6px 0 0!important;background:none!important;color:var(--on-page)!important;font:800 15px var(--display,inherit)!important;white-space:nowrap}
+.tabs.stuck .tabs-logo{display:inline-flex!important;animation:tlg .25s ease}
+@keyframes tlg{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+@media (max-width:640px){.tabs-logo span{display:none}}
+@media (prefers-reduced-motion:reduce){.tabs.stuck .tabs-logo{animation:none}}
 </style>
 </head>
 <body>
@@ -277,10 +285,11 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
   </div>
 
   <nav class="tabs" aria-label="Páginas do site">
+    <a class="tabs-logo" href="./" aria-label="Diego Reis, início" tabindex="-1"><svg viewBox="0 0 120 120" width="26" height="26" aria-hidden="true"><defs><mask id="dr-cut-mini"><rect width="120" height="120" fill="#fff"/><path d="M-4 46 H44 V30 L74 60 L44 90 V74 H-4 Z" fill="#000"/></mask></defs><path mask="url(#dr-cut-mini)" fill="#e23350" d="M24 8 H58 A52 52 0 0 1 58 112 H24 Q12 112 12 100 V20 Q12 8 24 8 Z"/></svg><span>Diego Reis</span></a>
     <a href="./">Apuração ao vivo</a>
     <a href="analise.html">1º × 2º turno</a>
     <a href="graficos.html">Gráficos</a>
-    <a href="pesquisas.html">Pesquisas</a>
+    <a href="pesquisas.html">Projeção</a>
     <a href="governador.html" aria-current="page">Governador</a>
   </nav>
   <div class="strip" data-contato><a class="fila-btn" href="https://cajuinalab.tre-pi.jus.br/kiwi/filas/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="7" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="19" cy="7" r="2"/><path d="M2.5 16v-2a2.5 2.5 0 0 1 5 0v2M9.5 16v-2a2.5 2.5 0 0 1 5 0v2M16.5 16v-2a2.5 2.5 0 0 1 5 0v2M3 20h18"/></g></svg><span>Fila de espera nas seções · PI<small>Consulte sua zona e seção no Kiwi do TRE-PI · 9h às 15h</small></span></a></div>
@@ -419,5 +428,6 @@ async function cycle(){
 })();
 </script>
 <script>(function(){var t=document.querySelector('.tabs'),c=t&&t.querySelector('[aria-current]');if(c&&t.scrollWidth>t.clientWidth)t.scrollLeft=c.offsetLeft-(t.clientWidth-c.offsetWidth)/2;})();</script>
+<script>(function(){var t=document.querySelector('.tabs');if(!t||!('IntersectionObserver' in window))return;var s=document.createElement('div');s.style.cssText='height:1px;margin-bottom:-1px';t.parentNode.insertBefore(s,t);new IntersectionObserver(function(e){var st=!e[0].isIntersecting&&e[0].boundingClientRect.top<0;t.classList.toggle('stuck',st);var l=t.querySelector('.tabs-logo');if(l)l.tabIndex=st?0:-1;}).observe(s);})();</script>
 </body>
 </html>

@@ -1,27 +1,446 @@
 {
   "atualizado_em": "2026-10-23",
   "nota": "Percentuais de votos válidos. Quando o instituto divulgou só votos totais, o válido foi calculado excluindo brancos, nulos e indecisos (marcado como calculado).",
-  "resultado_1t": { "lula": 45.16, "flavio": 47.03, "fonte": "TSE, resultado final do 1º turno (4/10/2026)" },
+  "resultado_1t": {
+    "lula": 45.16,
+    "flavio": 47.03,
+    "fonte": "TSE, resultado final do 1º turno (4/10/2026)"
+  },
   "turno1": [
-    { "instituto": "Vox Brasil", "campo": "reta final do 1º turno", "divulgacao": "3/10", "lula": 45.0, "flavio": 45.9, "base": "válidos", "registro": "", "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente" },
-    { "instituto": "Gerp", "campo": "reta final do 1º turno", "divulgacao": "3/10", "lula": 44.0, "flavio": 46.0, "base": "não informada (provavelmente totais)", "registro": "", "fonte": "https://www.brasilparalelo.com.br/noticias/veja-quais-pesquisas-erraram-o-resultado-do-primeiro-turno-das-eleicoes" },
-    { "instituto": "Quaest", "campo": "2 e 3/10", "divulgacao": "3/10", "lula": 46.0, "flavio": 45.0, "base": "válidos", "registro": "", "fonte": "https://mais.opovo.com.br/jornal/politica/2026/10/04/pesquisas-de-vespera-mostram-lula-e-flavio-bolsonaro-em-empate-tecnico.html" },
-    { "instituto": "PoderData/AYA", "campo": "véspera do 1º turno", "divulgacao": "3/10", "lula": 45.0, "flavio": 43.0, "base": "válidos", "registro": "", "fonte": "https://www.bnewssaopaulo.com.br/noticias/politica/poderdataaya-lula-tem-45-dos-votos-validos-no-1-turno-flavio-43.html" },
-    { "instituto": "AtlasIntel", "campo": "véspera do 1º turno", "divulgacao": "3/10", "lula": 47.0, "flavio": 44.1, "base": "válidos", "registro": "", "fonte": "https://www.cnnbrasil.com.br/eleicoes/atlas-lula-tem-47-dos-votos-validos-no-1o-turno-flavio-441/" },
-    { "instituto": "Futura Inteligência", "campo": "reta final do 1º turno", "divulgacao": "3/10", "lula": 42.6, "flavio": 44.8, "base": "não informada", "registro": "", "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente" },
-    { "instituto": "Datafolha", "campo": "3/10", "divulgacao": "3/10", "lula": 45.0, "flavio": 42.0, "base": "válidos", "registro": "", "fonte": "https://www.opovo.com.br/noticias/brasil/2026/10/04/datafolha-lula-tem-45-e-flavio-42-dos-votos-validos.html" },
-    { "instituto": "MDA/CNT", "campo": "30/9 a 2/10", "divulgacao": "3/10", "lula": 47.8, "flavio": 42.1, "base": "válidos", "registro": "", "fonte": "https://mais.opovo.com.br/jornal/politica/2026/10/04/pesquisas-de-vespera-mostram-lula-e-flavio-bolsonaro-em-empate-tecnico.html" }
+    {
+      "instituto": "Vox Brasil",
+      "campo": "reta final do 1º turno",
+      "divulgacao": "3/10",
+      "lula": 45.0,
+      "flavio": 45.9,
+      "base": "válidos",
+      "registro": "",
+      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+    },
+    {
+      "instituto": "Gerp",
+      "campo": "reta final do 1º turno",
+      "divulgacao": "3/10",
+      "lula": 44.0,
+      "flavio": 46.0,
+      "base": "não informada (provavelmente totais)",
+      "registro": "",
+      "fonte": "https://www.brasilparalelo.com.br/noticias/veja-quais-pesquisas-erraram-o-resultado-do-primeiro-turno-das-eleicoes"
+    },
+    {
+      "instituto": "Quaest",
+      "campo": "2 e 3/10",
+      "divulgacao": "3/10",
+      "lula": 46.0,
+      "flavio": 45.0,
+      "base": "válidos",
+      "registro": "",
+      "fonte": "https://mais.opovo.com.br/jornal/politica/2026/10/04/pesquisas-de-vespera-mostram-lula-e-flavio-bolsonaro-em-empate-tecnico.html"
+    },
+    {
+      "instituto": "PoderData/AYA",
+      "campo": "véspera do 1º turno",
+      "divulgacao": "3/10",
+      "lula": 45.0,
+      "flavio": 43.0,
+      "base": "válidos",
+      "registro": "",
+      "fonte": "https://www.bnewssaopaulo.com.br/noticias/politica/poderdataaya-lula-tem-45-dos-votos-validos-no-1-turno-flavio-43.html"
+    },
+    {
+      "instituto": "AtlasIntel",
+      "campo": "véspera do 1º turno",
+      "divulgacao": "3/10",
+      "lula": 47.0,
+      "flavio": 44.1,
+      "base": "válidos",
+      "registro": "",
+      "fonte": "https://www.cnnbrasil.com.br/eleicoes/atlas-lula-tem-47-dos-votos-validos-no-1o-turno-flavio-441/"
+    },
+    {
+      "instituto": "Futura Inteligência",
+      "campo": "reta final do 1º turno",
+      "divulgacao": "3/10",
+      "lula": 42.6,
+      "flavio": 44.8,
+      "base": "não informada",
+      "registro": "",
+      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+    },
+    {
+      "instituto": "Datafolha",
+      "campo": "3/10",
+      "divulgacao": "3/10",
+      "lula": 45.0,
+      "flavio": 42.0,
+      "base": "válidos",
+      "registro": "",
+      "fonte": "https://www.opovo.com.br/noticias/brasil/2026/10/04/datafolha-lula-tem-45-e-flavio-42-dos-votos-validos.html"
+    },
+    {
+      "instituto": "MDA/CNT",
+      "campo": "30/9 a 2/10",
+      "divulgacao": "3/10",
+      "lula": 47.8,
+      "flavio": 42.1,
+      "base": "válidos",
+      "registro": "",
+      "fonte": "https://mais.opovo.com.br/jornal/politica/2026/10/04/pesquisas-de-vespera-mostram-lula-e-flavio-bolsonaro-em-empate-tecnico.html"
+    }
   ],
   "turno2_principais": [
-    { "instituto": "Datafolha", "campo": "20 a 22/10", "divulgacao": "22/10", "lula": 50.0, "flavio": 50.0, "base": "válidos", "entrevistas": 2520, "margem": 2.0, "registro": "BR-09709/2026", "fonte": "https://www.cnnbrasil.com.br/eleicoes/datafolha-flavio-e-lula-empatam-em-50-de-votos-validos-no-2o-turno/" },
-    { "instituto": "Quaest", "campo": "17 a 20/10", "divulgacao": "21/10", "lula": 49.4, "flavio": 50.6, "base": "válidos (calculado a partir de 44% × 45% dos votos totais)", "entrevistas": 2154, "margem": 2.0, "registro": "BR-08535/2026", "fonte": "https://www.metropoles.com/brasil/quaest-flavio-bolsonaro-tem-45-e-lula-44-no-2o-turno" },
-    { "instituto": "AtlasIntel/Bloomberg", "campo": "13 a 18/10", "divulgacao": "19/10", "lula": 48.9, "flavio": 51.1, "base": "válidos", "entrevistas": 4998, "margem": null, "registro": "", "fonte": "https://www.congressoemfoco.com.br/noticia/123359/atlasintel-vantagem-de-flavio-cai-de-5-4-para-2-2-pontos-em-10-dias" },
-    { "instituto": "Vox Brasil", "campo": "17 a 23/10", "divulgacao": "23/10", "lula": 50.6, "flavio": 49.4, "base": "válidos", "entrevistas": null, "margem": null, "registro": "", "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente" },
-    { "instituto": "PoderData/AYA", "campo": "13 a 15/10", "divulgacao": "16/10", "lula": 50.0, "flavio": 50.0, "base": "válidos", "entrevistas": 3000, "margem": 1.8, "registro": "BR-04258/2026", "fonte": "https://tribunadejundiai.com.br/politica/eleicoes-2026/poderdata-segundo-turno-diferenca-entre-flavio-e-lula-desaparece-e-pesquisa-aponta-empate/" }
+    {
+      "instituto": "Datafolha",
+      "campo": "20 a 22/10",
+      "divulgacao": "22/10",
+      "lula": 50.0,
+      "flavio": 50.0,
+      "base": "válidos",
+      "entrevistas": 2520,
+      "margem": 2.0,
+      "registro": "BR-09709/2026",
+      "fonte": "https://www.cnnbrasil.com.br/eleicoes/datafolha-flavio-e-lula-empatam-em-50-de-votos-validos-no-2o-turno/"
+    },
+    {
+      "instituto": "Quaest",
+      "campo": "17 a 20/10",
+      "divulgacao": "21/10",
+      "lula": 49.4,
+      "flavio": 50.6,
+      "base": "válidos (calculado a partir de 44% × 45% dos votos totais)",
+      "entrevistas": 2154,
+      "margem": 2.0,
+      "registro": "BR-08535/2026",
+      "fonte": "https://www.metropoles.com/brasil/quaest-flavio-bolsonaro-tem-45-e-lula-44-no-2o-turno"
+    },
+    {
+      "instituto": "AtlasIntel/Bloomberg",
+      "campo": "13 a 18/10",
+      "divulgacao": "19/10",
+      "lula": 48.9,
+      "flavio": 51.1,
+      "base": "válidos",
+      "entrevistas": 4998,
+      "margem": null,
+      "registro": "",
+      "fonte": "https://www.congressoemfoco.com.br/noticia/123359/atlasintel-vantagem-de-flavio-cai-de-5-4-para-2-2-pontos-em-10-dias"
+    },
+    {
+      "instituto": "Vox Brasil",
+      "campo": "17 a 23/10",
+      "divulgacao": "23/10",
+      "lula": 50.6,
+      "flavio": 49.4,
+      "base": "válidos",
+      "entrevistas": null,
+      "margem": null,
+      "registro": "",
+      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+    },
+    {
+      "instituto": "PoderData/AYA",
+      "campo": "13 a 15/10",
+      "divulgacao": "16/10",
+      "lula": 50.0,
+      "flavio": 50.0,
+      "base": "válidos",
+      "entrevistas": 3000,
+      "margem": 1.8,
+      "registro": "BR-04258/2026",
+      "fonte": "https://tribunadejundiai.com.br/politica/eleicoes-2026/poderdata-segundo-turno-diferenca-entre-flavio-e-lula-desaparece-e-pesquisa-aponta-empate/"
+    }
   ],
   "turno2_outros": [
-    { "instituto": "Gerp", "campo": "19 a 21/10", "divulgacao": "22/10", "lula": 47.0, "flavio": 53.0, "base": "válidos", "registro": "", "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente" },
-    { "instituto": "Futura Inteligência", "campo": "19 e 20/10", "divulgacao": "21/10", "lula": 48.9, "flavio": 51.1, "base": "válidos", "registro": "", "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente" },
-    { "instituto": "Veritá", "campo": "15 a 19/10", "divulgacao": "20/10", "lula": 49.3, "flavio": 50.7, "base": "válidos", "registro": "", "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente" }
-  ]
+    {
+      "instituto": "Gerp",
+      "campo": "19 a 21/10",
+      "divulgacao": "22/10",
+      "lula": 47.0,
+      "flavio": 53.0,
+      "base": "válidos",
+      "registro": "",
+      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+    },
+    {
+      "instituto": "Futura Inteligência",
+      "campo": "19 e 20/10",
+      "divulgacao": "21/10",
+      "lula": 48.9,
+      "flavio": 51.1,
+      "base": "válidos",
+      "registro": "",
+      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+    },
+    {
+      "instituto": "Veritá",
+      "campo": "15 a 19/10",
+      "divulgacao": "20/10",
+      "lula": 49.3,
+      "flavio": 50.7,
+      "base": "válidos",
+      "registro": "",
+      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+    }
+  ],
+  "governador": {
+    "atualizado_em": "2026-10-23",
+    "estados": [
+      {
+        "uf": "ac",
+        "estado": "Acre",
+        "a": {
+          "nm": "Mailza Assis",
+          "partido": "PP",
+          "chave": "mailza"
+        },
+        "b": {
+          "nm": "Alan Rick",
+          "partido": "Republicanos",
+          "chave": "alan rick"
+        },
+        "pesquisas": [
+          {
+            "instituto": "Real Time Big Data",
+            "campo": "15 a 19/10",
+            "divulgacao": "20/10",
+            "a": 59.0,
+            "b": 41.0,
+            "base": "válidos",
+            "entrevistas": 1600,
+            "margem": 2.0,
+            "registro": "AC-09297/2026",
+            "fonte": "https://brasil61.com/n/pesquisa-realtime-big-data-mailza-assis-tem-59-dos-votos-validos-contra-41-de-alan-rick-no-acre-bras2617343"
+          },
+          {
+            "instituto": "Quaest",
+            "campo": "9 a 12/10",
+            "divulgacao": "13/10",
+            "a": 60.5,
+            "b": 39.5,
+            "base": "válidos (calculado a partir de 49% × 32% dos votos totais)",
+            "entrevistas": 1098,
+            "margem": 3.0,
+            "registro": "AC-05379/2026",
+            "fonte": "https://www.dgabc.com.br/Noticia/4352571/quaest-no-acre-mailza-tem-49-das-intencoes-de-voto-no-2-turno-contra-32-de-alan-rick"
+          }
+        ]
+      },
+      {
+        "uf": "am",
+        "estado": "Amazonas",
+        "a": {
+          "nm": "Omar Aziz",
+          "partido": "PSD",
+          "chave": "omar"
+        },
+        "b": {
+          "nm": "Professora Maria do Carmo",
+          "partido": "PL",
+          "chave": "maria do carmo"
+        },
+        "pesquisas": [
+          {
+            "instituto": "Real Time Big Data",
+            "campo": "15 a 19/10",
+            "divulgacao": "20/10",
+            "a": 53.0,
+            "b": 47.0,
+            "base": "válidos",
+            "entrevistas": 1600,
+            "margem": 2.0,
+            "registro": "AM-03112/2026",
+            "fonte": "https://exame.com/brasil/real-time-big-data-aziz-tem-46-e-maria-do-carmo-41-no-2o-turno-no-amazonas/"
+          },
+          {
+            "instituto": "Quaest",
+            "campo": "9 a 12/10",
+            "divulgacao": "",
+            "a": 58.0,
+            "b": 42.0,
+            "base": "válidos (calculado a partir de 51% × 37% dos votos totais)",
+            "entrevistas": null,
+            "margem": null,
+            "registro": "",
+            "fonte": "https://www.infomoney.com.br/politica/quem-esta-na-frente-no-2o-turno-no-amazonas/"
+          }
+        ]
+      },
+      {
+        "uf": "df",
+        "estado": "Distrito Federal",
+        "a": {
+          "nm": "Celina Leão",
+          "partido": "PP",
+          "chave": "celina"
+        },
+        "b": {
+          "nm": "Leandro Grass",
+          "partido": "PT",
+          "chave": "grass"
+        },
+        "pesquisas": [
+          {
+            "instituto": "Real Time Big Data",
+            "campo": "9 a 13/10",
+            "divulgacao": "14/10",
+            "a": 60.0,
+            "b": 40.0,
+            "base": "válidos",
+            "entrevistas": 1600,
+            "margem": 2.0,
+            "registro": "DF-01170/2026",
+            "fonte": "https://www.dgabc.com.br/Noticia/4352627/no-df-celina-tem-53-e-grass-36-no-segundo-turno-aponta-realtime-big-data"
+          },
+          {
+            "instituto": "Quaest",
+            "campo": "8 a 11/10",
+            "divulgacao": "12/10",
+            "a": 61.6,
+            "b": 38.4,
+            "base": "válidos (calculado a partir de 53% × 33% dos votos totais)",
+            "entrevistas": 1104,
+            "margem": 3.0,
+            "registro": "DF-08737/2026",
+            "fonte": "https://www.congressoemfoco.com.br/noticia/123183/celina-tem-53-e-grass-33-no-segundo-turno-no-df-segundo-quaest"
+          }
+        ]
+      },
+      {
+        "uf": "es",
+        "estado": "Espírito Santo",
+        "a": {
+          "nm": "Lorenzo Pazolini",
+          "partido": "Republicanos",
+          "chave": "pazolini"
+        },
+        "b": {
+          "nm": "Ricardo Ferraço",
+          "partido": "MDB",
+          "chave": "ferra"
+        },
+        "pesquisas": [
+          {
+            "instituto": "Real Time Big Data",
+            "campo": "15 a 19/10",
+            "divulgacao": "20/10",
+            "a": 52.0,
+            "b": 48.0,
+            "base": "válidos",
+            "entrevistas": 1600,
+            "margem": 2.0,
+            "registro": "ES-06599/2026",
+            "fonte": "https://brasil61.com/n/pesquisa-real-time-big-data-pazolini-tem-52-e-ferraco-48-dos-votos-validos-no-espirito-santo-bras2617348"
+          },
+          {
+            "instituto": "Quaest",
+            "campo": "10 a 13/10",
+            "divulgacao": "14/10",
+            "a": 55.3,
+            "b": 44.7,
+            "base": "válidos (calculado a partir de 47% × 38% dos votos totais)",
+            "entrevistas": 1098,
+            "margem": 3.0,
+            "registro": "ES-00468/2026",
+            "fonte": "https://www.dgabc.com.br/Noticia/4352781/quaest-es-no-2-turno-pazolini-tem-47-e-ferraco-38-"
+          }
+        ]
+      },
+      {
+        "uf": "rj",
+        "estado": "Rio de Janeiro",
+        "a": {
+          "nm": "Douglas Ruas",
+          "partido": "PL",
+          "chave": "ruas"
+        },
+        "b": {
+          "nm": "Eduardo Paes",
+          "partido": "PSD",
+          "chave": "paes"
+        },
+        "pesquisas": [],
+        "aviso": "Nenhuma pesquisa de 2º turno feita depois de 4/10 foi encontrada até agora."
+      },
+      {
+        "uf": "rn",
+        "estado": "Rio Grande do Norte",
+        "a": {
+          "nm": "Allyson Bezerra",
+          "partido": "União",
+          "chave": "allyson"
+        },
+        "b": {
+          "nm": "Cadu de Lula",
+          "partido": "PT",
+          "chave": "cadu"
+        },
+        "pesquisas": [
+          {
+            "instituto": "Real Time Big Data",
+            "campo": "15 a 19/10",
+            "divulgacao": "20/10",
+            "a": 52.0,
+            "b": 48.0,
+            "base": "válidos",
+            "entrevistas": 1600,
+            "margem": 2.0,
+            "registro": "RN-02651/2026",
+            "fonte": "https://www.dgabc.com.br/Noticia/4353722/no-rn-allyson-tem-45-e-cadu-de-lula-42-no-2-turno-mostra-pesquisa-real-time-big-data"
+          },
+          {
+            "instituto": "Quaest",
+            "campo": "9 a 12/10",
+            "divulgacao": "13/10",
+            "a": 51.7,
+            "b": 48.3,
+            "base": "válidos (calculado a partir de 45% × 42% dos votos totais)",
+            "entrevistas": 1098,
+            "margem": 3.0,
+            "registro": "RN-03210/2026",
+            "fonte": "https://www.dgabc.com.br/Noticia/4352558/pesquisa-quaest-allyson-tem-45-e-cadu-de-lula-soma-42-no-rio-grande-do-norte"
+          }
+        ]
+      },
+      {
+        "uf": "to",
+        "estado": "Tocantins",
+        "a": {
+          "nm": "Professora Dorinha",
+          "partido": "União",
+          "chave": "dorinha"
+        },
+        "b": {
+          "nm": "Vicentinho Júnior",
+          "partido": "PSDB",
+          "chave": "vicentinho"
+        },
+        "pesquisas": [
+          {
+            "instituto": "Real Time Big Data",
+            "campo": "15 a 19/10",
+            "divulgacao": "20/10",
+            "a": 48.0,
+            "b": 52.0,
+            "base": "válidos",
+            "entrevistas": 1600,
+            "margem": 2.0,
+            "registro": "TO-09320/2026",
+            "fonte": "https://sbtnews.sbt.com.br/noticia/politica/real-time-to-vicentinho-tem-com-52-contra-48-de-dorinha"
+          },
+          {
+            "instituto": "Quaest",
+            "campo": "10 a 13/10",
+            "divulgacao": "14/10",
+            "a": 46.2,
+            "b": 53.8,
+            "base": "válidos (calculado a partir de 49% × 42% dos votos totais)",
+            "entrevistas": 1098,
+            "margem": 3.0,
+            "registro": "TO-03829/2026",
+            "fonte": "https://www.dgabc.com.br/Noticia/4352782/quaest-to-no-2-turno-vicentinho-junior-tem-49-e-professora-dorinha-42"
+          }
+        ]
+      }
+    ]
+  }
 }
