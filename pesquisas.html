@@ -222,6 +222,8 @@ td .win{display:inline-block;width:10px;height:10px;border-radius:50%;margin-rig
 .ihead{display:flex;align-items:center;gap:10px;min-width:0}
 .ilogo{width:38px;height:38px;border-radius:10px;flex:none;display:grid;place-items:center;background:#fff;border:1px solid var(--line);overflow:hidden}
 .ilogo img{width:28px;height:28px;display:block}
+.ilogo.wide{width:auto;min-width:38px;max-width:80px;padding:0 5px}
+.ilogo.wide img{width:auto;height:30px;max-width:70px;object-fit:contain}
 .ilogo.ini{color:#fff;border:0;font:800 14px var(--body);letter-spacing:.02em}
 .poll .meta{font:500 12px var(--mono);color:var(--muted);margin-top:3px}
 .poll .meta a{color:var(--muted)}
@@ -382,12 +384,15 @@ function bar(nm,cls,v,real){ return `<div class="pbar"><span class="nm ${cls}">$
 /* Logotipo de cada instituto: ícone oficial do site do instituto (serviço de ícones do Google).
    Sem site conhecido, ou se o ícone não carregar, mostra as iniciais. */
 const INST_SITE=[[/^datafolha/i,"datafolha.folha.uol.com.br"],[/^quaest/i,"quaest.com.br"],[/^atlas/i,"atlasintel.org"],[/^poderdata/i,"poder360.com.br"],[/^mda/i,"mdapesquisa.com.br"]];
+const INST_LOCAL=[[/^vox/i,"img/vox-brasil.png"],[/^gerp/i,"img/gerp.png"]];   // logos enviados por Diego
 const INST_COR=["#0b5cad","#7a3db8","#c2410c","#047857","#b91c1c","#334155","#a16207","#0e7490"];
 function instLogo(nm){
   const ini=String(nm).split(/[\s/]+/).filter(w=>/^[A-Za-zÀ-ú]/.test(w)).slice(0,2).map(w=>w[0]).join("").toUpperCase();
   let h=0; for(const ch of String(nm)) h=(h*31+ch.charCodeAt(0))>>>0;
+  const local=(INST_LOCAL.find(([re])=>re.test(nm))||[])[1];
   const site=(INST_SITE.find(([re])=>re.test(nm))||[])[1];
   const tile=`<span class="ilogo ini" style="background:${INST_COR[h%INST_COR.length]}" aria-hidden="true">${esc(ini)}</span>`;
+  if(local) return `<span class="ilogo wide" aria-hidden="true"><img src="${local}" alt="" height="30" loading="lazy" onerror="this.parentNode.outerHTML='${tile.replace(/'/g,"&#39;").replace(/"/g,"&quot;")}'"></span>`;
   if(!site) return tile;
   return `<span class="ilogo" aria-hidden="true" data-ini="${esc(ini)}" data-cor="${INST_COR[h%INST_COR.length]}"><img src="https://www.google.com/s2/favicons?domain=${site}&sz=64" alt="" width="28" height="28" loading="lazy" onerror="const s=this.parentNode;s.classList.add('ini');s.style.background=s.dataset.cor;s.textContent=s.dataset.ini"></span>`;
 }
