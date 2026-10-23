@@ -217,6 +217,10 @@ td .win{display:inline-block;width:10px;height:10px;border-radius:50%;margin-rig
 .gstate h3{font:700 24px/1.1 var(--display);margin:0}
 .gstate .vs{font-size:14px;color:var(--muted)}
 .gstate .vs b.a{color:var(--g1,#c2410c)}.gstate .vs b.b{color:var(--g2,#6d28d9)}
+.ghead{display:flex;align-items:center;gap:12px}
+.gpics{display:flex;gap:6px;flex:none}
+.gfoto{width:64px;height:80px;border-radius:10px;object-fit:cover;object-position:top;background:var(--bg);border:1px solid var(--line);flex:none;display:grid;place-items:center;font:800 18px var(--body);color:var(--muted)}
+.gfoto.sm{width:44px;height:56px;font-size:14px;border-radius:8px}
 .gchips{display:flex;flex-wrap:wrap;gap:8px}
 .gchips a{text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font:700 13px var(--body);color:var(--fg);background:var(--bg)}
 .gchips a:hover{border-color:#ffdf00}
@@ -488,6 +492,24 @@ async function loadReal2(){
 function setView(v){ view=v; $("f1").setAttribute("aria-pressed",String(v===1)); $("f2").setAttribute("aria-pressed",String(v===2)); $("v1").hidden=v!==1; $("v2").hidden=v!==2; try{ history.replaceState(null,"",location.pathname+location.search+(v===2?"#segundo":"")); }catch(_){} }
 $("f1").onclick=()=>setView(1); $("f2").onclick=()=>setView(2);
 /* ===== Governador: pesquisas de 2º turno nos estados ===== */
+/* foto de urna do candidato a governador (divulgada pelo TSE junto com os resultados) */
+const urlFotoGov=(uf,sq)=>`${BASE}/${G1}/fotos/${uf}/${sq}.jpeg`;
+function gFoto(uf,c,cls){ const ini=String(c.nm||"").split(" ").filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join("").toUpperCase();
+  const tile=`<span class="gfoto ini ${cls||""}" aria-hidden="true">${esc(ini)}</span>`;
+  if(!c.sq) return tile;
+  return `<img class="gfoto ${cls||""}" src="${urlFotoGov(uf,c.sq)}" alt="Foto de urna de ${esc(c.nm)}" loading="lazy" onerror="this.outerHTML='${tile.replace(/"/g,"&quot;")}'">`; }
+let sqG={};   // uf -> {a:sq,b:sq}, lido do arquivo do 1º turno de governador
+async function loadSqG(){
+  if(!DATA||!DATA.governador) return;
+  await Promise.all(DATA.governador.estados.map(async e=>{
+    const j=await getJSON(url(G1,e.uf,"0003")); if(!j) return;
+    const cs=[]; ((j.carg||[])[0]?.agr||[]).forEach(g=>(g.par||[]).forEach(p=>(p.cand||[]).forEach(c=>cs.push({nm:normTxt((c.nmu||"")+" "+(c.nm||"")),sq:c.sqcand}))));
+    const fa=cs.find(c=>c.nm.includes(normTxt(e.a.chave))), fb=cs.find(c=>c.nm.includes(normTxt(e.b.chave)));
+    sqG[e.uf]={a:fa&&fa.sq,b:fb&&fb.sq};
+  }));
+  if(vcargo==="g") renderG();
+}
+
 let realG={}, vcargo="p";
 const normTxt=t=>String(t||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
 function gScore(q,r){ return score({lula:q.a,flavio:q.b},{lula:r.a,flavio:r.b}); }
@@ -497,7 +519,7 @@ function gCard(e,q,i,r,best){
   const metaBits=[q.campo&&("campo: "+q.campo), q.divulgacao&&("divulgada em "+q.divulgacao), q.entrevistas&&(fmt(q.entrevistas)+" entrevistas"), q.margem&&("margem ±"+String(q.margem).replace(".",",")+" p.p."), q.registro, q.base&&q.base!=="válidos"&&("base: "+q.base)].filter(Boolean);
   const lead=q.a===q.b?null:(q.a>q.b?e.a.nm:e.b.nm);
   const right= s ? `<div class="acc">${p1(s.acc)}</div><div class="err">acerto · erro médio ${s.err.toLocaleString("pt-BR",{maximumFractionDigits:2})} p.p.</div>${s.empate?`<span class="no-chip">indicou empate</span>`:s.ordemOk?`<span class="ok-chip">acertou quem ficou na frente</span>`:`<span class="no-chip">errou quem ficou na frente</span>`}`
-    : `<div class="acc" style="font-size:22px">${lead?esc(lead.split(" ").slice(-1)[0]):"Empate"}</div><div class="err">${lead?"à frente por "+Math.abs(q.a-q.b).toLocaleString("pt-BR",{maximumFractionDigits:1})+" p.p.":"50% a 50%"}</div>`;
+    : `<div class="acc" style="font-size:22px">${lead?esc(lead.length<=14?lead:lead.split(" ").slice(-1)[0]):"Empate"}</div><div class="err">${lead?"à frente por "+Math.abs(q.a-q.b).toLocaleString("pt-BR",{maximumFractionDigits:1})+" p.p.":"50% a 50%"}</div>`;
   return `<article class="poll ${best?"best":""}">${best?`<span class="tagbest">Mais perto de 100% de acerto</span>`:""}
     <div class="rk">${i+1}º</div>
     <div style="min-width:0"><div class="ihead">${instLogo(q.instituto)}<div class="inst">${esc(q.instituto)}</div></div><div class="meta">${esc(metaBits.join(" · "))}${q.fonte?` · <a href="${esc(q.fonte)}" target="_blank" rel="noopener">fonte</a>`:""}</div></div>
@@ -518,7 +540,7 @@ function renderG(){
     const avgA=polls.length?polls.reduce((t,o)=>t+o.q.a,0)/polls.length:null;
     const realHTML= r ? `<div class="realbox"><span class="k">${r.final?"Resultado oficial":"Apuração em andamento · "+p1(r.pst)+" das seções"}</span><span><span class="mk"></span><b>${esc(e.a.nm)} ${p1(r.a)}</b></span><span><span class="mk"></span><b>${esc(e.b.nm)} ${p1(r.b)}</b></span>${r.final?`<span class="ok-chip">Eleito(a): ${esc(r.a>r.b?e.a.nm:e.b.nm)}</span>`:""}</div>` : "";
     return `<div class="gstate" id="gov-${e.uf}">
-      <div><h3>${esc(e.estado)}</h3><div class="vs"><b class="a">${esc(e.a.nm)}</b> (${esc(e.a.partido)}) × <b class="b">${esc(e.b.nm)}</b> (${esc(e.b.partido)})${avgA!=null&&!r?` · média das pesquisas: ${esc(e.a.nm.split(" ").slice(-1)[0])} ${p1(avgA)} × ${esc(e.b.nm.split(" ").slice(-1)[0])} ${p1(100-avgA)}`:""}</div></div>
+      <div class="ghead"><div class="gpics">${gFoto(e.uf,{nm:e.a.nm,sq:sqG[e.uf]&&sqG[e.uf].a},"sm")}${gFoto(e.uf,{nm:e.b.nm,sq:sqG[e.uf]&&sqG[e.uf].b},"sm")}</div><div><h3>${esc(e.estado)}</h3><div class="vs"><b class="a">${esc(e.a.nm)}</b> (${esc(e.a.partido)}) × <b class="b">${esc(e.b.nm)}</b> (${esc(e.b.partido)})${avgA!=null&&!r?` · média das pesquisas: ${esc(e.a.nm.split(" ").slice(-1)[0])} ${p1(avgA)} × ${esc(e.b.nm.split(" ").slice(-1)[0])} ${p1(100-avgA)}`:""}</div></div></div>
       ${realHTML}
       ${polls.length?`<div class="polls">${polls.map((o,i)=>gCard(e,o.q,i,r,!!(r&&r.final&&i===0))).join("")}</div>`:`<div class="msg">${esc(e.aviso||"Nenhuma pesquisa de 2º turno encontrada.")}</div>`}
     </div>`;
@@ -562,7 +584,7 @@ $("fp").onclick=()=>setCargo("p"); $("fg").onclick=()=>setCargo("g");
   if(H0==="#segundo"||open2()) setView(2);
   if(H0==="#governador"||/^#gov-/.test(H0)){ const h=H0; setCargo("g"); if(/^#gov-/.test(h)) setTimeout(()=>{ const el=document.querySelector(h); if(el) el.scrollIntoView(); },50); }
   loadReal2(); setInterval(loadReal2,60000);
-  loadRealG(); setInterval(loadRealG,60000);
+  loadRealG(); setInterval(loadRealG,60000); loadSqG();
 })();
 })();
 </script>

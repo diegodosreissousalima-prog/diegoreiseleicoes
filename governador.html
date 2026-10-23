@@ -224,6 +224,12 @@ td .win{display:inline-block;width:10px;height:10px;border-radius:50%;margin-rig
 .cands2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .gc{border-radius:10px;padding:10px 12px;background:var(--bg);border-top:5px solid var(--c);display:flex;flex-direction:column;gap:4px;min-width:0}
 .gc .nm{font:700 20px/1.05 var(--display)}
+.gtop{display:flex;align-items:center;gap:10px;min-width:0}
+.gc .pt{overflow-wrap:anywhere}
+@media (max-width:520px){.gtop{flex-direction:column;align-items:flex-start}.gtop .gfoto{width:52px;height:66px}.gc .nm{font-size:17px}}
+.gfoto{width:64px;height:80px;border-radius:10px;object-fit:cover;object-position:top;background:var(--bg);border:1px solid var(--line);flex:none;display:grid;place-items:center;font:800 18px var(--body);color:var(--muted)}
+.gfoto.sm{width:44px;height:56px;font-size:14px;border-radius:8px}
+
 .gc .pt{font:500 12px var(--mono);color:var(--muted)}
 .gc .vals{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-variant-numeric:tabular-nums}
 .gc .v1{font:600 15px var(--body);color:var(--muted)}
@@ -356,6 +362,12 @@ function testBanner(){ if(!TESTE) return; const b=document.createElement("div");
 const UFNAME={ac:"Acre",am:"Amazonas",df:"Distrito Federal",es:"Espírito Santo",rj:"Rio de Janeiro",rn:"Rio Grande do Norte",to:"Tocantins",pe:"Pernambuco",rr:"Roraima"};
 /* finalistas conhecidos (usados só até o TSE responder) */
 const KNOWN={ac:["Mailza Assis","Alan Rick"],am:["Omar Aziz","Professora Maria do Carmo"],df:["Celina Leão","Leandro Grass"],es:["Lorenzo Pazolini","Ricardo Ferraço"],rj:["Douglas Ruas","Eduardo Paes"],rn:["Allyson","Cadu de Lula"],to:["Professora Dorinha","Vicentinho Júnior"]};
+/* foto de urna do candidato a governador (divulgada pelo TSE junto com os resultados) */
+const urlFotoGov=(uf,sq)=>`${BASE}/${G1}/fotos/${uf}/${sq}.jpeg`;
+function gFoto(uf,c,cls){ const ini=String(c.nm||"").split(" ").filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join("").toUpperCase();
+  const tile=`<span class="gfoto ini ${cls||""}" aria-hidden="true">${esc(ini)}</span>`;
+  if(!c.sq) return tile;
+  return `<img class="gfoto ${cls||""}" src="${urlFotoGov(uf,c.sq)}" alt="Foto de urna de ${esc(c.nm)}" loading="lazy" onerror="this.outerHTML='${tile.replace(/"/g,"&quot;")}'">`; }
 const STATES= TESTE ? ["pe","df"] : ["ac","am","df","es","rj","rn","to"];
 const S={};
 function cands(j){ const out=[]; ((j?.carg||[])[0]?.agr||[]).forEach(g=>(g.par||[]).forEach(p=>(p.cand||[]).forEach(c=>out.push({n:String(c.n),sq:c.sqcand,nm:nameCase(c.nmu||c.nm),pt:p.sg||"",vap:+(c.vap||0),e:c.e,st:String(c.st||"")})))); return out; }
@@ -378,7 +390,7 @@ function pairs(s){
   // junta 1º e 2º turno pelo número de urna; a ordem segue o 1º turno
   const f=(s.t1?.fin||[]);
   const base=f.length?f:(KNOWN[s.uf]||[]).map((nm,i)=>({n:"k"+i,nm,pt:"",p:null}));
-  return base.slice(0,2).map((c,i)=>{ const c2=s.t2?.cs.find(x=>x.n===c.n)||(s.t2&&!f.length?s.t2.cs[i]:null); return {i,n:c.n,nm:c2?.nm||c.nm,pt:c2?.pt||c.pt,p1:c.p,p2:c2&&s.t2.pst>0?c2.p:null,v2:c2?.vap||0,won:!!(c2&&elected(c2))}; });
+  return base.slice(0,2).map((c,i)=>{ const c2=s.t2?.cs.find(x=>x.n===c.n)||(s.t2&&!f.length?s.t2.cs[i]:null); return {i,n:c.n,sq:c2?.sq||c.sq||null,nm:c2?.nm||c.nm,pt:c2?.pt||c.pt,p1:c.p,p2:c2&&s.t2.pst>0?c2.p:null,v2:c2?.vap||0,won:!!(c2&&elected(c2))}; });
 }
 function slope(pp,s){
   const W=560,H=240,L=58,R=190,T=18,B=34;
@@ -413,7 +425,7 @@ function render(){
     const stat= s.t2&&s.t2.pst>0 ? `2º turno: ${pct(s.t2.pst)} das seções apuradas${s.t2.ht?" · TSE "+s.t2.ht.slice(0,5):""}${s.t2.final?" · final":""}` : (open2()?"aguardando os primeiros votos do 2º turno":"2º turno: resultados a partir das 17h de 25/10");
     return `<article class="gov ${w?"done":""}" id="gov-${uf}"><div class="gov-head"><h2>${esc(UFNAME[uf]||uf.toUpperCase())}</h2><span class="stat">${stat}</span></div>
       ${w?`<span class="eleito">Eleito(a): ${esc(w.nm)}</span>`:""}
-      <div class="cands2">${pp.map(c=>`<div class="gc ${c.won?"won":""}" style="--c:${c.i===0?"var(--g1)":"var(--g2)"}"><div class="nm">${esc(c.nm)}</div><div class="pt">${esc(c.pt)}</div>
+      <div class="cands2">${pp.map(c=>`<div class="gc ${c.won?"won":""}" style="--c:${c.i===0?"var(--g1)":"var(--g2)"}"><div class="gtop">${gFoto(uf,c)}<div style="min-width:0"><div class="nm">${esc(c.nm)}</div><div class="pt">${esc(c.pt)}</div></div></div>
         <div class="vals"><span class="v1">1º turno ${c.p1!=null?pct(c.p1):"—"}</span><span class="v2">${c.p2!=null?pct(c.p2):"—"}</span></div>${c.won?`<span class="eleito">Eleito(a)</span>`:""}</div>`).join("")}</div>
       <div class="slope">${slope(pp,s)}</div></article>`; }).join("");
 }
