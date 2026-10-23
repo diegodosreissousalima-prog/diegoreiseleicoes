@@ -110,6 +110,7 @@ input[type=search]{width:100%;font:16px var(--body);padding:10px 12px;border:1px
 .mlist li button[aria-current="true"]{background:var(--bg);font-weight:700}
 .mlist .cap{font:500 11px var(--mono);color:var(--muted)}
 .msg{font-size:14px;color:var(--muted);padding:10px 12px;border:1px dashed var(--line);border-radius:8px}
+.msg.t1{border:1px solid #e0b400;background:color-mix(in srgb,#ffdf00 14%,transparent);color:inherit;margin-bottom:12px}
 .msg.err{color:var(--live);border-color:var(--live)}
 footer{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
 footer a{color:inherit}
@@ -515,6 +516,10 @@ const $=id=>document.getElementById(id);
 const pad=n=>String(n).padStart(6,"0");
 const env=()=>ENVS[envKey];
 const urlRes=(abr)=>`${env().base}/${env().ele}/dados/${abr.slice(0,2)}/${abr}-c0001-e${pad(env().ele)}-u.json`;
+const urlRes1=(abr)=>`${env().base}/${env().ele1}/dados/${abr.slice(0,2)}/${abr}-c0001-e${pad(env().ele1)}-u.json`;
+/* Antes do 2º turno abrir, os painéis de estado e cidade mostram o resultado do 1º turno (arquivos já publicados, sem risco de 404). */
+const t1Cache={};
+async function get1(abr){ if(t1Cache[abr]) return t1Cache[abr]; try{ const d=parse(await getJSON(urlRes1(abr))); if(d.ok) t1Cache[abr]=d; return d.ok?d:null; }catch(e){ return null; } }
 const urlCfg=(e=env().ele)=>`${env().base}/${e}/config/mun-e${pad(e)}-cm.json`;
 const urlFoto=(sq)=>`${env().base}/${env().ele}/fotos/br/${sq}.jpeg`;
 const fmt=n=>Number(n||0).toLocaleString("pt-BR");
@@ -565,6 +570,8 @@ function parse(j){
   const keys=["13","22"]; const used=new Set();
   list.forEach(c=>{ if(keys.includes(String(c.n))) { used.add(String(c.n)); out.cands[String(c.n)]=mk(c);} });
   if(used.size<2){ const rest=list.filter(c=>!used.has(String(c.n))); keys.filter(k=>!used.has(k)).forEach((k,i)=>{ if(rest[i]) out.cands[k]=mk(rest[i]); }); }
+  // se o TSE não trouxer o % pronto, calcula pelos votos válidos
+  if(out.vv>0) Object.values(out.cands).forEach(c=>{ if(!c.pvap&&c.vap>0) c.pvap=c.vap/out.vv*100; });
   return out;
   function mk(c){return {n:String(c.n),st:String(c.st||""),nm:nameCase(c.nmu||c.nm),party:c.party||"",vap:+(c.vap||0),pvap:num(c.pvapn??c.pvap),e:c.e||"n",sq:c.sqcand||null};}
 }
@@ -619,7 +626,7 @@ function photoHTML(c){
   return `<img class="photo" alt="Foto de urna de ${esc(c.nm)}" src="${esc(src)}" onerror="this.outerHTML='<div class=&quot;photo&quot; aria-hidden=&quot;true&quot;>${ini}</div>'">`;
 }
 
-function boardHTML(d,{big,areas,scope}={}){
+function boardHTML(d,{big,areas,scope,t1}={}){
   const A=d.cands["13"], B=d.cands["22"];
   const lead = A.vap===B.vap ? null : (A.vap>B.vap?"13":"22");
   const side=(c,cls)=>`
@@ -645,6 +652,7 @@ function boardHTML(d,{big,areas,scope}={}){
       <div class="stat"><div class="k">Brancos</div><div class="v">${pctTxt(d.pvb)}</div></div>
       <div class="stat"><div class="k">Nulos</div><div class="v">${pctTxt(d.pvn)}</div></div>
     </div>`;
+  if(t1) return `<div class="msg t1"><b>Prévia: resultado do 1º turno (4/10).</b> O 2º turno aparece aqui a partir das 17h de domingo, 25/10, e a página atualiza sozinha.</div>`+h;
   h+=probHTML(project(areas||[d]),scope||"");
   if(!d.ok) h=`<div class="msg">O TSE ainda não publicou este resultado. A divulgação começa após as 17h (horário de Brasília) do dia 25/10. A página vai atualizar sozinha.</div>`+h;
   else if(d.dt) h+=`<div class="votes">Atualizado pelo TSE em ${esc(d.dt)} às ${esc(d.ht)}${d.and==="f"?" · totalização final":""}</div>`;
@@ -922,7 +930,7 @@ function indexCfg(cfg,onlyMissing){
     if(onlyMissing) munStats.from1.push(uf);
     const seen=new Map();
     (a.mu||[]).forEach(m=>{
-      const cd=String(m.cd).padStart(5,"0"); const raw=String(m.nm||""); const nm=decode(raw);
+      const cd=String(m.cd).padStart(5,"0"); const raw=String(m.nm||""); const nm=nameCase(decode(raw));
       if(nm!==raw) munStats.fixed++;
       if(seen.has(cd)){ munStats.dups++; return; }
       seen.set(cd,{cd,nm,c:m.c==="s"?"s":"n",cdi:m.cdi||""});
@@ -999,7 +1007,10 @@ async function showUF(uf){
   $("uf-title").textContent=UFNAME[uf]||uf.toUpperCase();
   try{ history.replaceState(null,"","#"+uf); }catch(e){}
   const d=ufCache[uf]||parse(await safeGet(urlRes(uf)));
-  ufCache[uf]=d; curMun=null; renderUpd(); renderCheck(); $("uf-board").innerHTML=boardHTML(d,{scope:"no estado"}); animateBoard($("uf-board"),"uf"+uf);
+  ufCache[uf]=d; curMun=null; renderUpd(); renderCheck();
+  const d1= !d.ok&&beforeOpen() ? await get1(uf) : null;
+  if(selUF!==uf) return;
+  $("uf-board").innerHTML= d1 ? boardHTML(d1,{t1:true}) : boardHTML(d,{scope:"no estado"}); animateBoard($("uf-board"),"uf"+uf);
   $("f-uf").value=uf;
   await loadCfg(); renderMunList(); fillMunSelect();
   loadRanking();
@@ -1010,7 +1021,9 @@ async function showMun(cd){
   const d=parse(await safeGet(urlRes(selUF+cd)));
   curMun={uf:selUF,cd,nm:m?.nm||cd,d}; renderUpd();
   if(rank.key===selUF){ rank.rows[selUF+cd]={m:m||{cd,nm:cd,c:"n"},uf:selUF,d}; renderRanking(); }
-  $("mun-board").innerHTML=`<h2>${esc((m?.nm||cd).replace(/&apos;/g,"'"))}</h2>`+boardHTML(d,{scope:"na cidade"});
+  const d1= !d.ok&&beforeOpen() ? await get1(selUF+cd) : null;
+  if(selMun!==cd) return;
+  $("mun-board").innerHTML=`<h2>${esc((m?.nm||cd).replace(/&apos;/g,"'"))}</h2>`+(d1 ? boardHTML(d1,{t1:true}) : boardHTML(d,{scope:"na cidade"}));
   animateBoard($("mun-board"),"mun"+selUF+cd);
 }
 const cleanNm=s=>String(s).replace(/&apos;/g,"'");
