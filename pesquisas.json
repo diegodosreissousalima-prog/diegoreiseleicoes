@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-10-23",
+  "atualizado_em": "2026-10-24",
   "nota": "Percentuais de votos válidos. Quando o instituto divulgou só votos totais, o válido foi calculado excluindo brancos, nulos e indecisos (marcado como calculado).",
   "resultado_1t": {
     "lula": 45.16,
@@ -127,27 +127,27 @@
     },
     {
       "instituto": "Vox Brasil",
-      "campo": "17 a 23/10",
+      "campo": "20 a 22/10",
       "divulgacao": "23/10",
       "lula": 50.6,
       "flavio": 49.4,
       "base": "válidos",
-      "entrevistas": null,
-      "margem": null,
-      "registro": "",
-      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+      "entrevistas": 2100,
+      "margem": 2.15,
+      "registro": "BR-03259/2026",
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
     },
     {
       "instituto": "PoderData/AYA",
-      "campo": "13 a 15/10",
-      "divulgacao": "16/10",
-      "lula": 50.0,
-      "flavio": 50.0,
+      "campo": "19 a 21/10",
+      "divulgacao": "22/10",
+      "lula": 49.0,
+      "flavio": 51.0,
       "base": "válidos",
-      "entrevistas": 3000,
-      "margem": 1.8,
-      "registro": "BR-04258/2026",
-      "fonte": "https://tribunadejundiai.com.br/politica/eleicoes-2026/poderdata-segundo-turno-diferenca-entre-flavio-e-lula-desaparece-e-pesquisa-aponta-empate/"
+      "entrevistas": 4000,
+      "margem": 1.6,
+      "registro": "BR-07926/2026",
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
     }
   ],
   "turno2_outros": [
@@ -158,8 +158,10 @@
       "lula": 47.0,
       "flavio": 53.0,
       "base": "válidos",
-      "registro": "",
-      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+      "registro": "BR-03835/2026",
+      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente",
+      "entrevistas": 2400,
+      "margem": 2.0
     },
     {
       "instituto": "Futura Inteligência",
@@ -168,18 +170,46 @@
       "lula": 48.9,
       "flavio": 51.1,
       "base": "válidos",
-      "registro": "",
-      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+      "registro": "BR-06614/2026",
+      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente",
+      "entrevistas": 2000,
+      "margem": 2.2
     },
     {
       "instituto": "Veritá",
-      "campo": "15 a 19/10",
-      "divulgacao": "20/10",
-      "lula": 49.3,
-      "flavio": 50.7,
+      "campo": "18 a 22/10",
+      "divulgacao": "23/10",
+      "lula": 48.7,
+      "flavio": 51.3,
       "base": "válidos",
-      "registro": "",
-      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+      "registro": "BR-06070/2026",
+      "fonte": "https://transmissaopolitica.com.br/politica-nacional/2026/10/23/pesquisa-verita-flavio-lula-23-outubro/",
+      "entrevistas": 15554,
+      "margem": 1.0
+    },
+    {
+      "instituto": "Real Time Big Data",
+      "campo": "19 a 22/10",
+      "divulgacao": "23/10",
+      "lula": 48.0,
+      "flavio": 52.0,
+      "base": "válidos",
+      "entrevistas": 2000,
+      "margem": 2.0,
+      "registro": "BR-09670/2026",
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
+    },
+    {
+      "instituto": "Palver",
+      "campo": "16 a 20/10",
+      "divulgacao": "21/10",
+      "lula": 49.0,
+      "flavio": 51.0,
+      "base": "válidos (recalculado pelo Poder360, sem indecisos e brancos/nulos)",
+      "entrevistas": 5000,
+      "margem": 2.4,
+      "registro": "BR-04612/2026",
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
     }
   ],
   "governador": {
