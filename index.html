@@ -1184,6 +1184,7 @@ function clearFilter(){
    inexistentes (o TSE bloqueia por 10 min quem gera muitos erros 404). */
 const PREP_UF={ac:"do",al:"de",ap:"do",am:"do",ba:"da",ce:"do",df:"do",es:"do",go:"de",ma:"do",mt:"de",ms:"de",mg:"de",pa:"do",pb:"da",pr:"do",pe:"de",pi:"do",rj:"do",rn:"do",rs:"do",ro:"de",rr:"de",sc:"de",sp:"de",se:"de",to:"do",zz:"do"};
 const RANK_EVERY_UF=120000, RANK_EVERY_BR=300000;
+let rankVisivel=false;   // quadro do ranking na tela (IntersectionObserver)
 let rank={key:null,rows:{},token:0,loading:false,doneAt:null,lastRun:0};
 function rankKey(){ return selUF||"br"; }
 function rankList(key){
@@ -1197,6 +1198,8 @@ async function loadRanking(force){
   const PREP={ac:"do",al:"de",ap:"do",am:"do",ba:"da",ce:"do",df:"do",es:"do",go:"de",ma:"do",mt:"de",ms:"de",mg:"de",pa:"do",pb:"da",pr:"do",pe:"de",pi:"do",rj:"do",rn:"do",rs:"do",ro:"de",rr:"de",sc:"de",sp:"de",se:"de",to:"do",zz:"do"};
   $("rank-title").textContent= nat ? "Cidades do Brasil" : `Cidades ${PREP[key]||"de"} ${UFNAME[key]}`;
   $("rank").classList.toggle("nat",nat);
+  // economia: o ranking (lê arquivo por cidade) só carrega com o quadro na tela e a aba aberta
+  if(!rankVisivel||document.hidden){ if(!rank.doneAt) $("rank-status").textContent="role até aqui para carregar o ranking das cidades"; return; }
   if(rank.key!==key){ rank={key,rows:{},token:rank.token+1,loading:false,doneAt:null,lastRun:0}; renderRanking(); }
   await loadCfg();
   if(rank.key!==key) return;
@@ -1312,8 +1315,15 @@ $("rank-body").addEventListener("click",async e=>{
   if(uf!==selUF) await showUF(uf);
   showMun(cd); $("detalhe").scrollIntoView({behavior:"smooth"});
 });
+if("IntersectionObserver" in window&&$("rank")) new IntersectionObserver(es=>{
+  rankVisivel=es.some(e=>e.isIntersecting);
+  if(rankVisivel&&!busy&&!rank.loading){
+    const every = rankKey()==="br" ? RANK_EVERY_BR : RANK_EVERY_UF;
+    if(rank.key!==rankKey()||!rank.doneAt||Date.now()-rank.lastRun>=every) loadRanking(true);
+  }
+},{rootMargin:"300px"}).observe($("rank")); else rankVisivel=true;
 setInterval(()=>{
-  if(busy||rank.loading) return;
+  if(busy||rank.loading||document.hidden) return;
   const every = rankKey()==="br" ? RANK_EVERY_BR : RANK_EVERY_UF;
   if(Date.now()-rank.lastRun>=every) loadRanking(true);
 },30000);
@@ -1330,12 +1340,14 @@ const OPEN_AT=Date.UTC(2026,9,25,19,55);
 const beforeOpen=()=>!TESTE&&Date.now()<OPEN_AT;
 function untilOpen(){ const ms=OPEN_AT+5*60e3-Date.now(); const d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4);
   return (d?d+"d ":"")+(h?h+"h ":"")+m+"min"; }
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden&&!beforeOpen()) cycle(); });
 async function cycle(){
   if(beforeOpen()){
     const empty=parse(null); lastBR=empty; renderNacional(empty); renderUpd();
     $("stamp").textContent=`resultados a partir das 17h de domingo (faltam ${untilOpen()})`;
     nextAt=Date.now()+POLL; lastCheckAt=new Date().toLocaleTimeString("pt-BR"); return;
   }
+  if(document.hidden){ nextAt=Date.now()+POLL; return; }   // aba em segundo plano: não consulta (economiza tráfego)
   if(busy) return; busy=true; hadErr=false;
   $("dot").classList.add("on"); $("stamp").textContent="atualizando…";
   try{
