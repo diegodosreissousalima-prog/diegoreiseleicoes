@@ -357,6 +357,45 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
 @keyframes tlg{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
 @media (max-width:640px){.tabs-logo span{display:none}}
 @media (prefers-reduced-motion:reduce){.tabs.stuck .tabs-logo{animation:none}}
+
+/* ===== filtro de cargo e apuração de governador ===== */
+.filt{align-self:flex-start;display:inline-flex;flex-wrap:wrap;border:2px solid #fff;border-radius:12px;overflow:hidden;background:var(--surface);margin:4px 0 14px}
+.filt button{border:0;background:none;color:var(--fg);font:700 16px var(--body);padding:12px 22px;cursor:pointer}
+.filt button[aria-pressed="true"]{background:#ffdf00;color:#1b2a12}
+#govlive{display:flex;flex-direction:column;gap:14px;--ga:#ea580c;--gb:#7c3aed;--win:#16a34a}
+#govlive[hidden]{display:none}
+.gl-filters{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.gl-filters label{display:flex;flex-direction:column;gap:6px;font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);flex:1 1 240px}
+.gl-filters select{font:500 16px var(--body);padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg);text-transform:none;letter-spacing:0}
+.gl-filters .clear{flex:0 0 auto;background:#ffdf00;color:#1b2a12;border:0;font-weight:700;padding:12px 20px;border-radius:10px;cursor:pointer}
+.gl-chips{display:flex;flex-wrap:wrap;gap:8px}
+.gl-chips button{border:1px solid color-mix(in srgb,var(--on-page) 40%,transparent);background:transparent;color:var(--on-page);border-radius:999px;padding:7px 14px;font:700 14px var(--body);cursor:pointer}
+.gl-chips button[aria-pressed="true"]{background:#ffdf00;border-color:#ffdf00;color:#1b2a12}
+.gl-chips button.won::after{content:" ✓";color:#4ade80}
+.gl-status{font:500 13px var(--mono);color:var(--on-page-muted)}
+.gl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:14px}
+.gl-card{background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:80px}
+.gl-card.done{border:3px solid var(--win)}
+.gl-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.gl-head h2{font:700 24px/1 var(--display);margin:0}
+.gl-head .st{font:500 12px var(--mono);color:var(--muted)}
+.gl-prev{font-size:13px;border:1px solid #e0b400;background:color-mix(in srgb,#ffdf00 14%,transparent);border-radius:8px;padding:7px 10px}
+.gl-cands{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gl-c{display:flex;gap:10px;align-items:flex-start;min-width:0;border-radius:10px;padding:8px;border-top:5px solid var(--c);background:var(--bg)}
+.gl-c.right{flex-direction:row-reverse;text-align:right}
+.gl-c.won{outline:3px solid var(--win)}
+.gl-c img,.gl-c .ph{width:52px;height:66px;border-radius:8px;object-fit:cover;object-position:top;flex:none;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;font:800 15px var(--body);color:var(--muted)}
+.gl-c .nm{font:700 17px/1.1 var(--display)}
+.gl-c .pt{font:500 12px var(--mono);color:var(--muted)}
+.gl-c .pc{font:700 30px/1 var(--display);color:var(--c);margin-top:4px}
+.gl-c .vt{font:500 12px var(--mono);color:var(--muted)}
+.gl-c .el{display:inline-block;margin-top:4px;background:var(--win);color:#fff;font:700 11px var(--body);padding:2px 8px;border-radius:999px}
+.gl-bar{display:flex;height:12px;border-radius:999px;overflow:hidden;background:var(--line);position:relative}
+.gl-bar span{display:block;height:100%;transition:width .8s ease}
+.gl-bar i{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--fg);opacity:.5}
+.gl-prog{height:4px;border-radius:999px;background:var(--line);overflow:hidden}.gl-prog i{display:block;height:100%;background:#16a34a}
+.gl-note{font-size:13px;color:var(--on-page-muted);margin:0}
+@media (max-width:520px){.gl-c{flex-direction:column}.gl-c.right{flex-direction:column;align-items:flex-end}.gl-c .pc{font-size:26px}}
 </style>
 </head>
 <body>
@@ -396,7 +435,7 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
 
   <header>
     <div>
-      <div class="label">Presidente da República · 2º turno · 25 out 2026</div>
+      <div class="label" id="kick">Presidente da República · 2º turno · 25 out 2026</div>
       <h1>Apuração em tempo real</h1>
       <div class="sub">Dados oficiais do TSE, atualizados automaticamente a cada 30 segundos.</div>
     </div>
@@ -406,6 +445,11 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
     </div>
   </header>
 
+  <div class="filt cargo" role="group" aria-label="Escolha o cargo">
+    <button id="cargo-p" aria-pressed="true">Presidente</button><button id="cargo-g" aria-pressed="false">Governador</button>
+  </div>
+
+  <div id="presview">
   <section class="board" id="nacional" aria-live="polite"></section>
 
   <section class="evo" aria-label="Evolução da apuração">
@@ -487,6 +531,20 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
     <div class="rank-tb"><table><thead><tr><th class="n">#</th><th>Cidade</th><th class="col-uf">UF</th><th>Mais votado</th><th class="n" id="rh-a">Lula</th><th class="n" id="rh-b">Flávio</th><th>Disputa</th><th class="n">Votos válidos</th><th class="n">Apurado</th></tr></thead><tbody id="rank-body"></tbody></table></div>
     <div class="sub" id="rank-note"></div>
     <a class="to-analise" href="analise.html" style="align-self:flex-start">Comparar com o 1º turno, cidade por cidade →</a>
+  </section>
+  </div>
+
+  <section id="govlive" hidden aria-live="polite">
+    <div class="gl-filters">
+      <label for="gl-uf">Estado
+        <select id="gl-uf"><option value="">Todos os estados com 2º turno</option></select>
+      </label>
+      <button class="exterior clear" id="gl-clear">Limpar filtro</button>
+    </div>
+    <div class="gl-chips" id="gl-chips"></div>
+    <div class="gl-status" id="gl-status">carregando…</div>
+    <div class="gl-grid" id="gl-grid"></div>
+    <p class="gl-note">Governador · 2º turno nos estados de AC, AM, DF, ES, RJ, RN e TO. Antes das 17h de domingo, cada cartão mostra a prévia do 1º turno; depois, os números do 2º turno atualizam sozinhos a cada 30 segundos. Fotos de urna e dados oficiais do TSE.</p>
   </section>
 
   <div class="elect" id="elect" hidden role="dialog" aria-modal="true" aria-labelledby="elect-t">
@@ -1289,5 +1347,105 @@ if(UFNAME[h]) showUF(h);
 </script>
 <script>(function(){var t=document.querySelector('.tabs'),c=t&&t.querySelector('[aria-current]');if(c&&t.scrollWidth>t.clientWidth)t.scrollLeft=c.offsetLeft-(t.clientWidth-c.offsetWidth)/2;})();</script>
 <script>(function(){var t=document.querySelector('.tabs');if(!t||!('IntersectionObserver' in window))return;var s=document.createElement('div');s.style.cssText='height:1px;margin-bottom:-1px';t.parentNode.insertBefore(s,t);new IntersectionObserver(function(e){var st=!e[0].isIntersecting&&e[0].boundingClientRect.top<0;t.classList.toggle('stuck',st);var l=t.querySelector('.tabs-logo');if(l)l.tabIndex=st?0:-1;}).observe(s);})();</script>
+<script>
+/* ===== Apuração de governador (filtro "Governador") ===== */
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const TESTE=/[?&]teste=simulado\b/.test(location.search);
+const ROUTES={"https://resultados.tse.jus.br":"/tse","https://resultados-sim.tse.jus.br":"/tse-sim"};
+const BASE= TESTE ? "https://resultados-sim.tse.jus.br/simulado/simulado2026/ele2026" : "https://resultados.tse.jus.br/oficial/ele2026";
+const G1=TESTE?"22411":"6259", G2=TESTE?"22412":"6260";
+const OPEN_AT= TESTE ? 0 : Date.UTC(2026,9,25,19,55);
+const open2=()=>Date.now()>=OPEN_AT;
+const STATES= TESTE ? ["pe","df"] : ["ac","am","df","es","rj","rn","to"];
+const UFN={ac:"Acre",am:"Amazonas",df:"Distrito Federal",es:"Espírito Santo",rj:"Rio de Janeiro",rn:"Rio Grande do Norte",to:"Tocantins",pe:"Pernambuco"};
+let viaProxy=false; try{ viaProxy=sessionStorage.getItem("tse-proxy")==="1"; }catch(e){}
+const canProxy=location.protocol.startsWith("http");
+const viaRoute=u=>{ for(const h in ROUTES) if(u.startsWith(h)) return ROUTES[h]+u.slice(h.length); return u; };
+async function getJSON(u){
+  try{
+    let r;
+    if(viaProxy&&canProxy) r=await fetch(viaRoute(u),{cache:"no-cache"});
+    else { try{ r=await fetch(u,{cache:"no-cache"}); }catch(e){ if(!canProxy) throw e; viaProxy=true; try{ sessionStorage.setItem("tse-proxy","1"); }catch(_){} r=await fetch(viaRoute(u),{cache:"no-cache"}); } }
+    return r.ok ? await r.json() : null;
+  }catch(e){ return null; }
+}
+const pad=n=>String(n).padStart(6,"0");
+const url=(ele,uf)=>`${BASE}/${ele}/dados/${uf}/${uf}-c0003-e${pad(ele)}-u.json`;
+const foto=(uf,sq)=>`${BASE}/${G1}/fotos/${uf}/${sq}.jpeg`;
+const num=s=>Number(String(s??"0").replace(",","."))||0;
+const fmt=n=>Number(n||0).toLocaleString("pt-BR");
+const pct=n=>Number(n||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const SM=new Set(["de","da","do","das","dos","e"]);
+const nc=s=>{ s=String(s||""); if(s!==s.toUpperCase()) return s; return s.toLowerCase().split(" ").map((w,i)=>i&&SM.has(w)?w:w.charAt(0).toUpperCase()+w.slice(1)).join(" "); };
+function cands(j){ const o=[]; ((j?.carg||[])[0]?.agr||[]).forEach(g=>(g.par||[]).forEach(p=>(p.cand||[]).forEach(c=>o.push({n:String(c.n),sq:c.sqcand||null,nm:nc(c.nmu||c.nm),pt:p.sg||"",v:+(c.vap||0),e:c.e,st:String(c.st||"")})))); return o; }
+const S={}; let sel="", timer=null, active=false;
+async function loadState(uf){
+  const s=S[uf]||(S[uf]={uf});
+  if(!s.fin){
+    const j=await getJSON(url(G1,uf));
+    if(j){ const cs=cands(j), vv=+(j.v?.vv||0)||cs.reduce((a,c)=>a+c.v,0);
+      let f=cs.filter(c=>/2º turno/i.test(c.st)); if(f.length<2) f=cs.slice().sort((a,b)=>b.v-a.v).slice(0,2);
+      s.fin=f.sort((a,b)=>b.v-a.v).map(c=>({...c,p1:vv?c.v/vv*100:0})); }
+  }
+  if(open2()){
+    const j=await getJSON(url(G2,uf));
+    if(j){ const cs=cands(j), tot=cs.reduce((a,c)=>a+c.v,0);
+      s.t2={pst:num(j.s?.pstn??j.s?.pst),final:j.and==="f",ht:j.ht||"",cs:cs.map(c=>({...c,p:tot?c.v/tot*100:0}))}; }
+  }
+}
+const isEl=c=>c&&c.e==="s"&&/eleit/i.test(c.st)&&!/turno/i.test(c.st);
+function pair(s){
+  const f=s.fin||[]; if(!f.length) return null;
+  const live=s.t2&&s.t2.pst>0;
+  return f.slice(0,2).map((c,i)=>{ const c2=s.t2?.cs.find(x=>x.n===c.n)||(s.t2&&TESTE?s.t2.cs[i]:null);
+    return {i,nm:c2?.nm||c.nm,pt:c.pt,n:c.n,sq:c.sq,p:live&&c2?c2.p:c.p1,v:live&&c2?c2.v:c.v,won:isEl(c2)}; });
+}
+function ph(uf,c){ const ini=c.nm.split(" ").filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join("").toUpperCase(); const t=`<span class="ph" aria-hidden="true">${esc(ini)}</span>`;
+  return c.sq?`<img src="${foto(uf,c.sq)}" alt="Foto de urna de ${esc(c.nm)}" loading="lazy" onerror="this.outerHTML='${t.replace(/"/g,"&quot;")}'">`:t; }
+function card(uf){
+  const s=S[uf]||{uf}, pp=pair(s);
+  if(!pp) return `<article class="gl-card" id="gl-${uf}"><div class="gl-head"><h2>${esc(UFN[uf])}</h2></div><div class="gl-prev">Não foi possível ler os dados do TSE agora. Nova tentativa em instantes.</div></article>`;
+  const live=s.t2&&s.t2.pst>0, done=pp.some(c=>c.won), tot=pp[0].p+pp[1].p||1;
+  const st= live ? `${pct(s.t2.pst)} das seções${s.t2.ht?" · TSE "+s.t2.ht.slice(0,5):""}${s.t2.final?" · final":""}` : (open2()?"aguardando os primeiros votos":"2º turno a partir das 17h de 25/10");
+  const side=(c,cls)=>`<div class="gl-c ${cls} ${c.won?"won":""}" style="--c:${c.i===0?"var(--ga)":"var(--gb)"}">${ph(uf,c)}<div style="min-width:0"><div class="nm">${esc(c.nm)}</div><div class="pt">${esc(c.pt)} · ${esc(c.n)}</div><div class="pc">${pct(c.p)}</div><div class="vt">${fmt(c.v)} votos</div>${c.won?`<span class="el">Eleito(a)</span>`:""}</div></div>`;
+  return `<article class="gl-card ${done?"done":""}" id="gl-${uf}">
+    <div class="gl-head"><h2>${esc(UFN[uf])}</h2><span class="st">${st}</span></div>
+    ${live?"":`<div class="gl-prev"><b>Prévia: 1º turno (4/10).</b> Percentual sobre todos os votos válidos do 1º turno.</div>`}
+    <div class="gl-cands">${side(pp[0],"")}${side(pp[1],"right")}</div>
+    <div class="gl-bar" role="img" aria-label="${esc(pp[0].nm)} ${pct(pp[0].p)}, ${esc(pp[1].nm)} ${pct(pp[1].p)}"><span style="width:${pp[0].p/tot*100}%;background:${pp[0].won?"var(--win)":"var(--ga)"}"></span><span style="width:${pp[1].p/tot*100}%;background:${pp[1].won?"var(--win)":"var(--gb)"}"></span><i></i></div>
+    ${live?`<div class="gl-prog" aria-hidden="true"><i style="width:${s.t2.pst}%"></i></div>`:""}
+  </article>`;
+}
+function render(){
+  const list= sel ? [sel] : STATES;
+  $("gl-grid").innerHTML=list.map(card).join("");
+  $("gl-chips").innerHTML=STATES.map(u=>{ const pp=pair(S[u]||{}); const w=pp&&pp.some(c=>c.won); return `<button data-g="${u}" aria-pressed="${sel===u}" class="${w?"won":""}">${esc(UFN[u])}</button>`; }).join("");
+  $("gl-uf").value=sel; $("gl-clear").disabled=false;
+  const n2=STATES.filter(u=>S[u]?.t2?.pst>0).length, done=STATES.filter(u=>(pair(S[u]||{})||[]).some(c=>c.won)).length;
+  $("gl-status").textContent= open2() ? `${n2} de ${STATES.length} estados com votos do 2º turno · ${done} com eleito(a) · atualizado às ${new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}` : "Prévia do 1º turno · o 2º turno aparece a partir das 17h de domingo, 25/10";
+}
+async function cycle(){ await Promise.all(STATES.map(loadState)); if(active) render(); }
+function setSel(uf){ sel=STATES.includes(uf)?uf:""; try{ history.replaceState(null,"","#"+(sel?"gov-"+sel:"governador")); }catch(_){} render(); }
+function show(on,uf){
+  active=on; $("presview").hidden=on; $("govlive").hidden=!on;
+  $("cargo-p").setAttribute("aria-pressed",String(!on)); $("cargo-g").setAttribute("aria-pressed",String(on));
+  $("kick").textContent= on ? "Governador · 2º turno · 25 out 2026" : "Presidente da República · 2º turno · 25 out 2026";
+  clearInterval(timer);
+  if(on){ sel=STATES.includes(uf)?uf:""; try{ history.replaceState(null,"","#"+(sel?"gov-"+sel:"governador")); }catch(_){} render(); cycle(); timer=setInterval(()=>{ if(open2()) cycle(); },30000); }
+  else { try{ history.replaceState(null,"",location.pathname+location.search); }catch(_){} }
+}
+$("gl-uf").innerHTML=`<option value="">Todos os estados com 2º turno</option>`+STATES.map(u=>`<option value="${u}">${esc(UFN[u])}</option>`).join("");
+$("gl-uf").onchange=e=>setSel(e.target.value);
+$("gl-clear").onclick=()=>setSel("");
+$("gl-chips").addEventListener("click",e=>{ const b=e.target.closest("button[data-g]"); if(b) setSel(sel===b.dataset.g?"":b.dataset.g); });
+$("cargo-p").onclick=()=>{ if(active) show(false); };
+$("cargo-g").onclick=()=>{ if(!active) show(true); };
+const h=(location.hash||"").slice(1).toLowerCase();
+if(h==="governador"||h.startsWith("gov-")) show(true,h.slice(4));
+})();
+</script>
 </body>
 </html>
