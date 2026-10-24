@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Projeção · Análise Diego Reis</title>
 <meta name="description" content="As pesquisas para presidente comparadas com o resultado das urnas: quem mais acertou o 1º turno, as últimas pesquisas do 2º turno e o instituto mais confiável. Análise – Diego R. S. Lima.">
-<meta name="theme-color" content="#0b5d3b">
+<meta name="theme-color" content="#0b2f78">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cmask id='m'%3E%3Crect width='120' height='120' fill='white'/%3E%3Cpath d='M-4 46H44V30L74 60 44 90V74H-4Z'/%3E%3C/mask%3E%3Cpath mask='url(%23m)' fill='%23e02a46' d='M24 8H58A52 52 0 0 1 58 112H24Q12 112 12 100V20Q12 8 24 8Z'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Poppins:wght@500;600&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
 /* Layout: mesma identidade do site de apuração — resumo dos dois turnos no topo, gráfico 1º×2º, tabela por estado/cidade */
 :root{
-  --page:#0b5d3b; --page-2:#063a25; --page-glow:rgba(255,214,0,.16); --on-page:#f4fbf7; --on-page-muted:#bfe0cf;
+  --page:#0b2f78; --page-2:#061a45; --page-glow:rgba(255,214,0,.16); --on-page:#f2f6ff; --on-page-muted:#b9c8ea;
   --bg:#f3f5f4; --surface:#ffffff; --line:#d9dfdc; --fg:#15201c; --muted:#5d6b66;
   --a:#d42a2a; --b:#1f5fd1; --a-soft:#f6d0cf; --b-soft:#d2def7; --o:#8a8f8c; --empty:#e2e7e4; --up:#178a4c; --down:#b3261e;
   --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
@@ -21,11 +21,11 @@
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --page:#06281a; --page-2:#03150d; --page-glow:rgba(255,214,0,.08); --on-page:#eaf5ef; --on-page-muted:#94b8a6;
+  --page:#071a45; --page-2:#030c22; --page-glow:rgba(255,214,0,.08); --on-page:#e9efff; --on-page-muted:#97a9d4;
   --bg:#0f1513; --surface:#161e1b; --line:#2a3531; --fg:#e8eeeb; --muted:#97a6a0;
   --a:#ff5a52; --b:#5b8dff; --a-soft:#4a1d1c; --b-soft:#1b2a4d; --o:#7d8783; --empty:#26302c; --up:#3fcf83; --down:#ff6b5b; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --page:#06281a; --page-2:#03150d; --page-glow:rgba(255,214,0,.08); --on-page:#eaf5ef; --on-page-muted:#94b8a6;
+  --page:#071a45; --page-2:#030c22; --page-glow:rgba(255,214,0,.08); --on-page:#e9efff; --on-page-muted:#97a9d4;
   --bg:#0f1513; --surface:#161e1b; --line:#2a3531; --fg:#e8eeeb; --muted:#97a6a0;
   --a:#ff5a52; --b:#5b8dff; --a-soft:#4a1d1c; --b-soft:#1b2a4d; --o:#7d8783; --empty:#26302c; --up:#3fcf83; --down:#ff6b5b; color-scheme:dark}
 *{box-sizing:border-box}
@@ -223,8 +223,9 @@ td .win{display:inline-block;width:10px;height:10px;border-radius:50%;margin-rig
 .gfoto{width:64px;height:80px;border-radius:10px;object-fit:cover;object-position:top;background:var(--bg);border:1px solid var(--line);flex:none;display:grid;place-items:center;font:800 18px var(--body);color:var(--muted)}
 .gfoto.sm{width:44px;height:56px;font-size:14px;border-radius:8px}
 .gchips{display:flex;flex-wrap:wrap;gap:8px}
-.gchips a{text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font:700 13px var(--body);color:var(--fg);background:var(--bg)}
-.gchips a:hover{border-color:#ffdf00}
+.gchips button{border:1px solid var(--line);border-radius:999px;padding:7px 13px;font:700 13px var(--body);color:var(--fg);background:var(--bg);cursor:pointer}
+.gchips button:hover{border-color:#ffdf00}
+.gchips button[aria-pressed="true"]{background:#ffdf00;border-color:#ffdf00;color:#1b2a12}
 .gstate .fill.ga{background:#ea580c}.gstate .fill.gb{background:#7c3aed}
 .gstate .nm.ga{color:#c2410c}.gstate .nm.gb{color:#6d28d9}
 .updline{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;color:var(--on-page-muted);font:500 13px var(--mono)}
@@ -291,6 +292,7 @@ details.more summary{cursor:pointer;font-weight:700}
 .me a.ig{background:linear-gradient(45deg,#f58529,#dd2a7b 55%,#8134af)}.me a.ig:hover{filter:brightness(1.08)}
 .footer-me{display:flex;flex-direction:column;gap:8px}
 .footer-me .nm{font:700 16px var(--body);color:var(--on-page)}
+.footer-me .role{font:500 14px var(--body);color:var(--on-page-muted);margin-top:-4px}
 @media (max-width:520px){.strip{flex-direction:column;align-items:stretch}.fila-btn{justify-content:center}.me{justify-content:center}}
 
 /* abas fixas no topo (computador e celular) */
@@ -306,6 +308,15 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
 @keyframes tlg{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
 @media (max-width:640px){.tabs-logo span{display:none}}
 @media (prefers-reduced-motion:reduce){.tabs.stuck .tabs-logo{animation:none}}
+
+/* ===== marca d'água e botão "Salvar imagem" em cada quadro ===== */
+.shot-host{position:relative}
+.wm{position:absolute;right:18px;bottom:46px;width:150px;max-width:38%;opacity:.13;pointer-events:none;user-select:none;z-index:1}
+.shotbar{display:flex;justify-content:flex-end;margin-top:4px;position:relative;z-index:2}
+.shotbtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 13px var(--body);padding:7px 12px;border-radius:999px;cursor:pointer}
+.shotbtn:hover{border-color:#ffdf00;background:color-mix(in srgb,#ffdf00 18%,var(--surface))}
+.shotbtn:disabled{opacity:.6;cursor:wait}
+.shotbtn svg{width:16px;height:16px}
 </style>
 </head>
 <body>
@@ -369,6 +380,7 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
 
   <section class="card" id="vg1" hidden>
     <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap"><div><div class="label">Governador · 1º turno · 4 de outubro</div><h2>Como os finalistas chegaram ao 2º turno</h2></div><button type="button" class="gclear" id="gclear1">Limpar filtro</button></div>
+    <div class="gchips" id="gchips1"></div>
     <div id="g1list" class="govlist"></div>
     <p class="note" style="margin:0">Resultado oficial do TSE no 1º turno para governador, em votos válidos, nos estados que têm 2º turno. Análise – Diego R. S. Lima.</p>
   </section>
@@ -382,7 +394,7 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
   </section>
 
   <footer>
-    <div class="footer-me" data-contato><span class="nm">Diego dos Reis Sousa Lima · Diego Reis</span><div class="me"><a class="wa" href="https://wa.me/5586998096932?text=Ol%C3%A1%2C%20Diego%21%20Vim%20pelo%20site%20das%20elei%C3%A7%C3%B5es." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M9 9.5c.3 1.9 2.4 4.1 4.6 4.7l1.1-1.2 1.6.8c-.2 1-1.1 1.7-2.2 1.6C11 15 8.8 12.7 8.5 10.6c-.1-1 .6-1.9 1.6-2.1l.8 1.6z"/></svg>WhatsApp (86) 99809-6932</a><a class="ig" href="https://www.instagram.com/diegosousa1998/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor"/></svg>Instagram @diegosousa1998</a></div></div>
+    <div class="footer-me" data-contato><span class="nm">Diego R. S. Lima</span><span class="role">Cientista e Engenheiro Computacional · Especialista em análise de metadados, gráficos e análises políticas e econômicas</span><div class="me"><a class="wa" href="https://wa.me/5586998096932?text=Ol%C3%A1%2C%20Diego%21%20Vim%20pelo%20site%20das%20elei%C3%A7%C3%B5es." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M9 9.5c.3 1.9 2.4 4.1 4.6 4.7l1.1-1.2 1.6.8c-.2 1-1.1 1.7-2.2 1.6C11 15 8.8 12.7 8.5 10.6c-.1-1 .6-1.9 1.6-2.1l.8 1.6z"/></svg>WhatsApp (86) 99809-6932</a><a class="ig" href="https://www.instagram.com/diegosousa1998/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor"/></svg>Instagram @diegosousa1998</a></div></div>
     <span>Fonte: arquivos públicos de divulgação do Tribunal Superior Eleitoral (resultados.tse.jus.br), eleições 6257 (1º turno) e 6258 (2º turno). Localização das cidades: base aberta Municípios Brasileiros (licença MIT). Site independente.</span>
   </footer>
 </div>
@@ -526,9 +538,9 @@ async function loadSqG(){
 function renderG1(){
   const est=(DATA&&DATA.governador&&DATA.governador.estados)||[];
   $("g1list").innerHTML=est.map(e=>{ const r=sqG[e.uf];
-    if(!r||r.pa==null) return `<div class="gstate"><h3>${esc(e.estado)}</h3><div class="msg">Lendo o resultado do 1º turno no TSE…</div></div>`;
+    if(!r||r.pa==null) return `<div class="gstate" data-uf="${e.uf}"><h3>${esc(e.estado)}</h3><div class="msg">Lendo o resultado do 1º turno no TSE…</div></div>`;
     const po=Math.max(0,100-r.pa-r.pb);
-    return `<div class="gstate"><div class="ghead"><div class="gpics">${gFoto(e.uf,{nm:e.a.nm,sq:r.a},"sm")}${gFoto(e.uf,{nm:e.b.nm,sq:r.b},"sm")}</div><div><h3>${esc(e.estado)}</h3><div class="vs"><b class="a">${esc(e.a.nm)}</b> (${esc(e.a.partido)}) × <b class="b">${esc(e.b.nm)}</b> (${esc(e.b.partido)})</div></div></div>
+    return `<div class="gstate" data-uf="${e.uf}"><div class="ghead"><div class="gpics">${gFoto(e.uf,{nm:e.a.nm,sq:r.a},"sm")}${gFoto(e.uf,{nm:e.b.nm,sq:r.b},"sm")}</div><div><h3>${esc(e.estado)}</h3><div class="vs"><b class="a">${esc(e.a.nm)}</b> (${esc(e.a.partido)}) × <b class="b">${esc(e.b.nm)}</b> (${esc(e.b.partido)})</div></div></div>
       <div class="pbars">${bar(e.a.nm,"ga",r.pa,null)}${bar(e.b.nm,"gb",r.pb,null)}${bar("Demais candidatos","o",po,null)}</div>
       <div class="note" style="margin:0">${fmt(r.va)} × ${fmt(r.vb)} votos no 1º turno</div></div>`; }).join("");
 }
@@ -552,7 +564,7 @@ function gCard(e,q,i,r,best){
 function renderG(){
   const G=DATA&&DATA.governador; if(!G){ $("govlist").innerHTML=`<div class="msg">As pesquisas para governador ainda não foram carregadas.</div>`; return; }
   const est=G.estados||[];
-  $("gchips").innerHTML=est.map(e=>`<a href="#gov-${e.uf}">${esc(e.estado)}</a>`).join("");
+
   const perInst={}; let finals=0, withPolls=0;
   $("govlist").innerHTML=est.map(e=>{
     const r=realG[e.uf]&&realG[e.uf].pst>0?realG[e.uf]:null;
@@ -562,7 +574,7 @@ function renderG(){
     if(r&&r.final&&polls.length){ finals++; polls.forEach(o=>{ const k=o.q.instituto; (perInst[k]=perInst[k]||[]).push(o.s.err); }); }
     const avgA=polls.length?polls.reduce((t,o)=>t+o.q.a,0)/polls.length:null;
     const realHTML= r ? `<div class="realbox"><span class="k">${r.final?"Resultado oficial":"Apuração em andamento · "+p1(r.pst)+" das seções"}</span><span><span class="mk"></span><b>${esc(e.a.nm)} ${p1(r.a)}</b></span><span><span class="mk"></span><b>${esc(e.b.nm)} ${p1(r.b)}</b></span>${r.final?`<span class="ok-chip">Eleito(a): ${esc(r.a>r.b?e.a.nm:e.b.nm)}</span>`:""}</div>` : "";
-    return `<div class="gstate" id="gov-${e.uf}">
+    return `<div class="gstate" id="gov-${e.uf}" data-uf="${e.uf}">
       <div class="ghead"><div class="gpics">${gFoto(e.uf,{nm:e.a.nm,sq:sqG[e.uf]&&sqG[e.uf].a},"sm")}${gFoto(e.uf,{nm:e.b.nm,sq:sqG[e.uf]&&sqG[e.uf].b},"sm")}</div><div><h3>${esc(e.estado)}</h3><div class="vs"><b class="a">${esc(e.a.nm)}</b> (${esc(e.a.partido)}) × <b class="b">${esc(e.b.nm)}</b> (${esc(e.b.partido)})${avgA!=null&&!r?` · média das pesquisas: ${esc(e.a.nm.split(" ").slice(-1)[0])} ${p1(avgA)} × ${esc(e.b.nm.split(" ").slice(-1)[0])} ${p1(100-avgA)}`:""}</div></div></div>
       ${realHTML}
       ${polls.length?`<div class="polls">${polls.map((o,i)=>gCard(e,o.q,i,r,!!(r&&r.final&&i===0))).join("")}</div>`:`<div class="msg">${esc(e.aviso||"Nenhuma pesquisa de 2º turno encontrada.")}</div>`}
@@ -596,7 +608,19 @@ function setCargo(c){
   setView(view);
 }
 $("fp").onclick=()=>setCargo("p"); $("fg").onclick=()=>setCargo("g");
-$("gclear").onclick=$("gclear1").onclick=()=>{ setCargo("p"); window.scrollTo({top:0,behavior:"smooth"}); };   // limpar filtro: volta para Presidente
+/* filtro por estado no modo governador: mostra só o estado escolhido (1º e 2º turno) */
+let gSel="";
+function applyGFilter(){
+  const est=(DATA&&DATA.governador&&DATA.governador.estados)||[];
+  const chips=`<button data-gs="" aria-pressed="${!gSel}">Todos os estados</button>`+est.map(e=>`<button data-gs="${e.uf}" aria-pressed="${gSel===e.uf}">${esc(e.estado)}</button>`).join("");
+  ["gchips","gchips1"].forEach(id=>{ const el=$(id); if(el) el.innerHTML=chips; });
+  document.querySelectorAll("#govlist .gstate, #g1list .gstate").forEach(g=>{ g.hidden=!!gSel&&g.dataset.uf!==gSel; });
+}
+["gchips","gchips1"].forEach(id=>$(id).addEventListener("click",e=>{ const b=e.target.closest("button[data-gs]"); if(!b) return; gSel=b.dataset.gs; applyGFilter(); }));
+const _renderG=renderG; renderG=function(){ _renderG(); applyGFilter(); };
+const _renderG1=renderG1; renderG1=function(){ _renderG1(); applyGFilter(); };
+
+$("gclear").onclick=$("gclear1").onclick=()=>{ gSel=""; setCargo("p"); window.scrollTo({top:0,behavior:"smooth"}); };   // limpar filtro: volta para Presidente
 
 (async()=>{
   testBanner();
@@ -606,7 +630,7 @@ $("gclear").onclick=$("gclear1").onclick=()=>{ setCargo("p"); window.scrollTo({t
   render1(); render2();
   const H0=location.hash;
   if(H0==="#segundo"||open2()) setView(2);
-  if(/^#governador/.test(H0)||/^#gov-/.test(H0)){ const h=H0; if(H0==="#governador-1") view=1; else view=2; setCargo("g"); if(/^#gov-/.test(h)) setTimeout(()=>{ const el=document.querySelector(h); if(el) el.scrollIntoView(); },50); }
+  if(/^#governador/.test(H0)||/^#gov-/.test(H0)){ const h=H0; if(H0==="#governador-1") view=1; else view=2; setCargo("g"); if(/^#gov-/.test(h)){ gSel=h.slice(5); applyGFilter(); } }
   loadReal2(); setInterval(loadReal2,60000);
   loadRealG(); setInterval(loadRealG,60000); loadSqG();
 })();
@@ -614,5 +638,66 @@ $("gclear").onclick=$("gclear1").onclick=()=>{ setCargo("p"); window.scrollTo({t
 </script>
 <script>(function(){var t=document.querySelector('.tabs'),c=t&&t.querySelector('[aria-current]');if(c&&t.scrollWidth>t.clientWidth)t.scrollLeft=c.offsetLeft-(t.clientWidth-c.offsetWidth)/2;})();</script>
 <script>(function(){var t=document.querySelector('.tabs');if(!t||!('IntersectionObserver' in window))return;var s=document.createElement('div');s.style.cssText='height:1px;margin-bottom:-1px';t.parentNode.insertBefore(s,t);new IntersectionObserver(function(e){var st=!e[0].isIntersecting&&e[0].boundingClientRect.top<0;t.classList.toggle('stuck',st);var l=t.querySelector('.tabs-logo');if(l)l.tabIndex=st?0:-1;}).observe(s);})();</script>
+<script>
+/* Marca d'água com a logo do Diego Reis e botão para salvar cada quadro/gráfico como imagem (PNG). */
+(function(){
+  const SEL=".card,.board,.panel,section.evo,.rank,.gov,.gl-card";
+  const dark=()=>window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches;
+  const ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
+  function decorate(){
+    document.querySelectorAll(SEL).forEach(el=>{
+      if(el.matches("[data-noshot]")||(el.parentElement&&el.parentElement.closest(SEL))) return;
+      if(el.querySelector(":scope > .shotbar")) return;
+      el.classList.add("shot-host");
+      const wm=document.createElement("img"); wm.className="wm"; wm.alt=""; wm.setAttribute("aria-hidden","true");
+      wm.src= dark()?"img/diego-reis-logo-escuro.png":"img/diego-reis-logo.png"; el.appendChild(wm);
+      const bar=document.createElement("div"); bar.className="shotbar";
+      const b=document.createElement("button"); b.type="button"; b.className="shotbtn"; b.innerHTML=ICON+"<span>Salvar imagem</span>";
+      b.title="Salvar este quadro como imagem, com a marca Diego Reis"; b.onclick=()=>shoot(el,b);
+      bar.appendChild(b); el.appendChild(bar);
+    });
+  }
+  let q=false; const later=()=>{ if(q) return; q=true; requestAnimationFrame(()=>{ q=false; decorate(); }); };
+  new MutationObserver(later).observe(document.body,{childList:true,subtree:true});
+  decorate();
+  /* html2canvas não entende color-mix()/color(): troca por rgb() já calculado, só na cópia usada para a imagem */
+  const cv=document.createElement("canvas"); cv.width=cv.height=1; const cx=cv.getContext("2d",{willReadFrequently:true});
+  function toRGB(v){ try{ cx.clearRect(0,0,1,1); cx.fillStyle="#000"; cx.fillStyle=v; cx.fillRect(0,0,1,1); const d=cx.getImageData(0,0,1,1).data; return `rgba(${d[0]},${d[1]},${d[2]},${(d[3]/255).toFixed(3)})`; }catch(e){ return "transparent"; } }
+  const PROPS=["color","background-color","border-top-color","border-right-color","border-bottom-color","border-left-color","outline-color","fill","stroke","text-decoration-color","caret-color","column-rule-color"];
+  function sanitize(root){
+    const win=root.ownerDocument.defaultView;
+    [root,...root.querySelectorAll("*")].forEach(n=>{
+      const cs=win.getComputedStyle(n);
+      PROPS.forEach(pr=>{ const v=cs.getPropertyValue(pr); if(v&&/color\(|color-mix|oklab|oklch|lab\(|lch\(/.test(v)) n.style.setProperty(pr,toRGB(v),"important"); });
+      ["box-shadow","text-shadow"].forEach(pr=>{ const v=cs.getPropertyValue(pr); if(v&&/color\(|color-mix|oklab|oklch/.test(v)) n.style.setProperty(pr,"none","important"); });
+      const bi=cs.getPropertyValue("background-image"); if(bi&&/color\(|color-mix|oklab|oklch/.test(bi)) n.style.setProperty("background-image","none","important");
+    });
+  }
+  let lib=null;
+  function load(){ return lib||(lib=new Promise((ok,err)=>{ const s=document.createElement("script"); s.src="js/html2canvas.min.js"; s.onload=()=>ok(window.html2canvas); s.onerror=err; document.head.appendChild(s); })); }
+  async function shoot(el,b){
+    const txt=b.lastChild.textContent; b.disabled=true; b.lastChild.textContent="Gerando…";
+    try{
+      const h2c=await load();
+      const bg=getComputedStyle(el).backgroundColor; const solid=toRGB(bg&&!/rgba\(0, 0, 0, 0\)|transparent/.test(bg)?bg:"#ffffff");
+      const c=await h2c(el,{scale:2,backgroundColor:solid,useCORS:true,logging:false,onclone:(doc,clone)=>sanitize(clone),ignoreElements:n=>n.classList&&n.classList.contains("shotbar")});
+      const F=72, out=document.createElement("canvas"); out.width=c.width; out.height=c.height+F;
+      const g=out.getContext("2d"); g.fillStyle="#0b2f78"; g.fillRect(0,0,out.width,out.height); g.drawImage(c,0,0);
+      g.fillStyle="#ffdf00"; g.fillRect(0,c.height,out.width,6);
+      g.fillStyle="#ffffff"; g.font="700 26px Arial, sans-serif"; g.textBaseline="middle";
+      g.fillText("Diego Reis · Análise eleitoral",24,c.height+F/2+3);
+      g.font="500 22px Arial, sans-serif"; g.textAlign="right";
+      g.fillText("diegoreiseleicoes.com.br · "+new Date().toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}),out.width-24,c.height+F/2+3);
+      const blob=await new Promise(r=>out.toBlob(r,"image/png"));
+      const name="diego-reis-"+(document.title.split("·")[0].trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-")||"grafico")+"-"+Date.now()+".png";
+      const file=new File([blob],name,{type:"image/png"});
+      if(navigator.canShare&&navigator.canShare({files:[file]})&&/Android|iPhone|iPad/i.test(navigator.userAgent)){ try{ await navigator.share({files:[file],title:"Diego Reis · Análise eleitoral"}); }catch(e){} }
+      else { const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1500); }
+      b.lastChild.textContent="Imagem salva ✓"; setTimeout(()=>{ b.lastChild.textContent=txt; },2000);
+    }catch(e){ b.lastChild.textContent="Não foi possível gerar"; setTimeout(()=>{ b.lastChild.textContent=txt; },2500); }
+    finally{ b.disabled=false; }
+  }
+})();
+</script>
 </body>
 </html>

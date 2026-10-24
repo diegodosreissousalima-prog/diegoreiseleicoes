@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>1º × 2º turno · Análise Diego Reis</title>
 <meta name="description" content="Comparação entre o 1º e o 2º turno da eleição presidencial de 2026, estado por estado e cidade por cidade, com dados oficiais do TSE. Análise – Diego R. S. Lima.">
-<meta name="theme-color" content="#0b5d3b">
+<meta name="theme-color" content="#0b2f78">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cmask id='m'%3E%3Crect width='120' height='120' fill='white'/%3E%3Cpath d='M-4 46H44V30L74 60 44 90V74H-4Z'/%3E%3C/mask%3E%3Cpath mask='url(%23m)' fill='%23e02a46' d='M24 8H58A52 52 0 0 1 58 112H24Q12 112 12 100V20Q12 8 24 8Z'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Poppins:wght@500;600&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
 /* Layout: mesma identidade do site de apuração — resumo dos dois turnos no topo, gráfico 1º×2º, tabela por estado/cidade */
 :root{
-  --page:#0b5d3b; --page-2:#063a25; --page-glow:rgba(255,214,0,.16); --on-page:#f4fbf7; --on-page-muted:#bfe0cf;
+  --page:#0b2f78; --page-2:#061a45; --page-glow:rgba(255,214,0,.16); --on-page:#f2f6ff; --on-page-muted:#b9c8ea;
   --bg:#f3f5f4; --surface:#ffffff; --line:#d9dfdc; --fg:#15201c; --muted:#5d6b66;
   --a:#d42a2a; --b:#1f5fd1; --a-soft:#f6d0cf; --b-soft:#d2def7; --o:#8a8f8c; --empty:#e2e7e4; --up:#178a4c; --down:#b3261e;
   --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
@@ -21,11 +21,11 @@
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --page:#06281a; --page-2:#03150d; --page-glow:rgba(255,214,0,.08); --on-page:#eaf5ef; --on-page-muted:#94b8a6;
+  --page:#071a45; --page-2:#030c22; --page-glow:rgba(255,214,0,.08); --on-page:#e9efff; --on-page-muted:#97a9d4;
   --bg:#0f1513; --surface:#161e1b; --line:#2a3531; --fg:#e8eeeb; --muted:#97a6a0;
   --a:#ff5a52; --b:#5b8dff; --a-soft:#4a1d1c; --b-soft:#1b2a4d; --o:#7d8783; --empty:#26302c; --up:#3fcf83; --down:#ff6b5b; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --page:#06281a; --page-2:#03150d; --page-glow:rgba(255,214,0,.08); --on-page:#eaf5ef; --on-page-muted:#94b8a6;
+  --page:#071a45; --page-2:#030c22; --page-glow:rgba(255,214,0,.08); --on-page:#e9efff; --on-page-muted:#97a9d4;
   --bg:#0f1513; --surface:#161e1b; --line:#2a3531; --fg:#e8eeeb; --muted:#97a6a0;
   --a:#ff5a52; --b:#5b8dff; --a-soft:#4a1d1c; --b-soft:#1b2a4d; --o:#7d8783; --empty:#26302c; --up:#3fcf83; --down:#ff6b5b; color-scheme:dark}
 *{box-sizing:border-box}
@@ -196,6 +196,7 @@ tbody tr[data-key]{cursor:pointer}
 .me a.ig{background:linear-gradient(45deg,#f58529,#dd2a7b 55%,#8134af)}.me a.ig:hover{filter:brightness(1.08)}
 .footer-me{display:flex;flex-direction:column;gap:8px}
 .footer-me .nm{font:700 16px var(--body);color:var(--on-page)}
+.footer-me .role{font:500 14px var(--body);color:var(--on-page-muted);margin-top:-4px}
 @media (max-width:520px){.strip{flex-direction:column;align-items:stretch}.fila-btn{justify-content:center}.me{justify-content:center}}
 
 /* abas fixas no topo (computador e celular) */
@@ -239,6 +240,15 @@ body.gov{--a:#ea580c;--b:#7c3aed}
 .dlt.up{background:var(--ec);color:#fff}
 .dlt.down{background:transparent;color:var(--ec)}
 .dlt.eq{background:transparent;color:var(--muted,#777)}
+
+/* ===== marca d'água e botão "Salvar imagem" em cada quadro ===== */
+.shot-host{position:relative}
+.wm{position:absolute;right:18px;bottom:46px;width:150px;max-width:38%;opacity:.13;pointer-events:none;user-select:none;z-index:1}
+.shotbar{display:flex;justify-content:flex-end;margin-top:4px;position:relative;z-index:2}
+.shotbtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 13px var(--body);padding:7px 12px;border-radius:999px;cursor:pointer}
+.shotbtn:hover{border-color:#ffdf00;background:color-mix(in srgb,#ffdf00 18%,var(--surface))}
+.shotbtn:disabled{opacity:.6;cursor:wait}
+.shotbtn svg{width:16px;height:16px}
 </style>
 </head>
 <body>
@@ -285,7 +295,7 @@ body.gov{--a:#ea580c;--b:#7c3aed}
     </div>
   </section>
 
-  <section class="card" aria-label="Escolha a área">
+  <section class="card" aria-label="Escolha a área" data-noshot>
     <div class="controls">
       <label for="scope">Comparar
         <select id="scope"><option value="br">Brasil · por estado</option></select>
@@ -373,7 +383,7 @@ body.gov{--a:#ea580c;--b:#7c3aed}
   </section>
 
   <footer>
-    <div class="footer-me" data-contato><span class="nm">Diego dos Reis Sousa Lima · Diego Reis</span><div class="me"><a class="wa" href="https://wa.me/5586998096932?text=Ol%C3%A1%2C%20Diego%21%20Vim%20pelo%20site%20das%20elei%C3%A7%C3%B5es." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M9 9.5c.3 1.9 2.4 4.1 4.6 4.7l1.1-1.2 1.6.8c-.2 1-1.1 1.7-2.2 1.6C11 15 8.8 12.7 8.5 10.6c-.1-1 .6-1.9 1.6-2.1l.8 1.6z"/></svg>WhatsApp (86) 99809-6932</a><a class="ig" href="https://www.instagram.com/diegosousa1998/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor"/></svg>Instagram @diegosousa1998</a></div></div>
+    <div class="footer-me" data-contato><span class="nm">Diego R. S. Lima</span><span class="role">Cientista e Engenheiro Computacional · Especialista em análise de metadados, gráficos e análises políticas e econômicas</span><div class="me"><a class="wa" href="https://wa.me/5586998096932?text=Ol%C3%A1%2C%20Diego%21%20Vim%20pelo%20site%20das%20elei%C3%A7%C3%B5es." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M9 9.5c.3 1.9 2.4 4.1 4.6 4.7l1.1-1.2 1.6.8c-.2 1-1.1 1.7-2.2 1.6C11 15 8.8 12.7 8.5 10.6c-.1-1 .6-1.9 1.6-2.1l.8 1.6z"/></svg>WhatsApp (86) 99809-6932</a><a class="ig" href="https://www.instagram.com/diegosousa1998/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor"/></svg>Instagram @diegosousa1998</a></div></div>
     <span>Fonte: arquivos públicos de divulgação do Tribunal Superior Eleitoral (resultados.tse.jus.br), eleições 6257 (1º turno) e 6258 (2º turno). Site independente.</span>
   </footer>
 </div>
@@ -871,5 +881,66 @@ setInterval(()=>{ if(has2) load(true); },180000);
 </script>
 <script>(function(){var t=document.querySelector('.tabs'),c=t&&t.querySelector('[aria-current]');if(c&&t.scrollWidth>t.clientWidth)t.scrollLeft=c.offsetLeft-(t.clientWidth-c.offsetWidth)/2;})();</script>
 <script>(function(){var t=document.querySelector('.tabs');if(!t||!('IntersectionObserver' in window))return;var s=document.createElement('div');s.style.cssText='height:1px;margin-bottom:-1px';t.parentNode.insertBefore(s,t);new IntersectionObserver(function(e){var st=!e[0].isIntersecting&&e[0].boundingClientRect.top<0;t.classList.toggle('stuck',st);var l=t.querySelector('.tabs-logo');if(l)l.tabIndex=st?0:-1;}).observe(s);})();</script>
+<script>
+/* Marca d'água com a logo do Diego Reis e botão para salvar cada quadro/gráfico como imagem (PNG). */
+(function(){
+  const SEL=".card,.board,.panel,section.evo,.rank,.gov,.gl-card";
+  const dark=()=>window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches;
+  const ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
+  function decorate(){
+    document.querySelectorAll(SEL).forEach(el=>{
+      if(el.matches("[data-noshot]")||(el.parentElement&&el.parentElement.closest(SEL))) return;
+      if(el.querySelector(":scope > .shotbar")) return;
+      el.classList.add("shot-host");
+      const wm=document.createElement("img"); wm.className="wm"; wm.alt=""; wm.setAttribute("aria-hidden","true");
+      wm.src= dark()?"img/diego-reis-logo-escuro.png":"img/diego-reis-logo.png"; el.appendChild(wm);
+      const bar=document.createElement("div"); bar.className="shotbar";
+      const b=document.createElement("button"); b.type="button"; b.className="shotbtn"; b.innerHTML=ICON+"<span>Salvar imagem</span>";
+      b.title="Salvar este quadro como imagem, com a marca Diego Reis"; b.onclick=()=>shoot(el,b);
+      bar.appendChild(b); el.appendChild(bar);
+    });
+  }
+  let q=false; const later=()=>{ if(q) return; q=true; requestAnimationFrame(()=>{ q=false; decorate(); }); };
+  new MutationObserver(later).observe(document.body,{childList:true,subtree:true});
+  decorate();
+  /* html2canvas não entende color-mix()/color(): troca por rgb() já calculado, só na cópia usada para a imagem */
+  const cv=document.createElement("canvas"); cv.width=cv.height=1; const cx=cv.getContext("2d",{willReadFrequently:true});
+  function toRGB(v){ try{ cx.clearRect(0,0,1,1); cx.fillStyle="#000"; cx.fillStyle=v; cx.fillRect(0,0,1,1); const d=cx.getImageData(0,0,1,1).data; return `rgba(${d[0]},${d[1]},${d[2]},${(d[3]/255).toFixed(3)})`; }catch(e){ return "transparent"; } }
+  const PROPS=["color","background-color","border-top-color","border-right-color","border-bottom-color","border-left-color","outline-color","fill","stroke","text-decoration-color","caret-color","column-rule-color"];
+  function sanitize(root){
+    const win=root.ownerDocument.defaultView;
+    [root,...root.querySelectorAll("*")].forEach(n=>{
+      const cs=win.getComputedStyle(n);
+      PROPS.forEach(pr=>{ const v=cs.getPropertyValue(pr); if(v&&/color\(|color-mix|oklab|oklch|lab\(|lch\(/.test(v)) n.style.setProperty(pr,toRGB(v),"important"); });
+      ["box-shadow","text-shadow"].forEach(pr=>{ const v=cs.getPropertyValue(pr); if(v&&/color\(|color-mix|oklab|oklch/.test(v)) n.style.setProperty(pr,"none","important"); });
+      const bi=cs.getPropertyValue("background-image"); if(bi&&/color\(|color-mix|oklab|oklch/.test(bi)) n.style.setProperty("background-image","none","important");
+    });
+  }
+  let lib=null;
+  function load(){ return lib||(lib=new Promise((ok,err)=>{ const s=document.createElement("script"); s.src="js/html2canvas.min.js"; s.onload=()=>ok(window.html2canvas); s.onerror=err; document.head.appendChild(s); })); }
+  async function shoot(el,b){
+    const txt=b.lastChild.textContent; b.disabled=true; b.lastChild.textContent="Gerando…";
+    try{
+      const h2c=await load();
+      const bg=getComputedStyle(el).backgroundColor; const solid=toRGB(bg&&!/rgba\(0, 0, 0, 0\)|transparent/.test(bg)?bg:"#ffffff");
+      const c=await h2c(el,{scale:2,backgroundColor:solid,useCORS:true,logging:false,onclone:(doc,clone)=>sanitize(clone),ignoreElements:n=>n.classList&&n.classList.contains("shotbar")});
+      const F=72, out=document.createElement("canvas"); out.width=c.width; out.height=c.height+F;
+      const g=out.getContext("2d"); g.fillStyle="#0b2f78"; g.fillRect(0,0,out.width,out.height); g.drawImage(c,0,0);
+      g.fillStyle="#ffdf00"; g.fillRect(0,c.height,out.width,6);
+      g.fillStyle="#ffffff"; g.font="700 26px Arial, sans-serif"; g.textBaseline="middle";
+      g.fillText("Diego Reis · Análise eleitoral",24,c.height+F/2+3);
+      g.font="500 22px Arial, sans-serif"; g.textAlign="right";
+      g.fillText("diegoreiseleicoes.com.br · "+new Date().toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}),out.width-24,c.height+F/2+3);
+      const blob=await new Promise(r=>out.toBlob(r,"image/png"));
+      const name="diego-reis-"+(document.title.split("·")[0].trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-")||"grafico")+"-"+Date.now()+".png";
+      const file=new File([blob],name,{type:"image/png"});
+      if(navigator.canShare&&navigator.canShare({files:[file]})&&/Android|iPhone|iPad/i.test(navigator.userAgent)){ try{ await navigator.share({files:[file],title:"Diego Reis · Análise eleitoral"}); }catch(e){} }
+      else { const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1500); }
+      b.lastChild.textContent="Imagem salva ✓"; setTimeout(()=>{ b.lastChild.textContent=txt; },2000);
+    }catch(e){ b.lastChild.textContent="Não foi possível gerar"; setTimeout(()=>{ b.lastChild.textContent=txt; },2500); }
+    finally{ b.disabled=false; }
+  }
+})();
+</script>
 </body>
 </html>
