@@ -113,6 +113,14 @@ input[type=search]{width:100%;font:16px var(--body);padding:10px 12px;border:1px
 .dlt-row{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}
 .cand.right .dlt-row{justify-content:flex-end}
 .dlt-k{font-size:11px;color:var(--muted)}
+.chance{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin-top:8px;padding:6px 12px;border-radius:12px;color:#fff;max-width:100%}
+.chance b{font:700 22px/1 var(--display)}
+.chance .ck{font:600 11px var(--body);letter-spacing:.05em;text-transform:uppercase;opacity:.95}
+.chance .cs{font:500 11px var(--body);opacity:.85}
+.chance.cwin{background:#178a4c}.chance.clos{background:#c22f21}
+.cand.right .chance{justify-content:flex-end}
+.chance{box-sizing:border-box}
+@media (max-width:560px){.chance{display:flex;width:100%;gap:2px 6px;padding:6px 10px}.chance b{font-size:18px}.chance .ck{font-size:10px}.chance .cs{flex-basis:100%}}
 .msg.t1{border:1px solid #e0b400;background:color-mix(in srgb,#ffdf00 14%,transparent);color:inherit;margin-bottom:12px}
 .msg.err{color:var(--live);border-color:var(--live)}
 footer{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
@@ -715,8 +723,24 @@ function photoHTML(c){
 /* seta de evolução do 1º para o 2º turno, na cor do candidato (▲ cresceu · ▼ caiu), em pontos percentuais */
 const dlt=(d,k)=>{ if(d==null||!isFinite(d)) return ""; const r=Math.round(d*10)/10, cls=r>0?"up":r<0?"down":"eq";
   return `<span class="dlt ${k} ${cls}" title="Variação em relação ao 1º turno (pontos percentuais)">${r>0?"▲":r<0?"▼":"="} ${(r>0?"+":r<0?"−":"")+Math.abs(r).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})} p.p.</span>`; };
+/* Chance de vitória dentro do quadro de cada candidato.
+   Com votos apurados: estimativa pela apuração (mesmo cálculo do quadro "Chance de vitória").
+   Antes das 17h, só no quadro do Brasil: estimativa pela média das 5 principais pesquisas (aba Projeção),
+   com incerteza de 4 pontos na diferença entre os dois. Verde = 50% ou mais; vermelho = menos de 50%. */
+let PESQ=null;
+fetch("pesquisas.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{ const m=j&&j.turno2_principais; if(!m||!m.length) return;
+  const L=m.reduce((t,p)=>t+p.lula,0)/m.length, F=m.reduce((t,p)=>t+p.flavio,0)/m.length; PESQ={L,F,n:m.length};
+  if(lastBR&&!(lastBR.pst>0)) renderNacional(lastBR); }).catch(()=>{});
+function chanceOf(d,areas,big){
+  const pr=d.ok&&d.pst>0 ? project(areas||[d]) : null;
+  if(pr) return {a:pr.probA*100,b:pr.probB*100,src:"pela apuração"};
+  if(big&&PESQ){ const pa=Phi((PESQ.L-PESQ.F)/4); return {a:pa*100,b:(1-pa)*100,src:"pelas pesquisas"}; }
+  return null;
+}
+const chanceTxt=v=>v>99.9?">99,9%":v<0.1?"<0,1%":v.toLocaleString("pt-BR",{maximumFractionDigits:1})+"%";
 function boardHTML(d,{big,areas,scope,t1,prev}={}){
   const A=d.cands["13"], B=d.cands["22"];
+  const CH= t1 ? null : chanceOf(d,areas,big);
   const lead = A.vap===B.vap ? null : (A.vap>B.vap?"13":"22");
   const side=(c,cls)=>`
     <div class="cand ${cls} ${lead===c.n?"lead":""} ${isElected(c)?"won":""}">
@@ -727,6 +751,7 @@ function boardHTML(d,{big,areas,scope,t1,prev}={}){
         <div class="pct" data-pct="${c.pvap}">${pctTxt(c.pvap)}</div>
         <div class="votes">${fmt(c.vap)} votos</div>
         ${prev&&d.ok&&d.pst>0&&prev.cands[c.n]?`<div class="dlt-row">${dlt(c.pvap-prev.cands[c.n].pvap,cls.split(" ")[0])}<span class="dlt-k">vs 1º turno</span></div>`:""}
+        ${CH?(()=>{ const v=c.n==="13"?CH.a:CH.b; return `<div class="chance ${v>=50?"cwin":"clos"}" title="Estimativa ${CH.src}. Não é pesquisa nem resultado oficial."><span class="ck">Chance de vitória</span><b>${chanceTxt(v)}</b><span class="cs">${CH.src}</span></div>`; })():""}
         ${isElected(c)?`<span class="badge"><b>Eleito</b></span>`:""}
       </div>
     </div>`;
