@@ -245,6 +245,7 @@ td .win{display:inline-block;width:10px;height:10px;border-radius:50%;margin-rig
 .ilogo.wide img{width:auto;height:30px;max-width:70px;object-fit:contain}
 .ilogo.ini{color:#fff;border:0;font:800 14px var(--body);letter-spacing:.02em}
 .poll .meta{font:500 12px var(--mono);color:var(--muted);margin-top:3px}
+.upd-inst{display:inline-block;margin-top:6px;padding:3px 9px;border-radius:999px;background:rgba(11,92,173,.09);color:#0b5cad;font:600 12px var(--mono)}
 .poll .meta a{color:var(--muted)}
 .pbars{display:flex;flex-direction:column;gap:7px;min-width:0}
 .pbar{display:grid;grid-template-columns:118px minmax(0,1fr) 64px;gap:8px;align-items:center;font-size:13px}
@@ -483,12 +484,18 @@ function instLogo(nm){
   if(!site) return tile;
   return `<span class="ilogo" aria-hidden="true" data-ini="${esc(ini)}" data-cor="${INST_COR[h%INST_COR.length]}"><img src="https://www.google.com/s2/favicons?domain=${site}&sz=64" alt="" width="28" height="28" loading="lazy" onerror="const s=this.parentNode;s.classList.add('ini');s.style.background=s.dataset.cor;s.textContent=s.dataset.ini"></span>`;
 }
+/* data e hora em que a pesquisa do instituto foi atualizada no site (campo "atualizado" do pesquisas.json) */
+function updChip(p){
+  const v=String(p.atualizado||""); if(!v) return "";
+  const [d,h]=v.split("T"); const [y,m,dd]=d.split("-");
+  return `<div class="upd-inst">🕒 Atualizado em ${dd}/${m}/${y}${h?` às ${h.slice(0,5)}`:""}</div>`;
+}
 function card(p,i,r,best,showScore){
   const s=r?score(p,r):null;
   const metaBits=[p.campo&&("campo: "+p.campo), p.divulgacao&&("divulgada em "+p.divulgacao), p.entrevistas&&(fmt(p.entrevistas)+" entrevistas"), p.margem&&("margem ±"+String(p.margem).replace(".",",")+" p.p."), p.registro, p.base&&p.base!=="válidos"&&("base: "+p.base)].filter(Boolean);
   return `<article class="poll ${best?"best":""}">${best?`<span class="tagbest">Mais perto de 100% de acerto</span>`:""}
     <div class="rk">${i+1}º</div>
-    <div style="min-width:0"><div class="ihead">${instLogo(p.instituto)}<div class="inst">${esc(p.instituto)}</div></div><div class="meta">${esc(metaBits.join(" · "))}${p.fonte?` · <a href="${esc(p.fonte)}" target="_blank" rel="noopener">fonte</a>`:""}</div></div>
+    <div style="min-width:0"><div class="ihead">${instLogo(p.instituto)}<div class="inst">${esc(p.instituto)}</div></div><div class="meta">${esc(metaBits.join(" · "))}${p.fonte?` · <a href="${esc(p.fonte)}" target="_blank" rel="noopener">fonte</a>`:""}</div>${updChip(p)}</div>
     <div class="pbars">${bar("Lula","a",p.lula,r?r.lula:null)}${bar("Flávio Bolsonaro","b",p.flavio,r?r.flavio:null)}</div>
     <div class="pscore">${s&&showScore?`<div class="acc">${p1(s.acc)}</div><div class="err">acerto · erro médio ${s.err.toLocaleString("pt-BR",{maximumFractionDigits:2})} p.p.</div>${s.empate?`<span class="no-chip">indicou empate</span>`:s.ordemOk?`<span class="ok-chip">acertou quem ficou na frente</span>`:`<span class="no-chip">errou quem ficou na frente</span>`}`
       :`<div class="acc" style="color:${p.flavio>p.lula?"var(--b)":p.lula>p.flavio?"var(--a)":"var(--fg)"}">${p.flavio===p.lula?"Empate":(p.flavio>p.lula?"Flávio":"Lula")}</div><div class="err">${p.flavio===p.lula?"50% a 50%":"à frente por "+Math.abs(p.flavio-p.lula).toLocaleString("pt-BR",{maximumFractionDigits:1})+" p.p."}</div>`}</div>
@@ -634,7 +641,7 @@ function gCard(e,q,i,r,best){
     : `<div class="acc" style="font-size:22px">${lead?esc(lead.length<=14?lead:lead.split(" ").slice(-1)[0]):"Empate"}</div><div class="err">${lead?"à frente por "+Math.abs(q.a-q.b).toLocaleString("pt-BR",{maximumFractionDigits:1})+" p.p.":"50% a 50%"}</div>`;
   return `<article class="poll ${best?"best":""}">${best?`<span class="tagbest">Mais perto de 100% de acerto</span>`:""}
     <div class="rk">${i+1}º</div>
-    <div style="min-width:0"><div class="ihead">${instLogo(q.instituto)}<div class="inst">${esc(q.instituto)}</div></div><div class="meta">${esc(metaBits.join(" · "))}${q.fonte?` · <a href="${esc(q.fonte)}" target="_blank" rel="noopener">fonte</a>`:""}</div></div>
+    <div style="min-width:0"><div class="ihead">${instLogo(q.instituto)}<div class="inst">${esc(q.instituto)}</div></div><div class="meta">${esc(metaBits.join(" · "))}${q.fonte?` · <a href="${esc(q.fonte)}" target="_blank" rel="noopener">fonte</a>`:""}</div>${updChip(q)}</div>
     <div class="pbars">${gBar(e.a.nm,"ga",q.a,r?r.a:null)}${gBar(e.b.nm,"gb",q.b,r?r.b:null)}</div>
     <div class="pscore">${right}</div></article>`;
 }

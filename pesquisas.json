@@ -15,7 +15,8 @@
       "flavio": 45.9,
       "base": "válidos",
       "registro": "",
-      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente",
+      "atualizado": "2026-10-23T19:22"
     },
     {
       "instituto": "Gerp",
@@ -25,7 +26,8 @@
       "flavio": 46.0,
       "base": "não informada (provavelmente totais)",
       "registro": "",
-      "fonte": "https://www.brasilparalelo.com.br/noticias/veja-quais-pesquisas-erraram-o-resultado-do-primeiro-turno-das-eleicoes"
+      "fonte": "https://www.brasilparalelo.com.br/noticias/veja-quais-pesquisas-erraram-o-resultado-do-primeiro-turno-das-eleicoes",
+      "atualizado": "2026-10-23T19:22"
     },
     {
       "instituto": "Quaest",
@@ -35,7 +37,8 @@
       "flavio": 45.0,
       "base": "válidos",
       "registro": "",
-      "fonte": "https://mais.opovo.com.br/jornal/politica/2026/10/04/pesquisas-de-vespera-mostram-lula-e-flavio-bolsonaro-em-empate-tecnico.html"
+      "fonte": "https://mais.opovo.com.br/jornal/politica/2026/10/04/pesquisas-de-vespera-mostram-lula-e-flavio-bolsonaro-em-empate-tecnico.html",
+      "atualizado": "2026-10-23T19:22"
     },
     {
       "instituto": "PoderData/AYA",
@@ -45,7 +48,8 @@
       "flavio": 43.0,
       "base": "válidos",
       "registro": "",
-      "fonte": "https://www.bnewssaopaulo.com.br/noticias/politica/poderdataaya-lula-tem-45-dos-votos-validos-no-1-turno-flavio-43.html"
+      "fonte": "https://www.bnewssaopaulo.com.br/noticias/politica/poderdataaya-lula-tem-45-dos-votos-validos-no-1-turno-flavio-43.html",
+      "atualizado": "2026-10-23T19:22"
     },
     {
       "instituto": "AtlasIntel",
@@ -55,7 +59,8 @@
       "flavio": 44.1,
       "base": "válidos",
       "registro": "",
-      "fonte": "https://www.cnnbrasil.com.br/eleicoes/atlas-lula-tem-47-dos-votos-validos-no-1o-turno-flavio-441/"
+      "fonte": "https://www.cnnbrasil.com.br/eleicoes/atlas-lula-tem-47-dos-votos-validos-no-1o-turno-flavio-441/",
+      "atualizado": "2026-10-23T19:22"
     },
     {
       "instituto": "Futura Inteligência",
@@ -65,7 +70,8 @@
       "flavio": 44.8,
       "base": "não informada",
       "registro": "",
-      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente",
+      "atualizado": "2026-10-23T19:22"
     },
     {
       "instituto": "Datafolha",
@@ -75,7 +81,8 @@
       "flavio": 42.0,
       "base": "válidos",
       "registro": "",
-      "fonte": "https://www.opovo.com.br/noticias/brasil/2026/10/04/datafolha-lula-tem-45-e-flavio-42-dos-votos-validos.html"
+      "fonte": "https://www.opovo.com.br/noticias/brasil/2026/10/04/datafolha-lula-tem-45-e-flavio-42-dos-votos-validos.html",
+      "atualizado": "2026-10-23T19:22"
     },
     {
       "instituto": "MDA/CNT",
@@ -85,7 +92,8 @@
       "flavio": 42.1,
       "base": "válidos",
       "registro": "",
-      "fonte": "https://mais.opovo.com.br/jornal/politica/2026/10/04/pesquisas-de-vespera-mostram-lula-e-flavio-bolsonaro-em-empate-tecnico.html"
+      "fonte": "https://mais.opovo.com.br/jornal/politica/2026/10/04/pesquisas-de-vespera-mostram-lula-e-flavio-bolsonaro-em-empate-tecnico.html",
+      "atualizado": "2026-10-23T19:22"
     }
   ],
   "turno2_principais": [
@@ -99,7 +107,8 @@
       "entrevistas": 4050,
       "margem": 2.0,
       "registro": "BR-09540/2026",
-      "fonte": "https://www.oliberal.com/politica/pesquisa-datafolha-flavio-tem-51-e-lula-49-dos-votos-validos-na-vespera-do-2-turno-1.1186426"
+      "fonte": "https://www.oliberal.com/politica/pesquisa-datafolha-flavio-tem-51-e-lula-49-dos-votos-validos-na-vespera-do-2-turno-1.1186426",
+      "atualizado": "2026-10-24T20:44"
     },
     {
       "instituto": "Quaest",
@@ -111,7 +120,8 @@
       "entrevistas": 3702,
       "margem": 2.0,
       "registro": "BR-09158/2026",
-      "fonte": "https://www.cnnbrasil.com.br/eleicoes/quaest-flavio-tem-51-dos-votos-validos-lula-49/"
+      "fonte": "https://www.cnnbrasil.com.br/eleicoes/quaest-flavio-tem-51-dos-votos-validos-lula-49/",
+      "atualizado": "2026-10-24T20:44"
     },
     {
       "instituto": "AtlasIntel/Bloomberg",
@@ -123,7 +133,8 @@
       "entrevistas": 4990,
       "margem": 1.0,
       "registro": "BR-06380/2026",
-      "fonte": "https://www.cnnbrasil.com.br/eleicoes/atlasintel-flavio-tem-508-dos-votos-validos-no-2o-turno-lula-492/"
+      "fonte": "https://www.cnnbrasil.com.br/eleicoes/atlasintel-flavio-tem-508-dos-votos-validos-no-2o-turno-lula-492/",
+      "atualizado": "2026-10-24T20:44"
     },
     {
       "instituto": "Vox Brasil",
@@ -135,7 +146,8 @@
       "entrevistas": 2100,
       "margem": 2.15,
       "registro": "BR-03259/2026",
-      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/",
+      "atualizado": "2026-10-24T08:43"
     },
     {
       "instituto": "PoderData/AYA",
@@ -147,7 +159,8 @@
       "entrevistas": 4000,
       "margem": 1.6,
       "registro": "BR-07926/2026",
-      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/",
+      "atualizado": "2026-10-24T08:43"
     }
   ],
   "turno2_outros": [
@@ -161,7 +174,8 @@
       "entrevistas": 2400,
       "margem": 2.0,
       "registro": "BR-09327/2026",
-      "fonte": "https://jovempan.com.br/politica/flavio-x-lula-o-que-dizem-as-pesquisas-divulgadas-na-vespera-do-2o-turno/"
+      "fonte": "https://jovempan.com.br/politica/flavio-x-lula-o-que-dizem-as-pesquisas-divulgadas-na-vespera-do-2o-turno/",
+      "atualizado": "2026-10-24T20:44"
     },
     {
       "instituto": "BTG/Nexus",
@@ -173,7 +187,8 @@
       "entrevistas": 2000,
       "margem": 2.2,
       "registro": "BR-08234/2026",
-      "fonte": "https://jovempan.com.br/politica/btg-nexus-flavio-tem-505-dos-votos-validos-e-lula-495-na-vespera-do-2o-turno/"
+      "fonte": "https://jovempan.com.br/politica/btg-nexus-flavio-tem-505-dos-votos-validos-e-lula-495-na-vespera-do-2o-turno/",
+      "atualizado": "2026-10-24T20:44"
     },
     {
       "instituto": "CNT/MDA",
@@ -185,7 +200,8 @@
       "entrevistas": 2032,
       "margem": 2.2,
       "registro": "BR-02136/2026",
-      "fonte": "https://www.opovo.com.br/noticias/politica/eleicoes/2026/10/24/pesquisa-cnt-mda-flavio-507-e-lula-493-de-votos-validos.html"
+      "fonte": "https://www.opovo.com.br/noticias/politica/eleicoes/2026/10/24/pesquisa-cnt-mda-flavio-507-e-lula-493-de-votos-validos.html",
+      "atualizado": "2026-10-24T20:44"
     },
     {
       "instituto": "Futura Inteligência",
@@ -197,7 +213,8 @@
       "registro": "BR-06614/2026",
       "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente",
       "entrevistas": 2000,
-      "margem": 2.2
+      "margem": 2.2,
+      "atualizado": "2026-10-23T19:22"
     },
     {
       "instituto": "Veritá",
@@ -209,7 +226,8 @@
       "registro": "BR-06070/2026",
       "fonte": "https://transmissaopolitica.com.br/politica-nacional/2026/10/23/pesquisa-verita-flavio-lula-23-outubro/",
       "entrevistas": 15554,
-      "margem": 1.0
+      "margem": 1.0,
+      "atualizado": "2026-10-24T08:43"
     },
     {
       "instituto": "Real Time Big Data",
@@ -221,7 +239,8 @@
       "entrevistas": 2000,
       "margem": 2.0,
       "registro": "BR-09670/2026",
-      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/",
+      "atualizado": "2026-10-24T08:43"
     },
     {
       "instituto": "Palver",
@@ -233,7 +252,8 @@
       "entrevistas": 5000,
       "margem": 2.4,
       "registro": "BR-04612/2026",
-      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/",
+      "atualizado": "2026-10-24T08:43"
     }
   ],
   "governador": {
@@ -579,7 +599,8 @@
       "margem": 2.0,
       "registro": "BR-09158/2026",
       "fonte": "https://www.cnnbrasil.com.br/eleicoes/quaest-flavio-tem-51-dos-votos-validos-lula-49/",
-      "data": "2026-10-24"
+      "data": "2026-10-24",
+      "atualizado": "2026-10-24T20:44"
     },
     {
       "instituto": "Gerp",
@@ -590,7 +611,8 @@
       "margem": 2.0,
       "registro": "BR-09327/2026",
       "fonte": "https://jovempan.com.br/politica/flavio-x-lula-o-que-dizem-as-pesquisas-divulgadas-na-vespera-do-2o-turno/",
-      "data": "2026-10-24"
+      "data": "2026-10-24",
+      "atualizado": "2026-10-24T20:44"
     },
     {
       "instituto": "Datafolha",
@@ -601,7 +623,8 @@
       "margem": 2.0,
       "registro": "BR-09540/2026",
       "fonte": "https://www.oliberal.com/politica/pesquisa-datafolha-flavio-tem-51-e-lula-49-dos-votos-validos-na-vespera-do-2-turno-1.1186426",
-      "data": "2026-10-24"
+      "data": "2026-10-24",
+      "atualizado": "2026-10-24T20:44"
     },
     {
       "instituto": "CNT/MDA",
@@ -612,7 +635,8 @@
       "margem": 2.2,
       "registro": "BR-02136/2026",
       "fonte": "https://www.opovo.com.br/noticias/politica/eleicoes/2026/10/24/pesquisa-cnt-mda-flavio-507-e-lula-493-de-votos-validos.html",
-      "data": "2026-10-24"
+      "data": "2026-10-24",
+      "atualizado": "2026-10-24T20:44"
     },
     {
       "instituto": "BTG/Nexus",
@@ -623,7 +647,8 @@
       "margem": 2.2,
       "registro": "BR-08234/2026",
       "fonte": "https://jovempan.com.br/politica/btg-nexus-flavio-tem-505-dos-votos-validos-e-lula-495-na-vespera-do-2o-turno/",
-      "data": "2026-10-24"
+      "data": "2026-10-24",
+      "atualizado": "2026-10-24T20:44"
     },
     {
       "instituto": "AtlasIntel/Bloomberg",
@@ -634,7 +659,8 @@
       "margem": 1.0,
       "registro": "BR-06380/2026",
       "fonte": "https://www.cnnbrasil.com.br/eleicoes/atlasintel-flavio-tem-508-dos-votos-validos-no-2o-turno-lula-492/",
-      "data": "2026-10-24"
+      "data": "2026-10-24",
+      "atualizado": "2026-10-24T20:44"
     },
     {
       "instituto": "Vox Brasil",
@@ -645,7 +671,8 @@
       "registro": "BR-03259/2026",
       "entrevistas": 2100,
       "margem": 2.15,
-      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/",
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "Veritá",
@@ -656,7 +683,8 @@
       "registro": "BR-06070/2026",
       "entrevistas": 15554,
       "margem": 1.0,
-      "fonte": "https://transmissaopolitica.com.br/politica-nacional/2026/10/23/pesquisa-verita-flavio-lula-23-outubro/"
+      "fonte": "https://transmissaopolitica.com.br/politica-nacional/2026/10/23/pesquisa-verita-flavio-lula-23-outubro/",
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "Real Time Big Data",
@@ -667,7 +695,8 @@
       "registro": "BR-09670/2026",
       "entrevistas": 2000,
       "margem": 2.0,
-      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/",
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "Ipespe",
@@ -676,7 +705,8 @@
       "lula": 49.5,
       "flavio": 50.5,
       "data_aprox": true,
-      "nota": "válidos calculados a partir do total (47% × 48%)"
+      "nota": "válidos calculados a partir do total (47% × 48%)",
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "Alfa Inteligência",
@@ -685,7 +715,8 @@
       "lula": 48.0,
       "flavio": 52.0,
       "data_aprox": true,
-      "nota": "válidos calculados a partir do total (46% × 49,9%)"
+      "nota": "válidos calculados a partir do total (46% × 49,9%)",
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "PoderData/AYA",
@@ -696,7 +727,8 @@
       "registro": "BR-07926/2026",
       "entrevistas": 4000,
       "margem": 1.6,
-      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/",
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "Indexa",
@@ -705,7 +737,8 @@
       "lula": 49.4,
       "flavio": 50.6,
       "data_aprox": true,
-      "nota": "válidos calculados a partir do total (44,1% × 45,2%)"
+      "nota": "válidos calculados a partir do total (44,1% × 45,2%)",
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "Gerp",
@@ -716,7 +749,8 @@
       "registro": "BR-03835/2026",
       "entrevistas": 2400,
       "margem": 2.0,
-      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente",
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "Datafolha",
@@ -727,7 +761,8 @@
       "registro": "BR-09709/2026",
       "entrevistas": 2520,
       "margem": 2.0,
-      "fonte": "https://www.cnnbrasil.com.br/eleicoes/datafolha-flavio-e-lula-empatam-em-50-de-votos-validos-no-2o-turno/"
+      "fonte": "https://www.cnnbrasil.com.br/eleicoes/datafolha-flavio-e-lula-empatam-em-50-de-votos-validos-no-2o-turno/",
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "Quaest",
@@ -738,7 +773,8 @@
       "registro": "BR-08535/2026",
       "entrevistas": 2154,
       "margem": 2.0,
-      "fonte": "https://www.metropoles.com/brasil/quaest-flavio-bolsonaro-tem-45-e-lula-44-no-2o-turno"
+      "fonte": "https://www.metropoles.com/brasil/quaest-flavio-bolsonaro-tem-45-e-lula-44-no-2o-turno",
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "Palver",
@@ -749,7 +785,8 @@
       "registro": "BR-04612/2026",
       "entrevistas": 5000,
       "margem": 2.4,
-      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/",
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "Meio/Ideia",
@@ -759,7 +796,8 @@
       "flavio": 51.1,
       "registro": "BR-08251/2026",
       "entrevistas": 1500,
-      "margem": 2.5
+      "margem": 2.5,
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "Futura Inteligência",
@@ -770,7 +808,8 @@
       "registro": "BR-06614/2026",
       "entrevistas": 2000,
       "margem": 2.2,
-      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente",
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "BTG/Nexus",
@@ -781,7 +820,8 @@
       "data_aprox": true,
       "registro": "BR-04499/2026",
       "entrevistas": 2002,
-      "margem": 2.0
+      "margem": 2.0,
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "AtlasIntel/Bloomberg",
@@ -791,7 +831,8 @@
       "flavio": 51.1,
       "registro": "",
       "entrevistas": 4998,
-      "fonte": "https://www.congressoemfoco.com.br/noticia/123359/atlasintel-vantagem-de-flavio-cai-de-5-4-para-2-2-pontos-em-10-dias"
+      "fonte": "https://www.congressoemfoco.com.br/noticia/123359/atlasintel-vantagem-de-flavio-cai-de-5-4-para-2-2-pontos-em-10-dias",
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "DataTrends",
@@ -802,7 +843,8 @@
       "data_aprox": true,
       "registro": "BR-04454/2026",
       "entrevistas": 2000,
-      "margem": 2.19
+      "margem": 2.19,
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "Veritá",
@@ -813,7 +855,8 @@
       "data_aprox": true,
       "registro": "BR-01107/2026",
       "entrevistas": 15554,
-      "margem": 1.0
+      "margem": 1.0,
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "Ipespe/Abrapel",
@@ -824,7 +867,8 @@
       "data_aprox": true,
       "registro": "BR-00223/2026",
       "entrevistas": 1500,
-      "margem": 2.6
+      "margem": 2.6,
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "CNT/MDA",
@@ -834,7 +878,8 @@
       "flavio": 50.5,
       "registro": "BR-00652/2026",
       "entrevistas": 2014,
-      "margem": 2.2
+      "margem": 2.2,
+      "atualizado": "2026-10-24T09:45"
     },
     {
       "instituto": "Indexa/Broadcast",
@@ -845,7 +890,8 @@
       "data_aprox": true,
       "registro": "BR-04629/2026",
       "entrevistas": 2000,
-      "margem": 2.2
+      "margem": 2.2,
+      "atualizado": "2026-10-24T09:45"
     }
   ],
   "nota_todas": "Todas as pesquisas de 2º turno para presidente registradas no TSE e divulgadas na imprensa, em votos válidos. Quando o instituto só publicou o total, os válidos foram calculados excluindo brancos, nulos e indecisos. Datas marcadas com ≈ são aproximadas (dia seguinte ao fim do campo)."
