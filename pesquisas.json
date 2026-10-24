@@ -91,39 +91,39 @@
   "turno2_principais": [
     {
       "instituto": "Datafolha",
-      "campo": "20 a 22/10",
-      "divulgacao": "22/10",
-      "lula": 50.0,
-      "flavio": 50.0,
+      "campo": "23 e 24/10",
+      "divulgacao": "24/10",
+      "lula": 49.0,
+      "flavio": 51.0,
       "base": "válidos",
-      "entrevistas": 2520,
+      "entrevistas": 4050,
       "margem": 2.0,
-      "registro": "BR-09709/2026",
-      "fonte": "https://www.cnnbrasil.com.br/eleicoes/datafolha-flavio-e-lula-empatam-em-50-de-votos-validos-no-2o-turno/"
+      "registro": "BR-09540/2026",
+      "fonte": "https://www.oliberal.com/politica/pesquisa-datafolha-flavio-tem-51-e-lula-49-dos-votos-validos-na-vespera-do-2-turno-1.1186426"
     },
     {
       "instituto": "Quaest",
-      "campo": "17 a 20/10",
-      "divulgacao": "21/10",
-      "lula": 49.4,
-      "flavio": 50.6,
-      "base": "válidos (calculado a partir de 44% × 45% dos votos totais)",
-      "entrevistas": 2154,
+      "campo": "23 e 24/10",
+      "divulgacao": "24/10",
+      "lula": 49.0,
+      "flavio": 51.0,
+      "base": "válidos",
+      "entrevistas": 3702,
       "margem": 2.0,
-      "registro": "BR-08535/2026",
-      "fonte": "https://www.metropoles.com/brasil/quaest-flavio-bolsonaro-tem-45-e-lula-44-no-2o-turno"
+      "registro": "BR-09158/2026",
+      "fonte": "https://www.cnnbrasil.com.br/eleicoes/quaest-flavio-tem-51-dos-votos-validos-lula-49/"
     },
     {
       "instituto": "AtlasIntel/Bloomberg",
-      "campo": "13 a 18/10",
-      "divulgacao": "19/10",
-      "lula": 48.9,
-      "flavio": 51.1,
+      "campo": "18 a 23/10",
+      "divulgacao": "24/10",
+      "lula": 49.2,
+      "flavio": 50.8,
       "base": "válidos",
-      "entrevistas": 4998,
-      "margem": null,
-      "registro": "",
-      "fonte": "https://www.congressoemfoco.com.br/noticia/123359/atlasintel-vantagem-de-flavio-cai-de-5-4-para-2-2-pontos-em-10-dias"
+      "entrevistas": 4990,
+      "margem": 1.0,
+      "registro": "BR-06380/2026",
+      "fonte": "https://www.cnnbrasil.com.br/eleicoes/atlasintel-flavio-tem-508-dos-votos-validos-no-2o-turno-lula-492/"
     },
     {
       "instituto": "Vox Brasil",
@@ -153,15 +153,39 @@
   "turno2_outros": [
     {
       "instituto": "Gerp",
-      "campo": "19 a 21/10",
-      "divulgacao": "22/10",
-      "lula": 47.0,
-      "flavio": 53.0,
+      "campo": "22 a 24/10",
+      "divulgacao": "24/10",
+      "lula": 48.0,
+      "flavio": 52.0,
       "base": "válidos",
-      "registro": "BR-03835/2026",
-      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente",
       "entrevistas": 2400,
-      "margem": 2.0
+      "margem": 2.0,
+      "registro": "BR-09327/2026",
+      "fonte": "https://jovempan.com.br/politica/flavio-x-lula-o-que-dizem-as-pesquisas-divulgadas-na-vespera-do-2o-turno/"
+    },
+    {
+      "instituto": "BTG/Nexus",
+      "campo": "23 e 24/10",
+      "divulgacao": "24/10",
+      "lula": 49.5,
+      "flavio": 50.5,
+      "base": "válidos",
+      "entrevistas": 2000,
+      "margem": 2.2,
+      "registro": "BR-08234/2026",
+      "fonte": "https://jovempan.com.br/politica/btg-nexus-flavio-tem-505-dos-votos-validos-e-lula-495-na-vespera-do-2o-turno/"
+    },
+    {
+      "instituto": "CNT/MDA",
+      "campo": "21 a 23/10",
+      "divulgacao": "24/10",
+      "lula": 49.3,
+      "flavio": 50.7,
+      "base": "válidos",
+      "entrevistas": 2032,
+      "margem": 2.2,
+      "registro": "BR-02136/2026",
+      "fonte": "https://www.opovo.com.br/noticias/politica/eleicoes/2026/10/24/pesquisa-cnt-mda-flavio-507-e-lula-493-de-votos-validos.html"
     },
     {
       "instituto": "Futura Inteligência",
@@ -230,6 +254,18 @@
         },
         "pesquisas": [
           {
+            "base": "válidos",
+            "divulgacao": "24/10",
+            "instituto": "Quaest",
+            "campo": "23 e 24/10",
+            "a": 62.0,
+            "b": 38.0,
+            "entrevistas": 2154,
+            "margem": 2.0,
+            "registro": "AC-02344/2026",
+            "fonte": "https://ac24horas.com/2026/10/24/quaest-mailza-tem-62-dos-votos-validos-e-alan-rick-38/"
+          },
+          {
             "instituto": "Real Time Big Data",
             "campo": "15 a 19/10",
             "divulgacao": "20/10",
@@ -269,6 +305,18 @@
           "chave": "maria do carmo"
         },
         "pesquisas": [
+          {
+            "base": "válidos",
+            "divulgacao": "24/10",
+            "instituto": "AtlasIntel",
+            "campo": "18 a 23/10",
+            "a": 56.9,
+            "b": 43.1,
+            "entrevistas": 1825,
+            "margem": 2.0,
+            "registro": "AM-09640/2026",
+            "fonte": "https://exame.com/brasil/pesquisa-atlasintel-omar-aziz-tem-569-e-maria-do-carmo-431-no-amazonas/"
+          },
           {
             "instituto": "Real Time Big Data",
             "campo": "15 a 19/10",
@@ -310,6 +358,18 @@
         },
         "pesquisas": [
           {
+            "base": "válidos",
+            "divulgacao": "24/10",
+            "instituto": "Quaest",
+            "campo": "23 e 24/10",
+            "a": 61.0,
+            "b": 39.0,
+            "entrevistas": 2652,
+            "margem": 2.0,
+            "registro": "DF-00368/2026",
+            "fonte": "https://www.gazetadopovo.com.br/eleicoes/2026/pesquisa-eleitoral-2026/quaest-governador-distrito-federal-outubro-2026-vespera-segundo-turno/"
+          },
+          {
             "instituto": "Real Time Big Data",
             "campo": "9 a 13/10",
             "divulgacao": "14/10",
@@ -350,6 +410,18 @@
         },
         "pesquisas": [
           {
+            "base": "válidos",
+            "divulgacao": "24/10",
+            "instituto": "Quaest",
+            "campo": "23 e 24/10",
+            "a": 55.0,
+            "b": 45.0,
+            "entrevistas": 2154,
+            "margem": 2.0,
+            "registro": "ES-04365/2026",
+            "fonte": "https://www.gazetadopovo.com.br/eleicoes/2026/pesquisa-eleitoral-2026/quaest-governador-espirito-santo-outubro-2026-vespera-segundo-turno/"
+          },
+          {
             "instituto": "Real Time Big Data",
             "campo": "15 a 19/10",
             "divulgacao": "20/10",
@@ -389,7 +461,7 @@
           "chave": "paes"
         },
         "pesquisas": [],
-        "aviso": "Nenhuma pesquisa de 2º turno feita depois de 4/10 foi encontrada até agora."
+        "aviso": "Não haverá 2º turno para governador no RJ: após a retotalização sem os votos de Garotinho, Douglas Ruas foi eleito no 1º turno (TRE-RJ)."
       },
       {
         "uf": "rn",
@@ -405,6 +477,18 @@
           "chave": "cadu"
         },
         "pesquisas": [
+          {
+            "base": "válidos",
+            "divulgacao": "24/10",
+            "instituto": "AtlasIntel",
+            "campo": "18 a 23/10",
+            "a": 48.9,
+            "b": 51.1,
+            "entrevistas": 1780,
+            "margem": 2.0,
+            "registro": "RN-07127/2026",
+            "fonte": "https://www.metropoles.com/brasil/atlasintel-cadu-pt-tem-51-e-allysson-uniao-49-para-governo-do-rn"
+          },
           {
             "instituto": "Real Time Big Data",
             "campo": "15 a 19/10",
@@ -446,6 +530,18 @@
         },
         "pesquisas": [
           {
+            "base": "válidos",
+            "divulgacao": "24/10",
+            "instituto": "Paraná Pesquisas",
+            "campo": "18 a 23/10",
+            "a": 41.0,
+            "b": 59.0,
+            "entrevistas": 1500,
+            "margem": 2.5,
+            "registro": "TO-02968/2026",
+            "fonte": "https://www.gazetadopovo.com.br/eleicoes/2026/pesquisa-eleitoral-2026/parana-pesquisas-governador-tocantins-outubro-2026-vespera-segundo-turno/"
+          },
+          {
             "instituto": "Real Time Big Data",
             "campo": "15 a 19/10",
             "divulgacao": "20/10",
@@ -474,6 +570,72 @@
     ]
   },
   "turno2_todas": [
+    {
+      "instituto": "Quaest",
+      "campo": "23 e 24/10",
+      "lula": 49.0,
+      "flavio": 51.0,
+      "entrevistas": 3702,
+      "margem": 2.0,
+      "registro": "BR-09158/2026",
+      "fonte": "https://www.cnnbrasil.com.br/eleicoes/quaest-flavio-tem-51-dos-votos-validos-lula-49/",
+      "data": "2026-10-24"
+    },
+    {
+      "instituto": "Gerp",
+      "campo": "22 a 24/10",
+      "lula": 48.0,
+      "flavio": 52.0,
+      "entrevistas": 2400,
+      "margem": 2.0,
+      "registro": "BR-09327/2026",
+      "fonte": "https://jovempan.com.br/politica/flavio-x-lula-o-que-dizem-as-pesquisas-divulgadas-na-vespera-do-2o-turno/",
+      "data": "2026-10-24"
+    },
+    {
+      "instituto": "Datafolha",
+      "campo": "23 e 24/10",
+      "lula": 49.0,
+      "flavio": 51.0,
+      "entrevistas": 4050,
+      "margem": 2.0,
+      "registro": "BR-09540/2026",
+      "fonte": "https://www.oliberal.com/politica/pesquisa-datafolha-flavio-tem-51-e-lula-49-dos-votos-validos-na-vespera-do-2-turno-1.1186426",
+      "data": "2026-10-24"
+    },
+    {
+      "instituto": "CNT/MDA",
+      "campo": "21 a 23/10",
+      "lula": 49.3,
+      "flavio": 50.7,
+      "entrevistas": 2032,
+      "margem": 2.2,
+      "registro": "BR-02136/2026",
+      "fonte": "https://www.opovo.com.br/noticias/politica/eleicoes/2026/10/24/pesquisa-cnt-mda-flavio-507-e-lula-493-de-votos-validos.html",
+      "data": "2026-10-24"
+    },
+    {
+      "instituto": "BTG/Nexus",
+      "campo": "23 e 24/10",
+      "lula": 49.5,
+      "flavio": 50.5,
+      "entrevistas": 2000,
+      "margem": 2.2,
+      "registro": "BR-08234/2026",
+      "fonte": "https://jovempan.com.br/politica/btg-nexus-flavio-tem-505-dos-votos-validos-e-lula-495-na-vespera-do-2o-turno/",
+      "data": "2026-10-24"
+    },
+    {
+      "instituto": "AtlasIntel/Bloomberg",
+      "campo": "18 a 23/10",
+      "lula": 49.2,
+      "flavio": 50.8,
+      "entrevistas": 4990,
+      "margem": 1.0,
+      "registro": "BR-06380/2026",
+      "fonte": "https://www.cnnbrasil.com.br/eleicoes/atlasintel-flavio-tem-508-dos-votos-validos-no-2o-turno-lula-492/",
+      "data": "2026-10-24"
+    },
     {
       "instituto": "Vox Brasil",
       "campo": "20 a 22/10",
