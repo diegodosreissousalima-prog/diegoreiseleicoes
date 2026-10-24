@@ -398,7 +398,7 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
     <div class="dfilt" data-noshot>
       <label>De<select id="dde"></select></label>
       <label>Até<select id="date"></select></label>
-      <div class="qk"><button id="dq1" aria-pressed="false">21/10 a 25/10</button><button id="dq2" aria-pressed="false">Só hoje</button><button id="dq3" aria-pressed="false">Todas</button></div>
+      <div class="qk"><button id="dq1" aria-pressed="false">21/10 a 25/10</button><button id="dq2" aria-pressed="false">Só hoje</button><button id="dq3" aria-pressed="false">Todas</button></div><button type="button" class="gclear" id="dclear" hidden>Limpar filtro</button>
       <span class="note cnt" id="dcnt"></span>
     </div>
     <div id="acert2"></div>
@@ -541,6 +541,7 @@ function initDates(){
   $("dq1").onclick=()=>set("2026-10-21","2026-10-25");
   $("dq2").onclick=()=>{ const h=DIAS.includes(hojeISO())?hojeISO():"2026-10-24"; set(h,h); };
   $("dq3").onclick=()=>set(DIAS[0],DIAS[DIAS.length-1]);
+  $("dclear").onclick=()=>set("2026-10-21","2026-10-25");   // limpar filtro: volta para 21/10 a 25/10
 }
 function renderAll(){
   if(!DATA||!$("all2")) return;
@@ -549,6 +550,7 @@ function renderAll(){
   $("dq1").setAttribute("aria-pressed",String(dFrom==="2026-10-21"&&dTo==="2026-10-25"));
   $("dq2").setAttribute("aria-pressed",String(dFrom===h&&dTo===h));
   $("dq3").setAttribute("aria-pressed",String(dFrom===DIAS[0]&&dTo===DIAS[DIAS.length-1]));
+  $("dclear").hidden= dFrom==="2026-10-21"&&dTo==="2026-10-25";
   const all=(DATA.turno2_todas||[]).filter(p=>p.data>=dFrom&&p.data<=dTo);
   const final=real2&&real2.final, r=real2&&real2.pst>0?real2:null;
   $("dcnt").textContent=`${all.length} pesquisa${all.length===1?"":"s"} entre ${dBR(dFrom)} e ${dBR(dTo)}`;

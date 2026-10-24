@@ -195,7 +195,11 @@ td .win{display:inline-block;width:10px;height:10px;border-radius:50%;margin-rig
 .loadbtn{height:44px;border:0;border-radius:10px;background:#ffdf00;color:#1b2a12;font:700 15px var(--body);cursor:pointer;padding:0 18px;box-shadow:0 4px 12px rgba(0,0,0,.15)}
 .loadbtn:hover{background:#ffe94d}
 .loadbtn[disabled]{opacity:.55;cursor:default}
-.mapcount{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.mapcount{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.mapcount .pv{font-size:14px;margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.mapcount .box.d{border-color:var(--muted)} .mapcount .box.d.a{border-color:var(--a)} .mapcount .box.d.b{border-color:var(--b)}
+.mapcount .d.a .n{color:var(--a)} .mapcount .d.b .n{color:var(--b)}
+@media (max-width:760px){.mapcount{grid-template-columns:1fr 1fr}.mapcount .box.d{grid-column:1/-1}}
 .mapcount .box{border-radius:10px;padding:10px 14px;background:var(--bg);border-left:6px solid}
 .mapcount .box.a{border-color:var(--a)} .mapcount .box.b{border-color:var(--b)}
 .mapcount .n{font:700 34px/1 var(--display);font-variant-numeric:tabular-nums}
@@ -344,7 +348,7 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
     <div class="maptools">
       <div class="seg" role="group" aria-label="Turno do mapa"><button id="mt1" aria-pressed="true">1º turno</button><button id="mt2" aria-pressed="false">2º turno</button></div>
       <label for="mscope">Área
-        <select id="mscope"><option value="br">Brasil inteiro</option></select></label>
+        <select id="mscope" autocomplete="off"><option value="br">Brasil inteiro</option></select></label>
       <button type="button" class="gclear" id="mclear" hidden>Limpar filtro</button>
       <button type="button" class="loadbtn" id="mload">Carregar as cidades do Brasil</button>
     </div>
@@ -568,8 +572,22 @@ function draw(){
   });
   // contagens
   const shown=cities.length, nA=withData.filter(p=>p.d.a>p.d.b).length, nB=withData.filter(p=>p.d.b>p.d.a).length;
-  $("mcount").innerHTML=`<div class="box a"><div class="t">${esc(NM.a)} mais votado em</div><div class="n">${fmt(nA)}</div><div class="t">cidades</div></div>
-    <div class="box b"><div class="t">${esc(NM.b)} mais votado em</div><div class="n">${fmt(nB)}</div><div class="t">cidades</div></div>`;
+  // percentual de votos válidos na área e diferença entre os dois; no 2º turno, seta ▲/▼ em relação ao 1º turno nas mesmas cidades
+  const sum=(R0,list)=>list.reduce((t,c)=>{ const d=R0[c.key]; if(d&&d.vv>0){ t.a+=d.a; t.b+=d.b; t.v+=d.vv; } return t; },{a:0,b:0,v:0});
+  const cur=sum(R,withData.map(p=>p.c)), pA=cur.v?cur.a/cur.v*100:null, pB=cur.v?cur.b/cur.v*100:null;
+  let dA=null,dB=null,dD=null;
+  if(mturn===2&&pA!=null){ const both=withData.map(p=>p.c).filter(c=>res[1][c.key]&&res[1][c.key].vv>0);
+    if(both.length){ const c1=sum(res[1],both), c2=sum(R,both); dA=c2.a/c2.v*100-c1.a/c1.v*100; dB=c2.b/c2.v*100-c1.b/c1.v*100; dD=(c2.a-c2.b)/c2.v*100-(c1.a-c1.b)/c1.v*100; } }
+  const pc=v=>v==null?"—":v.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
+  const lead= pA==null?null:(pA>=pB?"a":"b"), diff= pA==null?null:Math.abs(pA-pB);
+  $("mcount").innerHTML=`<div class="box a"><div class="t">${esc(NM.a)} mais votado em</div><div class="n">${fmt(nA)}</div><div class="t">cidades</div>
+      <div class="pv"><b>${pc(pA)}</b> dos votos válidos ${dA!=null?dlt(dA,"a"):""}</div></div>
+    <div class="box b"><div class="t">${esc(NM.b)} mais votado em</div><div class="n">${fmt(nB)}</div><div class="t">cidades</div>
+      <div class="pv"><b>${pc(pB)}</b> dos votos válidos ${dB!=null?dlt(dB,"b"):""}</div></div>
+    <div class="box d ${lead||""}"><div class="t">Diferença entre os dois</div><div class="n">${diff==null?"—":diff.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+" p.p."}</div>
+      <div class="t">${lead?`${esc(lead==="a"?NM.a:NM.b)} à frente · ${fmt(Math.abs(cur.a-cur.b))} votos`:"aguardando dados"}</div>
+      ${dD!=null?`<div class="pv">${Math.abs(dD)<0.05?"diferença estável":`${esc(NM.a)} ${dD>0?"▲ ganhou":"▼ perdeu"} ${Math.abs(dD).toLocaleString("pt-BR",{maximumFractionDigits:1})} p.p. de margem`} em relação ao 1º turno</div>`:""}
+      ${mturn===1&&pA!=null?`<div class="pv note" style="margin:0">As setas ▲▼ aparecem no 2º turno, comparando com o 1º.</div>`:""}</div>`;
   if(!loading) $("mst").textContent=`${fmt(withData.length)} de ${fmt(shown)} cidades com dados no ${mturn}º turno`;
 }
 async function loadCities(){
