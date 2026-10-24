@@ -252,6 +252,13 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
 .gcand img,.gcand .ph{width:52px;height:66px;border-radius:8px;object-fit:cover;object-position:top;flex:none;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;font:800 15px var(--body);color:var(--muted)}
 .gcand .nm{font:700 18px/1.1 var(--display)}.gcand .pt{font:500 12px var(--mono);color:var(--muted)}
 @media (max-width:520px){.gcand{flex-direction:column;align-items:flex-start}}
+
+/* seta de evolução 1º → 2º turno */
+.dlt{display:inline-flex;align-items:center;gap:4px;font:700 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;padding:4px 8px;border-radius:999px;white-space:nowrap;border:2px solid var(--ec,#888);vertical-align:middle}
+.dlt.a{--ec:var(--a)}.dlt.b{--ec:var(--b)}.dlt.ga{--ec:var(--ga,#ea580c)}.dlt.gb{--ec:var(--gb,#7c3aed)}
+.dlt.up{background:var(--ec);color:#fff}
+.dlt.down{background:transparent;color:var(--ec)}
+.dlt.eq{background:transparent;color:var(--muted,#777)}
 </style>
 </head>
 <body>
@@ -427,20 +434,24 @@ function stateRows(t,sort){
   const cmp={vv:(x,y)=>y.d.vv-x.d.vv, a:(x,y)=>pa(y)-pa(x), b:(x,y)=>pb(y)-pb(x), nm:(x,y)=>x.nm.localeCompare(y.nm,"pt-BR")}[sort];
   return rows.sort(cmp);
 }
-function rowHTML(nm,d,t,total){
+/* seta de evolução do 1º para o 2º turno, na cor do candidato (▲ cresceu · ▼ caiu), em pontos percentuais */
+const dlt=(d,k)=>{ if(d==null||!isFinite(d)) return ""; const r=Math.round(d*10)/10, cls=r>0?"up":r<0?"down":"eq";
+  return `<span class="dlt ${k} ${cls}" title="Variação em relação ao 1º turno (pontos percentuais)">${r>0?"▲":r<0?"▼":"="} ${(r>0?"+":r<0?"−":"")+Math.abs(r).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})} p.p.</span>`; };
+function rowHTML(nm,d,t,total,key){
+  const d1=t===2&&key?st[1][key]:null, p1a=d1&&d1.vv?d1.a/d1.vv*100:null, p1b=d1&&d1.vv?d1.b/d1.vv*100:null;
   const vv=t===2?(d.a+d.b)||d.vv:d.vv, pa=vv?d.a/vv*100:0, pb=vv?d.b/vv*100:0, po=Math.max(0,100-pa-pb);
   const win=d.a===d.b?"":(d.a>d.b?"var(--a)":"var(--b)");
   return `<tr class="${total?"total":""}"><td class="l">${win?`<span class="win" style="background:${win}"></span>`:""}${esc(nm)}</td>
     <td class="bar l"><div class="sbar" role="img" aria-label="${esc(NM.a)} ${pct(pa)}, ${esc(NM.b)} ${pct(pb)}"><i class="a" style="width:${pa}%"></i><i class="b" style="width:${pb}%"></i>${t===1?`<i class="o" style="width:${po}%"></i>`:""}</div></td>
-    <td>${pct(pa)}</td><td>${pct(pb)}</td><td>${t===1?pct(po):pct(d.pst)}</td><td>${fmt(vv)}</td></tr>`;
+    <td>${pct(pa)}${p1a!=null?`<br>${dlt(pa-p1a,"a")}`:""}</td><td>${pct(pb)}${p1b!=null?`<br>${dlt(pb-p1b,"b")}`:""}</td><td>${t===1?pct(po):pct(d.pst)}</td><td>${fmt(vv)}</td></tr>`;
 }
 function renderTable(t){
   const tb=$("tb"+t), sort=$("sort"+t).value;
   if(t===2&&!open2()){ tb.innerHTML=`<tr><td colspan="6"><div class="msg" style="border:0">O 2º turno começa a ser divulgado no domingo, 25/10, a partir das 17h (horário de Brasília). A tabela aparece sozinha.</div></td></tr>`; return; }
   const rows=stateRows(t,sort);
   if(!rows.length){ tb.innerHTML=`<tr><td colspan="6"><div class="msg" style="border:0">${t===2?"Aguardando os primeiros votos do 2º turno.":"Lendo os dados do TSE…"}</div></td></tr>`; return; }
-  if(cargo==="g"){ tb.innerHTML=(gsel&&st[t][gsel]&&st[t][gsel].vv?rowHTML(UFNAME[gsel]+" (estado)",st[t][gsel],t,true):"")+rows.map(r=>rowHTML(r.nm,r.d,t,false)).join(""); return; }
-  tb.innerHTML=(st[t].br&&st[t].br.vv?rowHTML("Brasil",st[t].br,t,true):"")+rows.map(r=>rowHTML(r.nm,r.d,t,false)).join("")+(st[t].zz&&st[t].zz.vv?rowHTML("Exterior",st[t].zz,t,false):"");
+  if(cargo==="g"){ tb.innerHTML=(gsel&&st[t][gsel]&&st[t][gsel].vv?rowHTML(UFNAME[gsel]+" (estado)",st[t][gsel],t,true,gsel):"")+rows.map(r=>rowHTML(r.nm,r.d,t,false,r.u)).join(""); return; }
+  tb.innerHTML=(st[t].br&&st[t].br.vv?rowHTML("Brasil",st[t].br,t,true,"br"):"")+rows.map(r=>rowHTML(r.nm,r.d,t,false,r.u)).join("")+(st[t].zz&&st[t].zz.vv?rowHTML("Exterior",st[t].zz,t,false,"zz"):"");
 }
 let gTok=0;
 async function loadStatesGov(t){

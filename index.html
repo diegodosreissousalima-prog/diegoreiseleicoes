@@ -110,6 +110,9 @@ input[type=search]{width:100%;font:16px var(--body);padding:10px 12px;border:1px
 .mlist li button[aria-current="true"]{background:var(--bg);font-weight:700}
 .mlist .cap{font:500 11px var(--mono);color:var(--muted)}
 .msg{font-size:14px;color:var(--muted);padding:10px 12px;border:1px dashed var(--line);border-radius:8px}
+.dlt-row{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}
+.cand.right .dlt-row{justify-content:flex-end}
+.dlt-k{font-size:11px;color:var(--muted)}
 .msg.t1{border:1px solid #e0b400;background:color-mix(in srgb,#ffdf00 14%,transparent);color:inherit;margin-bottom:12px}
 .msg.err{color:var(--live);border-color:var(--live)}
 footer{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
@@ -396,6 +399,13 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
 .gl-prog{height:4px;border-radius:999px;background:var(--line);overflow:hidden}.gl-prog i{display:block;height:100%;background:#16a34a}
 .gl-note{font-size:13px;color:var(--on-page-muted);margin:0}
 @media (max-width:520px){.gl-c{flex-direction:column}.gl-c.right{flex-direction:column;align-items:flex-end}.gl-c .pc{font-size:26px}}
+
+/* seta de evolução 1º → 2º turno */
+.dlt{display:inline-flex;align-items:center;gap:4px;font:700 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;padding:4px 8px;border-radius:999px;white-space:nowrap;border:2px solid var(--ec,#888);vertical-align:middle}
+.dlt.a{--ec:var(--a)}.dlt.b{--ec:var(--b)}.dlt.ga{--ec:var(--ga,#ea580c)}.dlt.gb{--ec:var(--gb,#7c3aed)}
+.dlt.up{background:var(--ec);color:#fff}
+.dlt.down{background:transparent;color:var(--ec)}
+.dlt.eq{background:transparent;color:var(--muted,#777)}
 </style>
 </head>
 <body>
@@ -593,6 +603,8 @@ const urlRes=(abr)=>`${env().base}/${env().ele}/dados/${abr.slice(0,2)}/${abr}-c
 const urlRes1=(abr)=>`${env().base}/${env().ele1}/dados/${abr.slice(0,2)}/${abr}-c0001-e${pad(env().ele1)}-u.json`;
 /* Antes do 2º turno abrir, os painéis de estado e cidade mostram o resultado do 1º turno (arquivos já publicados, sem risco de 404). */
 const t1Cache={};
+/* 1º turno já em cache (ou busca em segundo plano para a próxima atualização) */
+function prevOf(abr,d){ if(!d||!d.ok||!(d.pst>0)) return null; if(t1Cache[abr]) return t1Cache[abr]; get1(abr); return null; }
 async function get1(abr){ if(t1Cache[abr]) return t1Cache[abr]; try{ const d=parse(await getJSON(urlRes1(abr))); if(d.ok) t1Cache[abr]=d; return d.ok?d:null; }catch(e){ return null; } }
 const urlCfg=(e=env().ele)=>`${env().base}/${e}/config/mun-e${pad(e)}-cm.json`;
 const urlFoto=(sq)=>`${env().base}/${env().ele}/fotos/br/${sq}.jpeg`;
@@ -700,7 +712,10 @@ function photoHTML(c){
   return `<img class="photo" alt="Foto de urna de ${esc(c.nm)}" src="${esc(src)}" onerror="this.outerHTML='<div class=&quot;photo&quot; aria-hidden=&quot;true&quot;>${ini}</div>'">`;
 }
 
-function boardHTML(d,{big,areas,scope,t1}={}){
+/* seta de evolução do 1º para o 2º turno, na cor do candidato (▲ cresceu · ▼ caiu), em pontos percentuais */
+const dlt=(d,k)=>{ if(d==null||!isFinite(d)) return ""; const r=Math.round(d*10)/10, cls=r>0?"up":r<0?"down":"eq";
+  return `<span class="dlt ${k} ${cls}" title="Variação em relação ao 1º turno (pontos percentuais)">${r>0?"▲":r<0?"▼":"="} ${(r>0?"+":r<0?"−":"")+Math.abs(r).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})} p.p.</span>`; };
+function boardHTML(d,{big,areas,scope,t1,prev}={}){
   const A=d.cands["13"], B=d.cands["22"];
   const lead = A.vap===B.vap ? null : (A.vap>B.vap?"13":"22");
   const side=(c,cls)=>`
@@ -711,6 +726,7 @@ function boardHTML(d,{big,areas,scope,t1}={}){
         <div class="cparty">${esc(c.party)} · ${esc(c.n)}</div>
         <div class="pct" data-pct="${c.pvap}">${pctTxt(c.pvap)}</div>
         <div class="votes">${fmt(c.vap)} votos</div>
+        ${prev&&d.ok&&d.pst>0&&prev.cands[c.n]?`<div class="dlt-row">${dlt(c.pvap-prev.cands[c.n].pvap,cls.split(" ")[0])}<span class="dlt-k">vs 1º turno</span></div>`:""}
         ${isElected(c)?`<span class="badge"><b>Eleito</b></span>`:""}
       </div>
     </div>`;
@@ -883,7 +899,7 @@ let _rz; addEventListener("resize",()=>{ clearTimeout(_rz); _rz=setTimeout(rende
 loadHist();
 
 function renderNacional(d,areas){
-  $("nacional").innerHTML=`<div class="label">Brasil</div>`+boardHTML(d,{big:true,areas:areas||[d],scope:"no Brasil"});
+  $("nacional").innerHTML=`<div class="label">Brasil</div>`+boardHTML(d,{big:true,areas:areas||[d],scope:"no Brasil",prev:prevOf("br",d)});
   animateBoard($("nacional"),"br");
   $("lg-a").textContent=d.cands["13"].nm; $("lg-b").textContent=d.cands["22"].nm;
   checkElected(d);
@@ -1084,7 +1100,8 @@ async function showUF(uf){
   ufCache[uf]=d; curMun=null; renderUpd(); renderCheck();
   const d1= !d.ok&&beforeOpen() ? await get1(uf) : null;
   if(selUF!==uf) return;
-  $("uf-board").innerHTML= d1 ? boardHTML(d1,{t1:true}) : boardHTML(d,{scope:"no estado"}); animateBoard($("uf-board"),"uf"+uf);
+  const p1= d.ok ? await get1(uf) : null; if(selUF!==uf) return;
+  $("uf-board").innerHTML= d1 ? boardHTML(d1,{t1:true}) : boardHTML(d,{scope:"no estado",prev:p1}); animateBoard($("uf-board"),"uf"+uf);
   $("f-uf").value=uf;
   await loadCfg(); renderMunList(); fillMunSelect();
   loadRanking();
@@ -1097,7 +1114,8 @@ async function showMun(cd){
   if(rank.key===selUF){ rank.rows[selUF+cd]={m:m||{cd,nm:cd,c:"n"},uf:selUF,d}; renderRanking(); }
   const d1= !d.ok&&beforeOpen() ? await get1(selUF+cd) : null;
   if(selMun!==cd) return;
-  $("mun-board").innerHTML=`<h2>${esc((m?.nm||cd).replace(/&apos;/g,"'"))}</h2>`+(d1 ? boardHTML(d1,{t1:true}) : boardHTML(d,{scope:"na cidade"}));
+  const p1= d.ok ? await get1(selUF+cd) : null; if(selMun!==cd) return;
+  $("mun-board").innerHTML=`<h2>${esc((m?.nm||cd).replace(/&apos;/g,"'"))}</h2>`+(d1 ? boardHTML(d1,{t1:true}) : boardHTML(d,{scope:"na cidade",prev:p1}));
   animateBoard($("mun-board"),"mun"+selUF+cd);
 }
 const cleanNm=s=>String(s).replace(/&apos;/g,"'");
@@ -1291,6 +1309,7 @@ async function cycle(){
   $("dot").classList.add("on"); $("stamp").textContent="atualizando…";
   try{
     const br=parse(await safeGet(urlRes("br")));
+    if(br.ok&&br.pst>0) await get1("br");   // 1º turno para a seta de evolução
     lastBR=br; renderNacional(br); renderUpd();
     const all=[...UFS.map(u=>u[0]),"zz"];
     if(!br.ok){ return; }   // TSE ainda não publicou: não consulta os estados, para evitar bloqueio por erros 404
@@ -1299,7 +1318,7 @@ async function cycle(){
     }
     const areas=all.map(u=>ufCache[u]).filter(d=>d&&d.ok);
     renderNacional(br, areas.length===all.length ? areas : [br]);
-    if(selUF){ $("uf-board").innerHTML=boardHTML(ufCache[selUF],{scope:"no estado"}); animateBoard($("uf-board"),"uf"+selUF); if(selMun) await showMun(selMun);
+    if(selUF){ $("uf-board").innerHTML=boardHTML(ufCache[selUF],{scope:"no estado",prev:prevOf(selUF,ufCache[selUF])}); animateBoard($("uf-board"),"uf"+selUF); if(selMun) await showMun(selMun);
     }
     if(rank.key!==rankKey()||(!rank.doneAt&&!rank.loading)) loadRanking();
   } finally {
@@ -1381,6 +1400,9 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const SM=new Set(["de","da","do","das","dos","e"]);
 const nc=s=>{ s=String(s||""); if(s!==s.toUpperCase()) return s; return s.toLowerCase().split(" ").map((w,i)=>i&&SM.has(w)?w:w.charAt(0).toUpperCase()+w.slice(1)).join(" "); };
 function cands(j){ const o=[]; ((j?.carg||[])[0]?.agr||[]).forEach(g=>(g.par||[]).forEach(p=>(p.cand||[]).forEach(c=>o.push({n:String(c.n),sq:c.sqcand||null,nm:nc(c.nmu||c.nm),pt:p.sg||"",v:+(c.vap||0),e:c.e,st:String(c.st||"")})))); return o; }
+/* seta de evolução do 1º para o 2º turno, na cor do candidato (▲ cresceu · ▼ caiu), em pontos percentuais */
+const dlt=(d,k)=>{ if(d==null||!isFinite(d)) return ""; const r=Math.round(d*10)/10, cls=r>0?"up":r<0?"down":"eq";
+  return `<span class="dlt ${k} ${cls}" title="Variação em relação ao 1º turno (pontos percentuais)">${r>0?"▲":r<0?"▼":"="} ${(r>0?"+":r<0?"−":"")+Math.abs(r).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})} p.p.</span>`; };
 const S={}; let sel="", timer=null, active=false;
 async function loadState(uf){
   const s=S[uf]||(S[uf]={uf});
@@ -1401,7 +1423,7 @@ function pair(s){
   const f=s.fin||[]; if(!f.length) return null;
   const live=s.t2&&s.t2.pst>0;
   return f.slice(0,2).map((c,i)=>{ const c2=s.t2?.cs.find(x=>x.n===c.n)||(s.t2&&TESTE?s.t2.cs[i]:null);
-    return {i,nm:c2?.nm||c.nm,pt:c.pt,n:c.n,sq:c.sq,p:live&&c2?c2.p:c.p1,v:live&&c2?c2.v:c.v,won:isEl(c2)}; });
+    return {i,nm:c2?.nm||c.nm,pt:c.pt,n:c.n,sq:c.sq,p:live&&c2?c2.p:c.p1,v:live&&c2?c2.v:c.v,won:isEl(c2),d:live&&c2?c2.p-c.p1:null}; });
 }
 function ph(uf,c){ const ini=c.nm.split(" ").filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join("").toUpperCase(); const t=`<span class="ph" aria-hidden="true">${esc(ini)}</span>`;
   return c.sq?`<img src="${foto(uf,c.sq)}" alt="Foto de urna de ${esc(c.nm)}" loading="lazy" onerror="this.outerHTML='${t.replace(/"/g,"&quot;")}'">`:t; }
@@ -1410,7 +1432,7 @@ function card(uf){
   if(!pp) return `<article class="gl-card" id="gl-${uf}"><div class="gl-head"><h2>${esc(UFN[uf])}</h2></div><div class="gl-prev">Não foi possível ler os dados do TSE agora. Nova tentativa em instantes.</div></article>`;
   const live=s.t2&&s.t2.pst>0, done=pp.some(c=>c.won), tot=pp[0].p+pp[1].p||1;
   const st= live ? `${pct(s.t2.pst)} das seções${s.t2.ht?" · TSE "+s.t2.ht.slice(0,5):""}${s.t2.final?" · final":""}` : (open2()?"aguardando os primeiros votos":"2º turno a partir das 17h de 25/10");
-  const side=(c,cls)=>`<div class="gl-c ${cls} ${c.won?"won":""}" style="--c:${c.i===0?"var(--ga)":"var(--gb)"}">${ph(uf,c)}<div style="min-width:0"><div class="nm">${esc(c.nm)}</div><div class="pt">${esc(c.pt)} · ${esc(c.n)}</div><div class="pc">${pct(c.p)}</div><div class="vt">${fmt(c.v)} votos</div>${c.won?`<span class="el">Eleito(a)</span>`:""}</div></div>`;
+  const side=(c,cls)=>`<div class="gl-c ${cls} ${c.won?"won":""}" style="--c:${c.i===0?"var(--ga)":"var(--gb)"}">${ph(uf,c)}<div style="min-width:0"><div class="nm">${esc(c.nm)}</div><div class="pt">${esc(c.pt)} · ${esc(c.n)}</div><div class="pc">${pct(c.p)}</div><div class="vt">${fmt(c.v)} votos</div>${c.d!=null?`<div style="margin-top:4px">${dlt(c.d,c.i===0?"ga":"gb")}</div>`:""}${c.won?`<span class="el">Eleito(a)</span>`:""}</div></div>`;
   return `<article class="gl-card ${done?"done":""}" id="gl-${uf}">
     <div class="gl-head"><h2>${esc(UFN[uf])}</h2><span class="st">${st}</span></div>
     ${live?"":`<div class="gl-prev"><b>Prévia: 1º turno (4/10).</b> Percentual sobre todos os votos válidos do 1º turno.</div>`}

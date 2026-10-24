@@ -232,6 +232,13 @@ body.gov{--a:#ea580c;--b:#7c3aed}
 
 .cfoto{width:56px;height:70px;border-radius:10px;object-fit:cover;object-position:top;background:var(--bg);border:1px solid var(--line);flex:none;display:grid;place-items:center;font:800 16px var(--body);color:var(--muted)}
 @media (max-width:420px){.cfoto{width:46px;height:58px}}
+
+/* seta de evolução 1º → 2º turno */
+.dlt{display:inline-flex;align-items:center;gap:4px;font:700 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;padding:4px 8px;border-radius:999px;white-space:nowrap;border:2px solid var(--ec,#888);vertical-align:middle}
+.dlt.a{--ec:var(--a)}.dlt.b{--ec:var(--b)}.dlt.ga{--ec:var(--ga,#ea580c)}.dlt.gb{--ec:var(--gb,#7c3aed)}
+.dlt.up{background:var(--ec);color:#fff}
+.dlt.down{background:transparent;color:var(--ec)}
+.dlt.eq{background:transparent;color:var(--muted,#777)}
 </style>
 </head>
 <body>
@@ -627,6 +634,9 @@ function render(){
   renderSummary(all); renderInsights(all); renderChart(all); renderTops(all); renderTable(all);
 }
 
+/* seta de evolução do 1º para o 2º turno, na cor do candidato (▲ cresceu · ▼ caiu), em pontos percentuais */
+const dlt=(d,k)=>{ if(d==null||!isFinite(d)) return ""; const r=Math.round(d*10)/10, cls=r>0?"up":r<0?"down":"eq";
+  return `<span class="dlt ${k} ${cls}" title="Variação em relação ao 1º turno (pontos percentuais)">${r>0?"▲":r<0?"▼":"="} ${(r>0?"+":r<0?"−":"")+Math.abs(r).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})} p.p.</span>`; };
 function renderSummary(all){
   const city=selCity&&rows[selCity]?derive(rows[selCity]):null;
   const T= city || (topRow?derive(topRow):(all.length?aggregate(all.filter(r=>r.key!=="zz"||scope==="br")):null));
@@ -639,7 +649,7 @@ function renderSummary(all){
       <div class="turns"><div class="turn t1"><div class="k">1º turno</div><div class="v">${pct(p1)}</div><div class="n">${fmt(v1)} votos</div></div>
       <div class="arrow" aria-hidden="true">→</div>
       <div class="turn"><div class="k">2º turno</div><div class="v">${T.ok2?pct(p2):"—"}</div><div class="n">${T.ok2?fmt(v2)+" votos":"a partir das 17h de 25/10"}</div></div></div>
-      ${T.ok2?`<div class="delta"><span class="pill">Variação <b class="${d>=0?"up":"down"}">${pp(d)}</b></span><span class="pill">Votos a mais <b class="${dv>=0?"up":"down"}">${sv(dv)}</b></span><span class="pill">Captação dos demais <b>${pct(cap)}</b></span></div>`:""}
+      ${T.ok2?`<div class="delta"><span class="pill">Variação ${dlt(d,k)}</span><span class="pill">Votos a mais <b class="${dv>=0?"up":"down"}">${sv(dv)}</b></span><span class="pill">Captação dos demais <b>${pct(cap)}</b></span></div>`:""}
     </div>`;
   };
   // 1º lugar à esquerda: pelo 2º turno quando já divulgado, senão pelo 1º turno
@@ -735,11 +745,11 @@ function renderTable(all){
   const lead=r=>{ if(!r.ok2) return r.l1?`<span class="chip ${r.l1}">${esc(r.l1==="a"?NM.a:NM.b)} no 1º</span>`:"—";
     if(r.vir) return `<span class="chip ${r.l2}">Virou: ${esc(r.l2==="a"?NM.a:NM.b)}</span>`;
     return r.l2?`<span class="chip m">Manteve ${esc(r.l2==="a"?NM.a:NM.b)}</span>`:"Empate"; };
-  const dc=v=>`<span class="${v>=0?"up":"down"}">${pp(v)}</span>`;
+  const dc=(v,k)=>dlt(v,k);
   $("tbody").innerHTML=shown.map(r=>`<tr class="${r.key===selCity?"cur":""}" data-key="${esc(r.key)}"><td>${esc(r.nm)}</td>
     <td class="sep">${pct(r.p1a)}</td><td>${pct(r.p1b)}</td><td>${pct(r.p1o)}</td>
     <td class="sep">${r.ok2?pct(r.p2a):"—"}</td><td>${r.ok2?pct(r.p2b):"—"}</td>
-    <td class="sep">${r.ok2?dc(r.dpa):"—"}</td><td>${r.ok2?dc(r.dpb):"—"}</td>
+    <td class="sep">${r.ok2?dc(r.dpa,"a"):"—"}</td><td>${r.ok2?dc(r.dpb,"b"):"—"}</td>
     <td class="sep">${r.ok2?sv(r.da):"—"}</td><td>${r.ok2?sv(r.db):"—"}</td>
     <td class="sep l">${lead(r)}</td></tr>`).join("") || `<tr><td colspan="11"><div class="msg" style="border:0">${all.length?"Nada encontrado com essa busca.":"Lendo os dados do TSE…"}</div></td></tr>`;
 }

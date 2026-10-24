@@ -221,6 +221,7 @@ td .win{display:inline-block;width:10px;height:10px;border-radius:50%;margin-rig
 .gov-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
 .gov-head h2{font-size:28px}
 .gov .stat{font:500 12px var(--mono);color:var(--muted)}
+.gc{--ga:var(--g1);--gb:var(--g2)}
 .cands2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .gc{border-radius:10px;padding:10px 12px;background:var(--bg);border-top:5px solid var(--c);display:flex;flex-direction:column;gap:4px;min-width:0}
 .gc .nm{font:700 20px/1.05 var(--display)}
@@ -273,6 +274,13 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
 @keyframes tlg{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
 @media (max-width:640px){.tabs-logo span{display:none}}
 @media (prefers-reduced-motion:reduce){.tabs.stuck .tabs-logo{animation:none}}
+
+/* seta de evolução 1º → 2º turno */
+.dlt{display:inline-flex;align-items:center;gap:4px;font:700 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;padding:4px 8px;border-radius:999px;white-space:nowrap;border:2px solid var(--ec,#888);vertical-align:middle}
+.dlt.a{--ec:var(--a)}.dlt.b{--ec:var(--b)}.dlt.ga{--ec:var(--ga,#ea580c)}.dlt.gb{--ec:var(--gb,#7c3aed)}
+.dlt.up{background:var(--ec);color:#fff}
+.dlt.down{background:transparent;color:var(--ec)}
+.dlt.eq{background:transparent;color:var(--muted,#777)}
 </style>
 </head>
 <body>
@@ -392,6 +400,9 @@ function pairs(s){
   const base=f.length?f:(KNOWN[s.uf]||[]).map((nm,i)=>({n:"k"+i,nm,pt:"",p:null}));
   return base.slice(0,2).map((c,i)=>{ const c2=s.t2?.cs.find(x=>x.n===c.n)||(s.t2&&!f.length?s.t2.cs[i]:null); return {i,n:c.n,sq:c2?.sq||c.sq||null,nm:c2?.nm||c.nm,pt:c2?.pt||c.pt,p1:c.p,p2:c2&&s.t2.pst>0?c2.p:null,v2:c2?.vap||0,won:!!(c2&&elected(c2))}; });
 }
+/* seta de evolução do 1º para o 2º turno, na cor do candidato (▲ cresceu · ▼ caiu), em pontos percentuais */
+const dlt=(d,k)=>{ if(d==null||!isFinite(d)) return ""; const r=Math.round(d*10)/10, cls=r>0?"up":r<0?"down":"eq";
+  return `<span class="dlt ${k} ${cls}" title="Variação em relação ao 1º turno (pontos percentuais)">${r>0?"▲":r<0?"▼":"="} ${(r>0?"+":r<0?"−":"")+Math.abs(r).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})} p.p.</span>`; };
 function slope(pp,s){
   const W=560,H=240,L=58,R=190,T=18,B=34;
   const vals=pp.flatMap(c=>[c.p1,c.p2]).filter(v=>v!=null);
@@ -426,7 +437,7 @@ function render(){
     return `<article class="gov ${w?"done":""}" id="gov-${uf}"><div class="gov-head"><h2>${esc(UFNAME[uf]||uf.toUpperCase())}</h2><span class="stat">${stat}</span></div>
       ${w?`<span class="eleito">Eleito(a): ${esc(w.nm)}</span>`:""}
       <div class="cands2">${pp.map(c=>`<div class="gc ${c.won?"won":""}" style="--c:${c.i===0?"var(--g1)":"var(--g2)"}"><div class="gtop">${gFoto(uf,c)}<div style="min-width:0"><div class="nm">${esc(c.nm)}</div><div class="pt">${esc(c.pt)}</div></div></div>
-        <div class="vals"><span class="v1">1º turno ${c.p1!=null?pct(c.p1):"—"}</span><span class="v2">${c.p2!=null?pct(c.p2):"—"}</span></div>${c.won?`<span class="eleito">Eleito(a)</span>`:""}</div>`).join("")}</div>
+        <div class="vals"><span class="v1">1º turno ${c.p1!=null?pct(c.p1):"—"}</span><span class="v2">${c.p2!=null?pct(c.p2):"—"}</span></div>${c.p2!=null&&c.p1!=null?`<div style="margin-top:4px">${dlt(c.p2-c.p1,c.i===0?"ga":"gb")}</div>`:""}${c.won?`<span class="eleito">Eleito(a)</span>`:""}</div>`).join("")}</div>
       <div class="slope">${slope(pp,s)}</div></article>`; }).join("");
 }
 async function cycle(){

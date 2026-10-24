@@ -252,6 +252,7 @@ td .win{display:inline-block;width:10px;height:10px;border-radius:50%;margin-rig
 .pbar .track{position:relative;height:14px;background:var(--empty);border-radius:4px}
 .pbar .fill{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
 .pbar .fill.a{background:var(--a)} .pbar .fill.b{background:var(--b)}
+.pbar .fill.o{background:#9aa3a0} .pbar .nm.o{color:var(--muted)}
 .pbar .real{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--fg);border-radius:2px}
 .pbar .v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
 .pscore{display:flex;flex-direction:column;align-items:flex-end;gap:4px;text-align:right}
@@ -364,6 +365,12 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
     <div class="polls" id="list2"></div>
     <details class="more"><summary>Outros institutos</summary><div class="polls" id="other2" style="margin-top:12px"></div></details>
     <p class="note" style="margin:0" id="note2"></p>
+  </section>
+
+  <section class="card" id="vg1" hidden>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap"><div><div class="label">Governador · 1º turno · 4 de outubro</div><h2>Como os finalistas chegaram ao 2º turno</h2></div><button type="button" class="gclear" id="gclear1">Limpar filtro</button></div>
+    <div id="g1list" class="govlist"></div>
+    <p class="note" style="margin:0">Resultado oficial do TSE no 1º turno para governador, em votos válidos, nos estados que têm 2º turno. Análise – Diego R. S. Lima.</p>
   </section>
 
   <section class="card" id="vg" hidden>
@@ -490,7 +497,10 @@ async function loadReal2(){
   real2={lula:a/(a+b)*100, flavio:b/(a+b)*100, pst:num(j.s?.pstn??j.s?.pst), final:j.and==="f"};
   render2();
 }
-function setView(v){ view=v; $("f1").setAttribute("aria-pressed",String(v===1)); $("f2").setAttribute("aria-pressed",String(v===2)); $("v1").hidden=v!==1; $("v2").hidden=v!==2; try{ history.replaceState(null,"",location.pathname+location.search+(v===2?"#segundo":"")); }catch(_){} }
+function setView(v){ view=v; $("f1").setAttribute("aria-pressed",String(v===1)); $("f2").setAttribute("aria-pressed",String(v===2));
+  if(typeof vcargo!=="undefined"&&vcargo==="g"){ $("v1").hidden=true; $("v2").hidden=true; $("vg1").hidden=v!==1; $("vg").hidden=v!==2; if(v===1) renderG1(); else renderG(); try{ history.replaceState(null,"",location.pathname+location.search+(v===1?"#governador-1":"#governador")); }catch(_){} return; }
+  $("vg1").hidden=true; $("vg").hidden=true;
+  $("v1").hidden=v!==1; $("v2").hidden=v!==2; try{ history.replaceState(null,"",location.pathname+location.search+(v===2?"#segundo":"")); }catch(_){} }
 $("f1").onclick=()=>setView(1); $("f2").onclick=()=>setView(2);
 /* ===== Governador: pesquisas de 2º turno nos estados ===== */
 /* foto de urna do candidato a governador (divulgada pelo TSE junto com os resultados) */
@@ -504,11 +514,23 @@ async function loadSqG(){
   if(!DATA||!DATA.governador) return;
   await Promise.all(DATA.governador.estados.map(async e=>{
     const j=await getJSON(url(G1,e.uf,"0003")); if(!j) return;
-    const cs=[]; ((j.carg||[])[0]?.agr||[]).forEach(g=>(g.par||[]).forEach(p=>(p.cand||[]).forEach(c=>cs.push({nm:normTxt((c.nmu||"")+" "+(c.nm||"")),sq:c.sqcand}))));
-    const fa=cs.find(c=>c.nm.includes(normTxt(e.a.chave))), fb=cs.find(c=>c.nm.includes(normTxt(e.b.chave)));
-    sqG[e.uf]={a:fa&&fa.sq,b:fb&&fb.sq};
+    const cs=[]; ((j.carg||[])[0]?.agr||[]).forEach(g=>(g.par||[]).forEach(p=>(p.cand||[]).forEach(c=>cs.push({nm:normTxt((c.nmu||"")+" "+(c.nm||"")),sq:c.sqcand,v:+(c.vap||0)}))));
+    let fa=cs.find(c=>c.nm.includes(normTxt(e.a.chave))), fb=cs.find(c=>c.nm.includes(normTxt(e.b.chave)));
+    if((!fa||!fb)&&TESTE){ const o=cs.slice().sort((x,y)=>y.v-x.v); fa=o[0]; fb=o[1]; }
+    const vv=+(j.v?.vv||0)||cs.reduce((t,c)=>t+c.v,0);
+    sqG[e.uf]={a:fa&&fa.sq,b:fb&&fb.sq,pa:fa&&vv?fa.v/vv*100:null,pb:fb&&vv?fb.v/vv*100:null,va:fa?fa.v:0,vb:fb?fb.v:0};
   }));
   if(vcargo==="g") renderG();
+  if(vcargo==="g"&&view===1) renderG1();
+}
+function renderG1(){
+  const est=(DATA&&DATA.governador&&DATA.governador.estados)||[];
+  $("g1list").innerHTML=est.map(e=>{ const r=sqG[e.uf];
+    if(!r||r.pa==null) return `<div class="gstate"><h3>${esc(e.estado)}</h3><div class="msg">Lendo o resultado do 1º turno no TSE…</div></div>`;
+    const po=Math.max(0,100-r.pa-r.pb);
+    return `<div class="gstate"><div class="ghead"><div class="gpics">${gFoto(e.uf,{nm:e.a.nm,sq:r.a},"sm")}${gFoto(e.uf,{nm:e.b.nm,sq:r.b},"sm")}</div><div><h3>${esc(e.estado)}</h3><div class="vs"><b class="a">${esc(e.a.nm)}</b> (${esc(e.a.partido)}) × <b class="b">${esc(e.b.nm)}</b> (${esc(e.b.partido)})</div></div></div>
+      <div class="pbars">${bar(e.a.nm,"ga",r.pa,null)}${bar(e.b.nm,"gb",r.pb,null)}${bar("Demais candidatos","o",po,null)}</div>
+      <div class="note" style="margin:0">${fmt(r.va)} × ${fmt(r.vb)} votos no 1º turno</div></div>`; }).join("");
 }
 
 let realG={}, vcargo="p";
@@ -569,12 +591,12 @@ async function loadRealG(){
 }
 function setCargo(c){
   vcargo=c; $("fp").setAttribute("aria-pressed",String(c==="p")); $("fg").setAttribute("aria-pressed",String(c==="g"));
-  $("fturno").hidden=c!=="p"; $("vg").hidden=c!=="g";
-  if(c==="g"){ $("v1").hidden=true; $("v2").hidden=true; $("kick").textContent="Governador · estados com 2º turno"; renderG(); try{ history.replaceState(null,"",location.pathname+location.search+"#governador"); }catch(e){} }
-  else { $("kick").textContent="Presidente da República · Lula × Flávio Bolsonaro"; setView(view); }
+  $("fturno").hidden=false;
+  $("kick").textContent= c==="g" ? "Governador · estados com 2º turno" : "Presidente da República · Lula × Flávio Bolsonaro";
+  setView(view);
 }
 $("fp").onclick=()=>setCargo("p"); $("fg").onclick=()=>setCargo("g");
-$("gclear").onclick=()=>{ setCargo("p"); window.scrollTo({top:0,behavior:"smooth"}); };   // limpar filtro: volta para Presidente
+$("gclear").onclick=$("gclear1").onclick=()=>{ setCargo("p"); window.scrollTo({top:0,behavior:"smooth"}); };   // limpar filtro: volta para Presidente
 
 (async()=>{
   testBanner();
@@ -584,7 +606,7 @@ $("gclear").onclick=()=>{ setCargo("p"); window.scrollTo({top:0,behavior:"smooth
   render1(); render2();
   const H0=location.hash;
   if(H0==="#segundo"||open2()) setView(2);
-  if(H0==="#governador"||/^#gov-/.test(H0)){ const h=H0; setCargo("g"); if(/^#gov-/.test(h)) setTimeout(()=>{ const el=document.querySelector(h); if(el) el.scrollIntoView(); },50); }
+  if(/^#governador/.test(H0)||/^#gov-/.test(H0)){ const h=H0; if(H0==="#governador-1") view=1; else view=2; setCargo("g"); if(/^#gov-/.test(h)) setTimeout(()=>{ const el=document.querySelector(h); if(el) el.scrollIntoView(); },50); }
   loadReal2(); setInterval(loadReal2,60000);
   loadRealG(); setInterval(loadRealG,60000); loadSqG();
 })();
