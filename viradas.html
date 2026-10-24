@@ -336,6 +336,13 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
 .vtable th:first-child,.vtable td:first-child{text-align:left}
 .vtable .a{color:var(--a);font-weight:700}.vtable .b{color:var(--b);font-weight:700}
 .empty{color:var(--muted);font-size:14px;padding:6px 2px}
+
+/* seta de evolução 1º → 2º turno */
+.dlt{display:inline-flex;align-items:center;gap:4px;font:700 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;padding:4px 8px;border-radius:999px;white-space:nowrap;border:2px solid var(--ec,#888);vertical-align:middle}
+.dlt.a{--ec:var(--a)}.dlt.b{--ec:var(--b)}.dlt.ga{--ec:var(--ga,#ea580c)}.dlt.gb{--ec:var(--gb,#7c3aed)}
+.dlt.up{background:var(--ec);color:#fff}
+.dlt.down{background:transparent;color:var(--ec)}
+.dlt.eq{background:transparent;color:var(--muted,#777)}
 </style>
 </head>
 <body>
@@ -441,7 +448,7 @@ function votes(j){
   if(TESTE&&a+b===0){ all.sort((x,y)=>y.v-x.v); a=all[0]?.v||0; b=all[1]?.v||0; }
   return {a,b,pst:num(j.s?.pstn??j.s?.pst),final:j.and==="f",cands:all};
 }
-let places=[], selCand=null, nat2=null, phase="t1";   // phase: t1 (só 1º turno), parcial, final
+let nat1=null, places=[], selCand=null, nat2=null, phase="t1";   // phase: t1 (só 1º turno), parcial, final
 async function loadCapitals(){
   const cfg=await getJSON(urlCfg(E1)); const caps={};
   (cfg?.abr||[]).forEach(a=>{ const uf=String(a.cd).toLowerCase(); const m=(a.mu||[]).find(m=>m.c==="s"); if(m&&UFNAME[uf]) caps[uf]={cd:String(m.cd).padStart(5,"0"),nm:nameCase(m.nm)}; });
@@ -454,6 +461,7 @@ async function load(){
   await pool(list,8,async p=>{ p.t1=votes(await getJSON(url(E1,p.abr))); });
   if(open2()){
     nat2=votes(await getJSON(url(E2,"br")));
+    nat1=votes(await getJSON(url(E1,"br")));
     if(nat2&&nat2.a+nat2.b>0) await pool(list,8,async p=>{ p.t2=votes(await getJSON(url(E2,p.abr))); });
   }
   places=list.filter(p=>p.t1&&p.t1.a+p.t1.b>0);
@@ -478,15 +486,19 @@ function row(p,k){
   const s2=share(p.t2,k), lead1=p.t1.a>=p.t1.b?"a":"b", lead2=p.t2.a>=p.t2.b?"a":"b";
   return {p,s1,s2,d:Math.round((s2-s1)*10)/10,vir:lead1!==lead2,lead2,v1:k==="a"?p.t1.a:p.t1.b,v2:k==="a"?p.t2.a:p.t2.b};
 }
+/* seta de evolução do 1º para o 2º turno, na cor do candidato (▲ cresceu · ▼ caiu), em pontos percentuais */
+const dlt=(d,k)=>{ if(d==null||!isFinite(d)) return ""; const r=Math.round(d*10)/10, cls=r>0?"up":r<0?"down":"eq";
+  return `<span class="dlt ${k} ${cls}" title="Variação em relação ao 1º turno (pontos percentuais)">${r>0?"▲":r<0?"▼":"="} ${(r>0?"+":r<0?"−":"")+Math.abs(r).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})} p.p.</span>`; };
 function li(r,k){
   const nm=r.p.kind==="cap"?`${esc(r.p.nm)} <small>· ${r.p.uf.toUpperCase()}</small>`:esc(r.p.nm);
   const vir=r.vir?`<span class="vbadge" title="Mudou quem ficou em 1º lugar">Virada para ${esc(CAND[r.lead2].nm.split(" ")[0])}</span>`:"";
-  return `<li class="vrow"><span class="pl">${nm}${vir}</span><span class="dl ${r.d>0?"up":"down"}">${pp(r.d)}</span>
+  return `<li class="vrow"><span class="pl">${nm}${vir}</span><span>${dlt(r.d,k)}</span>
     <span class="nums">1º turno ${pc(r.s1)} → 2º turno ${pc(r.s2)} · ${fmt(r.v1)} → ${fmt(r.v2)} votos</span></li>`;
 }
 function block(title,rows,k){
   const up=rows.filter(r=>r.d>0).sort((x,y)=>y.d-x.d), down=rows.filter(r=>r.d<=0).sort((x,y)=>x.d-y.d);
-  return `<h3 style="font:700 20px var(--display);margin:6px 0 0">${title}</h3><div class="vcols">
+  const avg=rows.length?rows.reduce((t,r)=>t+r.d,0)/rows.length:null;
+  return `<h3 style="font:700 20px var(--display);margin:6px 0 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap">${title}${avg!=null?`<span style="font:500 13px var(--body);color:var(--muted)">média ${dlt(avg,k)}</span>`:""}</h3><div class="vcols">
     <div class="vcol up"><h3>▲ Cresceu (${up.length})</h3><ul class="vlist">${up.map(r=>li(r,k)).join("")||`<li class="empty">Nenhum.</li>`}</ul></div>
     <div class="vcol down"><h3>▼ Não cresceu (${down.length})</h3><ul class="vlist">${down.map(r=>li(r,k)).join("")||`<li class="empty">Nenhum.</li>`}</ul></div></div>`;
 }
@@ -516,6 +528,7 @@ function render(){
   const nUp=rs=>rs.filter(r=>r.d>0).length, nVir=rows.filter(r=>r.vir&&r.lead2===k).length;
   $("vstat").innerHTML=`<div class="box up"><div class="n">${nUp(ufs)} de ${ufs.length}</div><div class="t">estados em que ${esc(nm)} cresceu</div></div>
     <div class="box up"><div class="n">${nUp(caps)} de ${caps.length}</div><div class="t">capitais em que ${esc(nm)} cresceu</div></div>
+    ${nat1&&nat2&&nat2.a+nat2.b>0?`<div class="box"><div class="n" style="font-size:22px;padding-top:6px">${dlt(share(nat2,k)-share(nat1,k),k)}</div><div class="t">${esc(nm)} no Brasil, do 1º para o 2º turno</div></div>`:""}
     <div class="box vir"><div class="n">${nVir}</div><div class="t">viradas a favor de ${esc(nm)}</div></div>
     <div class="box down"><div class="n">${rows.filter(r=>r.vir&&r.lead2!==k).length}</div><div class="t">viradas contra ${esc(nm)}</div></div>`;
   $("vbody").innerHTML=(phase==="parcial"?`<div class="msg">Apuração em andamento: os números do 2º turno ainda são parciais e podem mudar.</div>`:"")+block("Estados",ufs,k)+block("Capitais",caps,k);
