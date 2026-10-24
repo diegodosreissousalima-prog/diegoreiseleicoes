@@ -345,6 +345,7 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
       <div class="seg" role="group" aria-label="Turno do mapa"><button id="mt1" aria-pressed="true">1º turno</button><button id="mt2" aria-pressed="false">2º turno</button></div>
       <label for="mscope">Área
         <select id="mscope"><option value="br">Brasil inteiro</option></select></label>
+      <button type="button" class="gclear" id="mclear" hidden>Limpar filtro</button>
       <button type="button" class="loadbtn" id="mload">Carregar as cidades do Brasil</button>
     </div>
     <div class="legend"><span><i style="background:var(--a)"></i><span class="nmA">Lula</span> mais votado</span><span><i style="background:var(--b)"></i><span class="nmB">Flávio Bolsonaro</span> mais votado</span><span><i style="background:var(--empty);border:1px solid var(--line)"></i>ainda sem dados</span><span>cor mais forte = vantagem maior · círculo maior = mais votos</span></div>
@@ -598,7 +599,9 @@ function updateLoadBtn(){
 }
 function setTurn(t){ mturn=t; $("mt1").setAttribute("aria-pressed",String(t===1)); $("mt2").setAttribute("aria-pressed",String(t===2)); loadTok++; loading=false; $("mload").disabled=false; updateLoadBtn(); draw(); if(mscope!=="br") loadCities(); }
 $("mt1").onclick=()=>setTurn(1); $("mt2").onclick=()=>setTurn(2);
-$("mscope").onchange=e=>{ mscope=e.target.value; loadTok++; loading=false; $("mload").disabled=false; updateLoadBtn(); draw(); if(mscope!=="br") loadCities(); };
+function syncMClear(){ $("mclear").hidden= mscope==="br" || $("mscope").closest("label").hidden; }
+$("mscope").onchange=e=>{ mscope=e.target.value; loadTok++; loading=false; $("mload").disabled=false; updateLoadBtn(); draw(); syncMClear(); if(mscope!=="br") loadCities(); };
+$("mclear").onclick=()=>{ $("mscope").value="br"; $("mscope").onchange({target:$("mscope")}); };   // limpar filtro: volta para o Brasil inteiro
 $("mload").onclick=()=>loadCities();
 // dica ao passar o mouse / tocar
 function tipAt(ev){
@@ -651,7 +654,7 @@ function setGov(uf){ gsel=GST.includes(uf)?uf:""; refreshGov(); }
 function setCargo(c,uf){
   cargo=c; document.documentElement.classList.toggle("gov",c==="g");
   $("cargo-p").setAttribute("aria-pressed",String(c==="p")); $("cargo-g").setAttribute("aria-pressed",String(c==="g"));
-  $("gbar").hidden=c!=="g"; $("mscope").closest("label").hidden=c==="g";
+  $("gbar").hidden=c!=="g"; $("mscope").closest("label").hidden=c==="g"; if(typeof syncMClear==="function") syncMClear();
   $("kick").textContent= c==="g" ? "Governador · Eleições 2026" : "Presidente da República · Eleições 2026";
   KEYS=["13","22"]; gsel= c==="g"&&GST.includes(uf)?uf:""; if(c!=="g"){ mscope="br"; $("mscope").value="br"; }
   refreshGov();

@@ -472,5 +472,219 @@
         ]
       }
     ]
-  }
+  },
+  "turno2_todas": [
+    {
+      "instituto": "Vox Brasil",
+      "campo": "20 a 22/10",
+      "data": "2026-10-23",
+      "lula": 50.6,
+      "flavio": 49.4,
+      "registro": "BR-03259/2026",
+      "entrevistas": 2100,
+      "margem": 2.15,
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
+    },
+    {
+      "instituto": "Veritá",
+      "campo": "18 a 22/10",
+      "data": "2026-10-23",
+      "lula": 48.7,
+      "flavio": 51.3,
+      "registro": "BR-06070/2026",
+      "entrevistas": 15554,
+      "margem": 1.0,
+      "fonte": "https://transmissaopolitica.com.br/politica-nacional/2026/10/23/pesquisa-verita-flavio-lula-23-outubro/"
+    },
+    {
+      "instituto": "Real Time Big Data",
+      "campo": "19 a 22/10",
+      "data": "2026-10-23",
+      "lula": 48.0,
+      "flavio": 52.0,
+      "registro": "BR-09670/2026",
+      "entrevistas": 2000,
+      "margem": 2.0,
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
+    },
+    {
+      "instituto": "Ipespe",
+      "campo": "20 a 22/10",
+      "data": "2026-10-23",
+      "lula": 49.5,
+      "flavio": 50.5,
+      "data_aprox": true,
+      "nota": "válidos calculados a partir do total (47% × 48%)"
+    },
+    {
+      "instituto": "Alfa Inteligência",
+      "campo": "18 a 22/10",
+      "data": "2026-10-23",
+      "lula": 48.0,
+      "flavio": 52.0,
+      "data_aprox": true,
+      "nota": "válidos calculados a partir do total (46% × 49,9%)"
+    },
+    {
+      "instituto": "PoderData/AYA",
+      "campo": "19 a 21/10",
+      "data": "2026-10-22",
+      "lula": 49.0,
+      "flavio": 51.0,
+      "registro": "BR-07926/2026",
+      "entrevistas": 4000,
+      "margem": 1.6,
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
+    },
+    {
+      "instituto": "Indexa",
+      "campo": "20 e 21/10",
+      "data": "2026-10-22",
+      "lula": 49.4,
+      "flavio": 50.6,
+      "data_aprox": true,
+      "nota": "válidos calculados a partir do total (44,1% × 45,2%)"
+    },
+    {
+      "instituto": "Gerp",
+      "campo": "19 a 21/10",
+      "data": "2026-10-22",
+      "lula": 47.0,
+      "flavio": 53.0,
+      "registro": "BR-03835/2026",
+      "entrevistas": 2400,
+      "margem": 2.0,
+      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+    },
+    {
+      "instituto": "Datafolha",
+      "campo": "20 a 22/10",
+      "data": "2026-10-22",
+      "lula": 50.0,
+      "flavio": 50.0,
+      "registro": "BR-09709/2026",
+      "entrevistas": 2520,
+      "margem": 2.0,
+      "fonte": "https://www.cnnbrasil.com.br/eleicoes/datafolha-flavio-e-lula-empatam-em-50-de-votos-validos-no-2o-turno/"
+    },
+    {
+      "instituto": "Quaest",
+      "campo": "17 a 20/10",
+      "data": "2026-10-21",
+      "lula": 49.4,
+      "flavio": 50.6,
+      "registro": "BR-08535/2026",
+      "entrevistas": 2154,
+      "margem": 2.0,
+      "fonte": "https://www.metropoles.com/brasil/quaest-flavio-bolsonaro-tem-45-e-lula-44-no-2o-turno"
+    },
+    {
+      "instituto": "Palver",
+      "campo": "16 a 20/10",
+      "data": "2026-10-21",
+      "lula": 49.0,
+      "flavio": 51.0,
+      "registro": "BR-04612/2026",
+      "entrevistas": 5000,
+      "margem": 2.4,
+      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/"
+    },
+    {
+      "instituto": "Meio/Ideia",
+      "campo": "15 a 19/10",
+      "data": "2026-10-21",
+      "lula": 48.9,
+      "flavio": 51.1,
+      "registro": "BR-08251/2026",
+      "entrevistas": 1500,
+      "margem": 2.5
+    },
+    {
+      "instituto": "Futura Inteligência",
+      "campo": "19 e 20/10",
+      "data": "2026-10-21",
+      "lula": 48.9,
+      "flavio": 51.1,
+      "registro": "BR-06614/2026",
+      "entrevistas": 2000,
+      "margem": 2.2,
+      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente"
+    },
+    {
+      "instituto": "BTG/Nexus",
+      "campo": "16 a 18/10",
+      "data": "2026-10-19",
+      "lula": 49.7,
+      "flavio": 50.3,
+      "data_aprox": true,
+      "registro": "BR-04499/2026",
+      "entrevistas": 2002,
+      "margem": 2.0
+    },
+    {
+      "instituto": "AtlasIntel/Bloomberg",
+      "campo": "13 a 18/10",
+      "data": "2026-10-19",
+      "lula": 48.9,
+      "flavio": 51.1,
+      "registro": "",
+      "entrevistas": 4998,
+      "fonte": "https://www.congressoemfoco.com.br/noticia/123359/atlasintel-vantagem-de-flavio-cai-de-5-4-para-2-2-pontos-em-10-dias"
+    },
+    {
+      "instituto": "DataTrends",
+      "campo": "15 a 17/10",
+      "data": "2026-10-18",
+      "lula": 48.5,
+      "flavio": 51.5,
+      "data_aprox": true,
+      "registro": "BR-04454/2026",
+      "entrevistas": 2000,
+      "margem": 2.19
+    },
+    {
+      "instituto": "Veritá",
+      "campo": "12 a 16/10",
+      "data": "2026-10-17",
+      "lula": 48.9,
+      "flavio": 51.1,
+      "data_aprox": true,
+      "registro": "BR-01107/2026",
+      "entrevistas": 15554,
+      "margem": 1.0
+    },
+    {
+      "instituto": "Ipespe/Abrapel",
+      "campo": "13 a 15/10",
+      "data": "2026-10-16",
+      "lula": 48.8,
+      "flavio": 51.2,
+      "data_aprox": true,
+      "registro": "BR-00223/2026",
+      "entrevistas": 1500,
+      "margem": 2.6
+    },
+    {
+      "instituto": "CNT/MDA",
+      "campo": "13 a 15/10",
+      "data": "2026-10-16",
+      "lula": 49.5,
+      "flavio": 50.5,
+      "registro": "BR-00652/2026",
+      "entrevistas": 2014,
+      "margem": 2.2
+    },
+    {
+      "instituto": "Indexa/Broadcast",
+      "campo": "13 e 14/10",
+      "data": "2026-10-15",
+      "lula": 49.0,
+      "flavio": 51.0,
+      "data_aprox": true,
+      "registro": "BR-04629/2026",
+      "entrevistas": 2000,
+      "margem": 2.2
+    }
+  ],
+  "nota_todas": "Todas as pesquisas de 2º turno para presidente registradas no TSE e divulgadas na imprensa, em votos válidos. Quando o instituto só publicou o total, os válidos foram calculados excluindo brancos, nulos e indecisos. Datas marcadas com ≈ são aproximadas (dia seguinte ao fim do campo)."
 }

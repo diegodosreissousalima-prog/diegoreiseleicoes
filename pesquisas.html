@@ -274,6 +274,21 @@ details.more summary{cursor:pointer;font-weight:700}
 .avg .n{font:700 36px/1 var(--display);font-variant-numeric:tabular-nums}
 .avg .a .n{color:var(--a)} .avg .b .n{color:var(--b)}
 .avg .t{font-size:13px;color:var(--muted)}
+/* filtro por data — todas as pesquisas */
+.dfilt{display:flex;flex-wrap:wrap;align-items:end;gap:10px 14px;background:var(--bg);border-radius:12px;padding:12px 14px}
+.dfilt label{display:flex;flex-direction:column;gap:4px;font:600 12px var(--body);color:var(--muted,#555)}
+.dfilt select{font:600 15px var(--body);padding:8px 10px;border-radius:10px;border:1px solid var(--line,#ccd);background:var(--surface);color:var(--fg)}
+.dfilt .qk{display:flex;flex-wrap:wrap;gap:6px}
+.dfilt .qk button{font:600 13px var(--body);padding:8px 12px;border-radius:999px;border:1px solid var(--line,#ccd);background:var(--surface);color:var(--fg);cursor:pointer}
+.dfilt .qk button[aria-pressed="true"]{background:#ffdf00;color:#1b2a12;border-color:#ffdf00}
+.dfilt .cnt{font-size:13px;margin-left:auto}
+.dday{font:700 14px var(--body);margin:6px 0 -4px;color:var(--fg);border-bottom:1px solid var(--line,#dde);padding-bottom:4px}
+.acert{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.acert>div{border-radius:12px;padding:12px 14px;background:var(--bg);display:flex;flex-direction:column;gap:6px}
+.acert h3{margin:0;font-size:15px}
+.acert ol{margin:0;padding-left:20px;font-size:14px;line-height:1.5}
+.acert .okb{border:2px solid var(--up)}.acert .nob{border:2px solid var(--down,#c0392b)}
+@media (max-width:620px){.acert{grid-template-columns:1fr}.dfilt .cnt{margin-left:0}}
 .winner{border:3px solid var(--up);border-radius:14px;padding:16px 18px;background:color-mix(in srgb,var(--up) 8%,var(--surface));display:flex;flex-direction:column;gap:6px}
 .winner .k{font:700 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--up)}
 .winner .nm{font:700 clamp(28px,5vw,40px)/1 var(--display)}
@@ -376,6 +391,19 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
     <div class="polls" id="list2"></div>
     <details class="more"><summary>Outros institutos</summary><div class="polls" id="other2" style="margin-top:12px"></div></details>
     <p class="note" style="margin:0" id="note2"></p>
+  </section>
+
+  <section class="card" id="v2all" hidden>
+    <div><div class="label">2º turno · presidente</div><h2>Todas as pesquisas por data de divulgação</h2></div>
+    <div class="dfilt" data-noshot>
+      <label>De<select id="dde"></select></label>
+      <label>Até<select id="date"></select></label>
+      <div class="qk"><button id="dq1" aria-pressed="false">21/10 a 25/10</button><button id="dq2" aria-pressed="false">Só hoje</button><button id="dq3" aria-pressed="false">Todas</button></div>
+      <span class="note cnt" id="dcnt"></span>
+    </div>
+    <div id="acert2"></div>
+    <div class="polls" id="all2"></div>
+    <p class="note" style="margin:0" id="noteall"></p>
   </section>
 
   <section class="card" id="vg1" hidden>
@@ -498,6 +526,53 @@ function render2(){
     $("note2").textContent="Ordem por data de divulgação mais recente. Depois da apuração, esta lista passa a ser ordenada pelo acerto e o site indica o instituto mais confiável. Análise – Diego R. S. Lima.";
   }
 }
+/* ===== Todas as pesquisas de 2º turno, com filtro por data ===== */
+const DIAS=["2026-10-15","2026-10-16","2026-10-17","2026-10-18","2026-10-19","2026-10-20","2026-10-21","2026-10-22","2026-10-23","2026-10-24","2026-10-25"];
+const dBR=iso=>iso.slice(8,10)+"/"+iso.slice(5,7);
+const WD=["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
+const hojeISO=()=>{ const n=new Date(Date.now()-3*3600e3); return n.toISOString().slice(0,10); };
+let dFrom="2026-10-21", dTo="2026-10-25";
+function initDates(){
+  const opt=DIAS.map(d=>`<option value="${d}">${dBR(d)} · ${WD[new Date(d+"T12:00:00Z").getUTCDay()]}</option>`).join("");
+  $("dde").innerHTML=opt; $("date").innerHTML=opt;
+  try{ const sv=JSON.parse(localStorage.getItem("proj-datas")||"null"); if(sv&&DIAS.includes(sv[0])&&DIAS.includes(sv[1])){ dFrom=sv[0]; dTo=sv[1]; } }catch(_){}
+  const set=(f,t)=>{ if(f>t) [f,t]=[t,f]; dFrom=f; dTo=t; try{ localStorage.setItem("proj-datas",JSON.stringify([f,t])); }catch(_){} renderAll(); };
+  $("dde").onchange=()=>set($("dde").value,dTo); $("date").onchange=()=>set(dFrom,$("date").value);
+  $("dq1").onclick=()=>set("2026-10-21","2026-10-25");
+  $("dq2").onclick=()=>{ const h=DIAS.includes(hojeISO())?hojeISO():"2026-10-24"; set(h,h); };
+  $("dq3").onclick=()=>set(DIAS[0],DIAS[DIAS.length-1]);
+}
+function renderAll(){
+  if(!DATA||!$("all2")) return;
+  $("dde").value=dFrom; $("date").value=dTo;
+  const h=DIAS.includes(hojeISO())?hojeISO():"2026-10-24";
+  $("dq1").setAttribute("aria-pressed",String(dFrom==="2026-10-21"&&dTo==="2026-10-25"));
+  $("dq2").setAttribute("aria-pressed",String(dFrom===h&&dTo===h));
+  $("dq3").setAttribute("aria-pressed",String(dFrom===DIAS[0]&&dTo===DIAS[DIAS.length-1]));
+  const all=(DATA.turno2_todas||[]).filter(p=>p.data>=dFrom&&p.data<=dTo);
+  const final=real2&&real2.final, r=real2&&real2.pst>0?real2:null;
+  $("dcnt").textContent=`${all.length} pesquisa${all.length===1?"":"s"} entre ${dBR(dFrom)} e ${dBR(dTo)}`;
+  const withMeta=p=>Object.assign({},p,{divulgacao:(p.data_aprox?"≈":"")+dBR(p.data)});
+  if(!all.length){ $("all2").innerHTML=`<div class="msg">Nenhuma pesquisa divulgada nesse período.</div>`; $("acert2").innerHTML=""; }
+  else if(r){
+    const ranked=all.map(p=>({p,s:score(p,r)})).sort((x,y)=>x.s.err-y.s.err);
+    const winner=r.flavio>r.lula?"Flávio Bolsonaro":"Lula";
+    const hit=ranked.filter(o=>o.s.ordemOk), miss=ranked.filter(o=>!o.s.ordemOk);
+    const li=o=>`<li><b>${esc(o.p.instituto)}</b> (${dBR(o.p.data)}) · ${esc(p1(o.p.lula))} × ${esc(p1(o.p.flavio))} · erro ${o.s.err.toLocaleString("pt-BR",{maximumFractionDigits:2})} p.p.${o.s.empate?" · indicou empate":""}</li>`;
+    $("acert2").innerHTML=`<div class="acert"><div class="okb"><h3>✅ ${final?"Acertaram o resultado":"Estão acertando (apuração parcial)"}: ${esc(winner)} à frente</h3>${hit.length?`<ol>${hit.map(li).join("")}</ol>`:`<div class="note" style="margin:0">Nenhuma pesquisa do período indicou ${esc(winner)} à frente.</div>`}</div>
+      <div class="nob"><h3>❌ ${final?"Erraram quem venceria":"Estão errando (parcial)"}</h3>${miss.length?`<ol>${miss.map(li).join("")}</ol>`:`<div class="note" style="margin:0">Todas acertaram quem ficou na frente.</div>`}</div></div>`;
+    $("all2").innerHTML=ranked.map((o,i)=>card(withMeta(o.p),i,r,i===0,true)).join("");
+    $("noteall").textContent=(final?"Resultado final do TSE. ":"Comparação parcial, com "+p1(r.pst)+" das seções apuradas. ")+"Ordem pelo menor erro médio em relação ao resultado (votos válidos). "+(DATA.nota_todas||"")+" Análise – Diego R. S. Lima.";
+  } else {
+    $("acert2").innerHTML=`<div class="msg">No dia 25/10, depois da apuração do TSE, aqui aparece quais institutos acertaram o resultado e quais erraram.</div>`;
+    let html="", last="", i=0;
+    all.slice().sort((x,y)=>y.data.localeCompare(x.data)||x.instituto.localeCompare(y.instituto)).forEach(p=>{
+      if(p.data!==last){ last=p.data; html+=`<div class="dday">${dBR(p.data)} · ${WD[new Date(p.data+"T12:00:00Z").getUTCDay()]}</div>`; }
+      html+=card(withMeta(p),i++,null,false,false); });
+    $("all2").innerHTML=html;
+    $("noteall").textContent="Ordem por data de divulgação, da mais recente para a mais antiga. "+(DATA.nota_todas||"")+" Análise – Diego R. S. Lima.";
+  }
+}
 async function loadReal2(){
   if(!open2()) return;
   const j=await getJSON(url(E2,"br"));
@@ -507,12 +582,12 @@ async function loadReal2(){
   if(TESTE&&a+b===0){ const cs=[]; ((j.carg||[])[0]?.agr||[]).forEach(g=>(g.par||[]).forEach(p=>(p.cand||[]).forEach(c=>cs.push(+(c.vap||0))))); cs.sort((x,y)=>y-x); a=cs[0]||0; b=cs[1]||0; }
   if(a+b===0) return;
   real2={lula:a/(a+b)*100, flavio:b/(a+b)*100, pst:num(j.s?.pstn??j.s?.pst), final:j.and==="f"};
-  render2();
+  render2(); renderAll();
 }
 function setView(v){ view=v; $("f1").setAttribute("aria-pressed",String(v===1)); $("f2").setAttribute("aria-pressed",String(v===2));
-  if(typeof vcargo!=="undefined"&&vcargo==="g"){ $("v1").hidden=true; $("v2").hidden=true; $("vg1").hidden=v!==1; $("vg").hidden=v!==2; if(v===1) renderG1(); else renderG(); try{ history.replaceState(null,"",location.pathname+location.search+(v===1?"#governador-1":"#governador")); }catch(_){} return; }
+  if(typeof vcargo!=="undefined"&&vcargo==="g"){ $("v1").hidden=true; $("v2").hidden=true; $("v2all").hidden=true; $("vg1").hidden=v!==1; $("vg").hidden=v!==2; if(v===1) renderG1(); else renderG(); try{ history.replaceState(null,"",location.pathname+location.search+(v===1?"#governador-1":"#governador")); }catch(_){} return; }
   $("vg1").hidden=true; $("vg").hidden=true;
-  $("v1").hidden=v!==1; $("v2").hidden=v!==2; try{ history.replaceState(null,"",location.pathname+location.search+(v===2?"#segundo":"")); }catch(_){} }
+  $("v1").hidden=v!==1; $("v2").hidden=v!==2; $("v2all").hidden=v!==2; try{ history.replaceState(null,"",location.pathname+location.search+(v===2?"#segundo":"")); }catch(_){} }
 $("f1").onclick=()=>setView(1); $("f2").onclick=()=>setView(2);
 /* ===== Governador: pesquisas de 2º turno nos estados ===== */
 /* foto de urna do candidato a governador (divulgada pelo TSE junto com os resultados) */
@@ -627,7 +702,7 @@ $("gclear").onclick=$("gclear1").onclick=()=>{ gSel=""; setCargo("p"); window.sc
   try{ const r=await fetch("pesquisas.json",{cache:"no-cache"}); DATA=await r.json(); }catch(e){ DATA=null; }
   if(!DATA){ $("list1").innerHTML=`<div class="msg">Não foi possível carregar as pesquisas agora. Recarregue a página.</div>`; return; }
   const [y,m,d]=String(DATA.atualizado_em||"").split("-"); $("upd").textContent=d?`${d}/${m}/${y}`:"—";
-  render1(); render2();
+  render1(); render2(); initDates(); renderAll();
   const H0=location.hash;
   if(H0==="#segundo"||open2()) setView(2);
   if(/^#governador/.test(H0)||/^#gov-/.test(H0)){ const h=H0; if(H0==="#governador-1") view=1; else view=2; setCargo("g"); if(/^#gov-/.test(h)){ gSel=h.slice(5); applyGFilter(); } }
