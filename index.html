@@ -564,7 +564,7 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
 "use strict";
 const ENVS={
   oficial:{base:"https://resultados.tse.jus.br/oficial/ele2026",ele:"6258",ele1:"6257"},
-  simulado:{base:"https://resultados-sim.tse.jus.br/simulado/simulado2026/ele2026",ele:"22410",ele1:"21270"}
+  simulado:{base:"https://resultados-sim.tse.jus.br/simulado/simulado2026/ele2026",ele:"22410",ele1:"22409"}
 };
 // Ordem fixa na tela: nº 13 à esquerda, nº 22 à direita. Nomes de reserva antes do TSE publicar os arquivos.
 const FALLBACK={ "13":{nm:"Lula",party:"PT"}, "22":{nm:"Flávio Bolsonaro",party:"PL"} };
@@ -1439,7 +1439,7 @@ function show(on,uf){
 }
 $("gl-uf").innerHTML=`<option value="">Todos os estados com 2º turno</option>`+STATES.map(u=>`<option value="${u}">${esc(UFN[u])}</option>`).join("");
 $("gl-uf").onchange=e=>setSel(e.target.value);
-$("gl-clear").onclick=()=>setSel("");
+$("gl-clear").onclick=()=>{ sel=""; show(false); window.scrollTo({top:0,behavior:"smooth"}); };   // limpar filtro: volta para Presidente
 $("gl-chips").addEventListener("click",e=>{ const b=e.target.closest("button[data-g]"); if(b) setSel(sel===b.dataset.g?"":b.dataset.g); });
 $("cargo-p").onclick=()=>{ if(active) show(false); };
 $("cargo-g").onclick=()=>{ if(!active) show(true); };

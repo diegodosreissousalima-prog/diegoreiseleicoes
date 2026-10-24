@@ -791,7 +791,7 @@ document.addEventListener("pointerdown",e=>{ if(!e.target.closest("#city-wrap"))
 $("city-clear").onclick=clearCity;
 $("reset").onclick=()=>{
   $("q").value=""; $("sort").value="vv"; chartCand="a"; $("cv-a").setAttribute("aria-pressed","true"); $("cv-b").setAttribute("aria-pressed","false");
-  if(cargo==="g"){ scope=""; $("scope").value=""; selCity=null; $("city").value=""; $("city-clear").hidden=true; try{ history.replaceState(null,"",location.pathname+"#governador"); }catch(_){} topRow=null; fillCities(); load(); return; }
+  if(cargo==="g"){ setCargo("p"); return; }   // limpar filtros no modo governador: volta para Presidente
   if(scope!=="br"){ scope="br"; $("scope").value="br"; try{ history.replaceState(null,"",location.pathname); }catch(_){} topRow=null; fillCities(); load(); }
   else { clearCity(); }
 };

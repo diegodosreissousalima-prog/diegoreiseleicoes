@@ -212,6 +212,7 @@ td .win{display:inline-block;width:10px;height:10px;border-radius:50%;margin-rig
 .filt.cargo{border-color:#fff}
 .filt.cargo button[aria-pressed="true"]{background:#fff;color:#1b2a12}
 .filt.cargo button{font-size:16px;padding:12px 22px}
+.gclear{border:0;background:#ffdf00;color:#1b2a12;font:700 15px var(--body);padding:11px 18px;border-radius:10px;cursor:pointer}
 .govlist{display:flex;flex-direction:column;gap:22px}
 .gstate{display:flex;flex-direction:column;gap:10px;scroll-margin-top:80px}
 .gstate h3{font:700 24px/1.1 var(--display);margin:0}
@@ -366,7 +367,7 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
   </section>
 
   <section class="card" id="vg" hidden>
-    <div><div class="label">Governador · 2º turno · 25 de outubro</div><h2>Pesquisas nos estados com 2º turno</h2></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap"><div><div class="label">Governador · 2º turno · 25 de outubro</div><h2>Pesquisas nos estados com 2º turno</h2></div><button type="button" class="gclear" id="gclear">Limpar filtro</button></div>
     <div id="wing"></div>
     <div class="gchips" id="gchips"></div>
     <div id="govlist" class="govlist"></div>
@@ -573,6 +574,7 @@ function setCargo(c){
   else { $("kick").textContent="Presidente da República · Lula × Flávio Bolsonaro"; setView(view); }
 }
 $("fp").onclick=()=>setCargo("p"); $("fg").onclick=()=>setCargo("g");
+$("gclear").onclick=()=>{ setCargo("p"); window.scrollTo({top:0,behavior:"smooth"}); };   // limpar filtro: volta para Presidente
 
 (async()=>{
   testBanner();

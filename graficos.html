@@ -637,7 +637,7 @@ function setCargo(c,uf){
 }
 $("gsel").innerHTML=`<option value="">Todos os ${GST.length} estados</option>`+GST.map(u=>`<option value="${u}">${esc(UFNAME[u])}</option>`).join("");
 $("gsel").onchange=e=>setGov(e.target.value);
-$("gclear").onclick=()=>setGov("");
+$("gclear").onclick=()=>setCargo("p");   // limpar filtro: volta para Presidente
 $("gchips").addEventListener("click",e=>{ const b=e.target.closest("button[data-g]"); if(b) setGov(gsel===b.dataset.g?"":b.dataset.g); });
 $("cargo-p").onclick=()=>{ if(cargo!=="p") setCargo("p"); };
 $("cargo-g").onclick=()=>{ if(cargo!=="g") setCargo("g"); };
