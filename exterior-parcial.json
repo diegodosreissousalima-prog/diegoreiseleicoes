@@ -1,6 +1,6 @@
 {
- "atualizado": "25/10/2026 15h36",
- "fonte": "Boletins de urna do TSE já publicados no exterior (até 15h36), compilados por CNN Brasil, Metrópoles e BBC/Terra; Alemanha, Itália e Portugal ainda parciais",
+ "atualizado": "25/10/2026 16h18",
+ "fonte": "Boletins de urna do TSE já publicados no exterior (até 16h18), compilados por CNN Brasil, Metrópoles e BBC/Terra; última parcial antes da divulgação oficial do TSE",
  "links": [
   [
    "CNN Brasil",
@@ -17,19 +17,24 @@
  ],
  "paises": [
   [
+   "Portugal",
+   34319,
+   23433
+  ],
+  [
    "Japão",
    7098,
    28538
   ],
   [
-   "Portugal",
-   20844,
-   13818
-  ],
-  [
    "Alemanha",
    16549,
    4374
+  ],
+  [
+   "Reino Unido",
+   10968,
+   6349
   ],
   [
    "Espanha",
@@ -110,11 +115,6 @@
    "Israel",
    166,
    699
-  ],
-  [
-   "Reino Unido",
-   658,
-   176
   ],
   [
    "Jordânia",
