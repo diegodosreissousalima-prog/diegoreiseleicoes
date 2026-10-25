@@ -1,6 +1,6 @@
 {
- "atualizado": "25/10/2026 12h30",
- "fonte": "Boletins de urna do TSE já publicados no exterior (até 12h30), compilados pela CNN Brasil",
+ "atualizado": "25/10/2026 13h14",
+ "fonte": "Boletins de urna do TSE já publicados no exterior (até 13h14), compilados pela CNN Brasil",
  "links": [
   [
    "CNN Brasil",
@@ -23,9 +23,24 @@
    3465
   ],
   [
+   "Líbano",
+   2736,
+   1276
+  ],
+  [
    "Emirados Árabes Unidos",
    643,
    772
+  ],
+  [
+   "Palestina",
+   1000,
+   46
+  ],
+  [
+   "Israel",
+   166,
+   699
   ],
   [
    "Jordânia",
@@ -108,14 +123,14 @@
    44
   ],
   [
-   "Kuwait",
-   62,
-   17
-  ],
-  [
    "Arábia Saudita",
    49,
    31
+  ],
+  [
+   "Kuwait",
+   62,
+   17
   ],
   [
    "Egito",
