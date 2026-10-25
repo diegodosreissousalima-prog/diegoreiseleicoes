@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Regiões · Análise Diego Reis</title>
+<meta name="description" content="Apuração do 2º turno para presidente por região do Brasil (Norte, Nordeste, Centro-Oeste, Sudeste e Sul): percentual de Lula e Flávio Bolsonaro com dados oficiais do TSE. Análise – Diego Reis.">
+<meta name="theme-color" content="#0b2f78">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cmask id='m'%3E%3Crect width='120' height='120' fill='white'/%3E%3Cpath d='M-4 46H44V30L74 60 44 90V74H-4Z'/%3E%3C/mask%3E%3Cpath mask='url(%23m)' fill='%23e02a46' d='M24 8H58A52 52 0 0 1 58 112H24Q12 112 12 100V20Q12 8 24 8Z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Poppins:wght@500;600&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: mesma identidade do site de apuração — resumo dos dois turnos no topo, gráfico 1º×2º, tabela por estado/cidade */
+:root{
+  --page:#0b2f78; --page-2:#061a45; --page-glow:rgba(255,214,0,.16); --on-page:#f2f6ff; --on-page-muted:#b9c8ea;
+  --bg:#f3f5f4; --surface:#ffffff; --line:#d9dfdc; --fg:#15201c; --muted:#5d6b66;
+  --a:#d42a2a; --b:#1f5fd1; --a-soft:#f6d0cf; --b-soft:#d2def7; --o:#8a8f8c; --empty:#e2e7e4; --up:#178a4c; --down:#b3261e;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",Roboto,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --page:#071a45; --page-2:#030c22; --page-glow:rgba(255,214,0,.08); --on-page:#e9efff; --on-page-muted:#97a9d4;
+  --bg:#0f1513; --surface:#161e1b; --line:#2a3531; --fg:#e8eeeb; --muted:#97a6a0;
+  --a:#ff5a52; --b:#5b8dff; --a-soft:#4a1d1c; --b-soft:#1b2a4d; --o:#7d8783; --empty:#26302c; --up:#3fcf83; --down:#ff6b5b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --page:#071a45; --page-2:#030c22; --page-glow:rgba(255,214,0,.08); --on-page:#e9efff; --on-page-muted:#97a9d4;
+  --bg:#0f1513; --surface:#161e1b; --line:#2a3531; --fg:#e8eeeb; --muted:#97a6a0;
+  --a:#ff5a52; --b:#5b8dff; --a-soft:#4a1d1c; --b-soft:#1b2a4d; --o:#7d8783; --empty:#26302c; --up:#3fcf83; --down:#ff6b5b; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--page-2)}
+body{margin:0;color:var(--fg);font:16px/1.45 var(--body);min-height:100vh;
+  background:radial-gradient(1200px 600px at 85% -10%,var(--page-glow),transparent 60%),linear-gradient(170deg,var(--page),var(--page-2)) fixed;background-color:var(--page);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+a{color:inherit}
+button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #ffdf00;outline-offset:2px}
+
+.brand{display:flex;align-items:center;justify-content:space-between;gap:14px 20px;flex-wrap:wrap;border-bottom:1px solid color-mix(in srgb,var(--on-page) 30%,transparent);padding-bottom:16px}
+.logo-dr{display:flex;align-items:center;gap:14px;min-width:0;text-decoration:none}
+.dr-mark{width:clamp(48px,7vw,64px);height:auto;flex:none;filter:drop-shadow(0 4px 10px rgba(0,0,0,.25))}
+.dr-words{display:flex;flex-direction:column;gap:4px}
+.dr-name{font:600 clamp(26px,4.4vw,38px)/1 "Poppins",var(--body);letter-spacing:-.02em;color:var(--on-page)}
+.dr-tag{font:500 clamp(10px,1.4vw,12px)/1 "Poppins",var(--body);letter-spacing:.32em;text-transform:uppercase;color:#ffb8c3}
+.back{display:inline-flex;align-items:center;gap:8px;background:#ffdf00;color:#1b2a12;text-decoration:none;font:700 15px var(--body);padding:10px 16px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.2)}
+.back:hover{background:#ffe94d}
+header{color:var(--on-page)}
+.kick{font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--on-page-muted)}
+h1{font:700 clamp(30px,5.4vw,48px)/1.02 var(--display);margin:4px 0 6px;text-wrap:balance}
+.lede{max-width:70ch;color:var(--on-page-muted);margin:0}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(14px,2.5vw,22px);display:flex;flex-direction:column;gap:14px;min-width:0}
+.label{font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h2{font:700 26px/1.1 var(--display);margin:0;text-wrap:balance}
+.sub{font-size:14px;color:var(--muted)}
+.msg{font-size:14px;color:var(--muted);padding:10px 12px;border:1px dashed var(--line);border-radius:8px}
+
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;align-items:end}
+.controls label{display:flex;flex-direction:column;gap:6px;font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:0}
+select,input[type=search]{font:16px var(--body);padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);width:100%;min-width:0}
+.status{font:500 12px var(--mono);color:var(--muted)}
+.prog{height:6px;border-radius:3px;background:var(--empty);overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#009c3b,#ffdf00);transition:width .4s}
+
+/* resumo por candidato */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:700px){.duo{grid-template-columns:1fr}}
+.cand{border-radius:12px;padding:14px 16px;background:var(--bg);border-top:6px solid currentColor;display:flex;flex-direction:column;gap:10px;min-width:0}
+.cand.a{color:var(--a)} .cand.b{color:var(--b)}
+.cand .nm{font:700 26px/1 var(--display);color:var(--fg)}
+.cand .pty{font:500 12px var(--mono);color:var(--muted)}
+.turns{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:8px}
+.turn .k{font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.turn .v{font:700 clamp(30px,5vw,44px)/1 var(--display);font-variant-numeric:tabular-nums}
+.turn .n{font:500 12px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.turn.t1 .v{color:var(--fg);opacity:.8}
+.arrow{font:700 28px var(--display);color:var(--muted);padding-bottom:16px}
+.delta{display:flex;flex-wrap:wrap;gap:8px}
+.pill{display:inline-flex;gap:6px;align-items:baseline;border-radius:999px;padding:4px 10px;font:600 13px var(--body);background:var(--surface);border:1px solid var(--line);color:var(--fg);font-variant-numeric:tabular-nums}
+.pill b.up{color:var(--up)} .pill b.down{color:var(--down)}
+.flow{display:flex;flex-direction:column;gap:8px}
+.flowbar{display:flex;height:22px;border-radius:6px;overflow:hidden;background:var(--empty)}
+.flowbar i{display:block;height:100%}
+.flowbar .fa{background:var(--a)} .flowbar .fb{background:var(--b)} .flowbar .fo{background:var(--o)}
+.flowleg{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted)}
+.flowleg span{display:inline-flex;align-items:center;gap:6px}
+.flowleg i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.fact{border-top:1px solid var(--line);padding-top:8px}
+.fact .v{font:600 24px var(--display);font-variant-numeric:tabular-nums}
+.fact .k{font-size:12px;color:var(--muted)}
+
+/* gráfico 1º × 2º */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--surface);color:var(--fg);font:600 13px var(--body);padding:8px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--surface)}
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart .gl{stroke:var(--line);stroke-width:1}
+.chart .diag{stroke:var(--muted);stroke-dasharray:5 5;stroke-width:1.2}
+.chart .ax{fill:var(--muted);font:500 11px var(--mono)}
+.chart .axt{fill:var(--muted);font:600 12px var(--body)}
+.chart .zone{fill:var(--muted);font:600 12px var(--body);opacity:.8}
+.chart .pa{fill:var(--a);fill-opacity:.55;stroke:var(--a);stroke-width:1}
+.chart .pb{fill:var(--b);fill-opacity:.55;stroke:var(--b);stroke-width:1}
+.chart .pl{fill:var(--fg);font:600 11px var(--body);paint-order:stroke;stroke:var(--surface);stroke-width:3px}
+.chart circle{cursor:pointer}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font:500 12px var(--body);box-shadow:0 6px 16px rgba(0,0,0,.15);white-space:nowrap;z-index:2}
+
+/* destaques */
+.tops{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:700px){.tops{grid-template-columns:1fr}}
+.top h3{margin:0 0 6px;font:700 18px var(--display)}
+.top.a h3{color:var(--a)} .top.b h3{color:var(--b)}
+.top ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px}
+.top li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;font-size:14px;padding:5px 0;border-bottom:1px solid var(--line)}
+.top li .i{font:500 11px var(--mono);color:var(--muted)}
+.top li .d{font:700 14px var(--body);font-variant-numeric:tabular-nums}
+.top.a li .d{color:var(--a)} .top.b li .d{color:var(--b)}
+
+/* tabela */
+.tb{overflow:auto;max-height:620px;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums;min-width:960px}
+th{position:sticky;top:0;background:var(--surface);text-align:right;font:600 11px var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:9px 8px;border-bottom:1px solid var(--line);z-index:1;vertical-align:bottom}
+th:first-child,td:first-child,th.l,td.l{text-align:left}
+th .g{display:block;font-size:10px;letter-spacing:.1em}
+th.a{color:var(--a)} th.b{color:var(--b)}
+td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:right}
+tbody tr:hover{background:var(--bg)}
+td.sep,th.sep{border-left:1px solid var(--line)}
+.up{color:var(--up);font-weight:700} .down{color:var(--down);font-weight:700}
+.chip{display:inline-block;font:700 11px var(--body);padding:2px 8px;border-radius:999px;color:#fff;white-space:nowrap}
+.chip.a{background:var(--a)} .chip.b{background:var(--b)} .chip.m{background:var(--o)}
+.note{font-size:13px;color:var(--muted);max-width:90ch}
+footer{font-size:13px;color:var(--on-page-muted);display:flex;flex-direction:column;gap:4px}
+
+/* WhatsApp */
+.wa-float{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:inline-flex;align-items:center;gap:8px;
+  background:#1faa55;color:#fff;text-decoration:none;font:700 15px var(--body);padding:12px 16px;border-radius:999px;box-shadow:0 8px 22px rgba(0,0,0,.3)}
+.wa-float:hover{background:#178f47}
+.wa-float:focus-visible{outline:3px solid #ffdf00;outline-offset:3px}
+@media (max-width:520px){.wa-float .t{display:none}.wa-float{padding:14px}}
+.wa-line{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.wa-line a{display:inline-flex;align-items:center;gap:6px;background:#1faa55;color:#fff;text-decoration:none;font:700 14px var(--body);padding:7px 14px;border-radius:999px}
+.wa-line .num{font:600 15px var(--body);color:var(--on-page);user-select:all}
+.resetbtn{align-self:end;height:44px;border:0;border-radius:10px;background:#ffdf00;color:#1b2a12;font:700 15px var(--body);cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.15);padding:0 18px}
+.resetbtn:hover{background:#ffe94d}
+.resetbtn:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.citybox{display:flex;flex-direction:column;gap:6px;min-width:0;position:relative}
+.citylist{position:absolute;left:0;right:0;top:76px;z-index:20;margin:0;padding:4px;list-style:none;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.22);max-height:320px;overflow:auto}
+.citylist li{padding:9px 12px;border-radius:7px;cursor:pointer;display:flex;justify-content:space-between;gap:8px;font-size:15px}
+.citylist li[aria-selected="true"],.citylist li:hover{background:color-mix(in srgb,#f2b705 22%,var(--surface))}
+.citylist li .cap{font:500 11px var(--mono);color:var(--muted)}
+.citylist li mark{background:none;color:inherit;font-weight:700;text-decoration:underline}
+.citylist .none{color:var(--muted);cursor:default}
+.citybox label{display:flex;flex-direction:column;gap:6px;font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.citybox input{font:16px var(--body);padding:10px 12px;border:2px solid #f2b705;border-radius:8px;background:var(--bg);color:var(--fg);width:100%}
+.clearbtn{align-self:flex-start;border:0;background:none;color:var(--b);font:600 13px var(--body);padding:2px 0;cursor:pointer;text-decoration:underline}
+tbody tr.cur{background:color-mix(in srgb,#f2b705 18%,var(--surface));font-weight:700}
+tbody tr[data-key]{cursor:pointer}
+.chart circle.sel{stroke:var(--fg);stroke-width:2.5;fill-opacity:.9}
+.chart .ring{fill:none;stroke:#f2b705;stroke-width:3}
+.cand-head{display:flex;align-items:center;gap:12px}
+.rankb{flex:none;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font:700 26px/1 var(--display);background:var(--surface);color:var(--muted);border:2px solid var(--line)}
+.cand.first .rankb{background:currentColor;border-color:currentColor}
+.cand.first .rankb{color:inherit}
+.cand.first .rankb{-webkit-text-fill-color:#fff}
+.cand.first{box-shadow:0 0 0 2px color-mix(in srgb,currentColor 35%,transparent)}
+@media (prefers-reduced-motion:reduce){.prog i{transition:none}}
+
+/* abas */
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tabs a{text-decoration:none;font:700 14px var(--body);padding:9px 16px;border-radius:999px;color:var(--on-page);border:1px solid color-mix(in srgb,var(--on-page) 35%,transparent)}
+.tabs a:hover{background:color-mix(in srgb,var(--on-page) 12%,transparent)}
+.tabs a[aria-current="page"]{background:#ffdf00;color:#1b2a12;border-color:#ffdf00}
+/* tabelas por estado */
+.stbl{overflow:auto;border:1px solid var(--line);border-radius:10px}
+.stbl table{min-width:640px}
+.stbl td.bar{width:38%;min-width:180px}
+.sbar{display:flex;height:16px;border-radius:4px;overflow:hidden;background:var(--empty)}
+.sbar i{display:block;height:100%}
+.sbar .a{background:var(--a)} .sbar .b{background:var(--b)} .sbar .o{background:var(--o)}
+tr.total td{font-weight:700;background:var(--bg)}
+td .win{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+/* mapa de cidades */
+.mapwrap{position:relative;width:100%;max-width:760px;margin:0 auto}
+.mapwrap canvas{display:block;width:100%;height:auto;touch-action:manipulation}
+.maptools{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+.maptools label{display:flex;flex-direction:column;gap:6px;font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:200px}
+.loadbtn{height:44px;border:0;border-radius:10px;background:#ffdf00;color:#1b2a12;font:700 15px var(--body);cursor:pointer;padding:0 18px;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.loadbtn:hover{background:#ffe94d}
+.loadbtn[disabled]{opacity:.55;cursor:default}
+.mapcount{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.mapcount .box{border-radius:10px;padding:10px 14px;background:var(--bg);border-left:6px solid}
+.mapcount .box.a{border-color:var(--a)} .mapcount .box.b{border-color:var(--b)}
+.mapcount .n{font:700 34px/1 var(--display);font-variant-numeric:tabular-nums}
+.mapcount .a .n{color:var(--a)} .mapcount .b .n{color:var(--b)}
+.mapcount .t{font-size:13px;color:var(--muted)}
+.brstate{width:100%;max-width:640px;margin:0 auto;display:block;height:auto}
+.brstate path{stroke:var(--surface);stroke-width:1}
+.testbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:#b3261e;color:#fff;text-align:center;font:700 13px var(--body);padding:8px 12px;letter-spacing:.04em;margin:-20px calc(-1*max(16px,env(safe-area-inset-left,0px))) 12px}
+
+/* pesquisas */
+.filt{align-self:flex-start;display:inline-flex;flex-wrap:wrap;border:2px solid #ffdf00;border-radius:12px;overflow:hidden;background:var(--surface)}
+.filt button{border:0;background:none;color:var(--fg);font:700 15px var(--body);padding:11px 18px;cursor:pointer}
+.filt button[aria-pressed="true"]{background:#ffdf00;color:#1b2a12}
+.filt.cargo{border-color:#fff}
+.filt.cargo button[aria-pressed="true"]{background:#fff;color:#1b2a12}
+.filt.cargo button{font-size:16px;padding:12px 22px}
+.govlist{display:flex;flex-direction:column;gap:22px}
+.gstate{display:flex;flex-direction:column;gap:10px;scroll-margin-top:80px}
+.gstate h3{font:700 24px/1.1 var(--display);margin:0}
+.gstate .vs{font-size:14px;color:var(--muted)}
+.gstate .vs b.a{color:var(--g1,#c2410c)}.gstate .vs b.b{color:var(--g2,#6d28d9)}
+.gchips{display:flex;flex-wrap:wrap;gap:8px}
+.gchips a{text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font:700 13px var(--body);color:var(--fg);background:var(--bg)}
+.gchips a:hover{border-color:#ffdf00}
+.gstate .fill.ga{background:#ea580c}.gstate .fill.gb{background:#7c3aed}
+.gstate .nm.ga{color:#c2410c}.gstate .nm.gb{color:#6d28d9}
+.updline{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;color:var(--on-page-muted);font:500 13px var(--mono)}
+.updline b{color:var(--on-page)}
+.polls{display:flex;flex-direction:column;gap:12px}
+.poll{display:grid;grid-template-columns:44px minmax(0,1.3fr) minmax(0,2fr) minmax(0,1fr);gap:14px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--surface);position:relative}
+@media (max-width:760px){.poll{grid-template-columns:40px minmax(0,1fr)}.poll .pbars,.poll .pscore{grid-column:1/-1}}
+.poll.best{border:3px solid #f2b705;box-shadow:0 0 0 5px color-mix(in srgb,#f2b705 22%,transparent);padding:12px 14px}
+.poll.best .tagbest{position:absolute;top:-13px;left:14px;background:#f2b705;color:#1b2a12;font:700 12px var(--body);padding:3px 10px;border-radius:999px;letter-spacing:.03em}
+.poll .rk{font:700 30px/1 var(--display);color:var(--muted)}
+.poll.best .rk{color:#b8860b}
+.poll .inst{font:700 20px/1.1 var(--display)}
+.ihead{display:flex;align-items:center;gap:10px;min-width:0}
+.ilogo{width:38px;height:38px;border-radius:10px;flex:none;display:grid;place-items:center;background:#fff;border:1px solid var(--line);overflow:hidden}
+.ilogo img{width:28px;height:28px;display:block}
+.ilogo.wide{width:auto;min-width:38px;max-width:80px;padding:0 5px}
+.ilogo.wide img{width:auto;height:30px;max-width:70px;object-fit:contain}
+.ilogo.ini{color:#fff;border:0;font:800 14px var(--body);letter-spacing:.02em}
+.poll .meta{font:500 12px var(--mono);color:var(--muted);margin-top:3px}
+.poll .meta a{color:var(--muted)}
+.pbars{display:flex;flex-direction:column;gap:7px;min-width:0}
+.pbar{display:grid;grid-template-columns:118px minmax(0,1fr) 64px;gap:8px;align-items:center;font-size:13px}
+.pbar .nm{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pbar .nm.a{color:var(--a)} .pbar .nm.b{color:var(--b)}
+.pbar .track{position:relative;height:14px;background:var(--empty);border-radius:4px}
+.pbar .fill{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
+.pbar .fill.a{background:var(--a)} .pbar .fill.b{background:var(--b)}
+.pbar .real{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--fg);border-radius:2px}
+.pbar .v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.pscore{display:flex;flex-direction:column;align-items:flex-end;gap:4px;text-align:right}
+.pscore .acc{font:700 30px/1 var(--display);font-variant-numeric:tabular-nums}
+.pscore .err{font:500 12px var(--mono);color:var(--muted)}
+.ok-chip,.no-chip{display:inline-block;font:700 11px var(--body);padding:3px 9px;border-radius:999px}
+.ok-chip{background:color-mix(in srgb,var(--up) 18%,var(--surface));color:var(--up)}
+.no-chip{background:color-mix(in srgb,var(--down) 14%,var(--surface));color:var(--down)}
+.realbox{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;border-radius:10px;background:var(--bg);padding:12px 14px;font-size:14px}
+.realbox .k{font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.realbox b.a{color:var(--a)} .realbox b.b{color:var(--b)}
+.realbox .mk{display:inline-block;width:3px;height:14px;background:var(--fg);vertical-align:middle;margin-right:4px;border-radius:2px}
+details.more{border-top:1px solid var(--line);padding-top:10px}
+details.more summary{cursor:pointer;font-weight:700}
+.avg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.avg .box{border-radius:10px;padding:12px 14px;background:var(--bg);border-left:6px solid}
+.avg .a{border-color:var(--a)} .avg .b{border-color:var(--b)}
+.avg .n{font:700 36px/1 var(--display);font-variant-numeric:tabular-nums}
+.avg .a .n{color:var(--a)} .avg .b .n{color:var(--b)}
+.avg .t{font-size:13px;color:var(--muted)}
+.winner{border:3px solid var(--up);border-radius:14px;padding:16px 18px;background:color-mix(in srgb,var(--up) 8%,var(--surface));display:flex;flex-direction:column;gap:6px}
+.winner .k{font:700 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--up)}
+.winner .nm{font:700 clamp(28px,5vw,40px)/1 var(--display)}
+.testbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:#b3261e;color:#fff;text-align:center;font:700 13px var(--body);padding:8px 12px;letter-spacing:.04em;margin:-20px calc(-1*max(16px,env(safe-area-inset-left,0px))) 12px}
+
+/* contato-fila */
+.strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px}
+.fila-btn{display:inline-flex;align-items:center;gap:10px;background:#ffdf00;color:#1b2a12;text-decoration:none;padding:10px 18px 10px 14px;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.22);font:700 15px var(--body);line-height:1.15}
+.fila-btn small{display:block;font:500 12px var(--body);opacity:.85}
+.fila-btn:hover{filter:brightness(1.05);transform:translateY(-1px)}
+.fila-btn:focus-visible,.me a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.me{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.me .who{font:700 14px var(--body);color:var(--on-page);margin-right:2px}
+.me a{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:#fff;font:700 13px var(--body);padding:7px 12px;border-radius:999px}
+.me a.wa{background:#1faa55}.me a.wa:hover{background:#178f47}
+.me a.ig{background:linear-gradient(45deg,#f58529,#dd2a7b 55%,#8134af)}.me a.ig:hover{filter:brightness(1.08)}
+.footer-me{display:flex;flex-direction:column;gap:8px}
+.footer-me .nm{font:700 16px var(--body);color:var(--on-page)}
+.footer-me .role{font:500 14px var(--body);color:var(--on-page-muted);margin-top:-4px}
+@media (max-width:520px){.strip{flex-direction:column;align-items:stretch}.fila-btn{justify-content:center}.me{justify-content:center}}
+
+/* abas fixas no topo (computador e celular) */
+html{scroll-padding-top:72px}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:35;padding:10px 0;background:color-mix(in srgb,var(--page) 92%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 10px 14px -12px rgba(0,0,0,.45)}
+body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
+@media (max-width:640px){.tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin:0 -16px;padding:10px 16px}.tabs::-webkit-scrollbar{display:none}.tabs a{flex:none;font-size:13px;padding:8px 13px}}
+
+/* logo pequena na barra fixa, aparece ao rolar */
+.tabs{align-items:center}
+.tabs-logo{display:none!important;align-items:center;gap:6px;text-decoration:none!important;border:0!important;padding:0 6px 0 0!important;background:none!important;color:var(--on-page)!important;font:800 15px var(--display,inherit)!important;white-space:nowrap}
+.tabs.stuck .tabs-logo{display:inline-flex!important;animation:tlg .25s ease}
+@keyframes tlg{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+@media (max-width:640px){.tabs-logo span{display:none}}
+@media (prefers-reduced-motion:reduce){.tabs.stuck .tabs-logo{animation:none}}
+
+/* ===== Viradas ===== */
+.cands-pick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) auto;gap:12px;align-items:stretch}
+@media (max-width:640px){.cands-pick{grid-template-columns:1fr 1fr}.cands-pick .clear{grid-column:1/-1}}
+.cpick{display:flex;align-items:center;gap:12px;border:2px solid var(--line);background:var(--surface);color:var(--fg);border-radius:14px;padding:10px 14px;cursor:pointer;text-align:left;font:inherit;min-width:0}
+.cpick img{width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:top;background:var(--bg);flex:none}
+.cpick .nm{font:700 18px/1.1 var(--display)}
+.cpick .sub{font-size:12px;color:var(--muted)}
+.cpick.a[aria-pressed="true"]{border-color:var(--a);box-shadow:0 0 0 4px color-mix(in srgb,var(--a) 20%,transparent)}
+.cpick.b[aria-pressed="true"]{border-color:var(--b);box-shadow:0 0 0 4px color-mix(in srgb,var(--b) 20%,transparent)}
+.cpick:hover{border-color:#ffdf00}
+.cpick.a.shown{border-color:var(--a)}.cpick.b.shown{border-color:var(--b)}
+.clear{border:0;background:#ffdf00;color:#1b2a12;font:700 15px var(--body);border-radius:14px;padding:12px 18px;cursor:pointer}
+.clear:hover{filter:brightness(1.05)}
+.vstat{display:flex;flex-wrap:wrap;gap:10px}
+.vstat .box{flex:1 1 150px;border-radius:12px;padding:12px 14px;background:var(--bg);border:1px solid var(--line)}
+.vstat .n{font:700 30px/1 var(--display)}
+.vstat .t{font-size:13px;color:var(--muted);margin-top:4px}
+.vstat .up .n{color:var(--up)}.vstat .down .n{color:var(--down)}.vstat .vir .n{color:#b8860b}
+.vcols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.vcols{grid-template-columns:1fr}}
+.vcol h3{font:700 16px var(--body);margin:0 0 8px;display:flex;align-items:center;gap:8px}
+.vcol.up h3{color:var(--up)}.vcol.down h3{color:var(--down)}
+.vlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.vrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--surface)}
+.vrow .pl{font-weight:700;min-width:0}
+.vrow .pl small{font-weight:500;color:var(--muted)}
+.vrow .dl{font:700 15px var(--mono);white-space:nowrap}
+.vrow .dl.up{color:var(--up)}.vrow .dl.down{color:var(--down)}
+.vrow .nums{grid-column:1/-1;font:500 12px var(--mono);color:var(--muted)}
+.vbadge{display:inline-block;font:700 11px var(--body);letter-spacing:.03em;padding:2px 8px;border-radius:999px;background:#ffdf00;color:#1b2a12;margin-left:6px;vertical-align:middle}
+.vtable{width:100%;border-collapse:collapse;font-size:14px}
+.vtable th,.vtable td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:right}
+.vtable th:first-child,.vtable td:first-child{text-align:left}
+.vtable .a{color:var(--a);font-weight:700}.vtable .b{color:var(--b);font-weight:700}
+.empty{color:var(--muted);font-size:14px;padding:6px 2px}
+
+/* seta de evolução 1º → 2º turno */
+.dlt{display:inline-flex;align-items:center;gap:4px;font:700 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;padding:4px 8px;border-radius:999px;white-space:nowrap;border:2px solid var(--ec,#888);vertical-align:middle}
+.dlt.a{--ec:var(--a)}.dlt.b{--ec:var(--b)}.dlt.ga{--ec:var(--ga,#ea580c)}.dlt.gb{--ec:var(--gb,#7c3aed)}
+.dlt.up{background:var(--ec);color:#fff}
+.dlt.down{background:transparent;color:var(--ec)}
+.dlt.eq{background:transparent;color:var(--muted,#777)}
+
+/* ===== marca d'água e botão "Salvar imagem" em cada quadro ===== */
+.shot-host{position:relative}
+.wm{position:absolute;right:18px;bottom:46px;width:150px;max-width:38%;opacity:.13;pointer-events:none;user-select:none;z-index:1}
+.shotbar{display:flex;justify-content:flex-end;margin-top:4px;position:relative;z-index:2}
+.shotbtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 13px var(--body);padding:7px 12px;border-radius:999px;cursor:pointer}
+.shotbtn:hover{border-color:#ffdf00;background:color-mix(in srgb,#ffdf00 18%,var(--surface))}
+.shotbtn:disabled{opacity:.6;cursor:wait}
+.shotbtn svg{width:16px;height:16px}
+
+.rgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+@media (max-width:1100px){.rgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:700px){.rgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.rgrid{grid-template-columns:1fr}}
+.rcard{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;border-top:5px solid var(--o);background:var(--surface)}
+.rcard.a{border-top-color:var(--a)}.rcard.b{border-top-color:var(--b)}
+.rcab{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.rcab h3{margin:0;font:700 22px/1 var(--display)}
+.rpst{font:500 11px var(--mono);color:var(--muted);white-space:nowrap}
+.rlin{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.rlin .rn{font:600 13px var(--body);color:var(--muted);min-width:46px}
+.rlin b{font:700 30px/1 var(--display)}
+.rlin.a b{color:var(--a)}.rlin.b b{color:var(--b)}
+.rdl{font:600 11px var(--mono);padding:2px 6px;border-radius:99px}
+.rdl.up{color:var(--up);background:color-mix(in srgb,var(--up) 14%,transparent)}.rdl.down{color:var(--down);background:color-mix(in srgb,var(--down) 14%,transparent)}
+.rbar{display:flex;height:10px;border-radius:99px;overflow:hidden;background:var(--empty)}
+.rbar i.a{background:var(--a)}.rbar i.b{background:var(--b)}
+.rpe{font-size:13px;color:var(--fg)}.rq1{font-size:12px;color:var(--muted)}
+.rleg{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12.5px;color:var(--muted);align-items:center}
+.rleg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}.rleg i.la{background:var(--a)}.rleg i.lb{background:var(--b)}
+.rtab-box{overflow-x:auto}
+table.rt{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+table.rt th{text-align:left;font:600 12px var(--body);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding:8px}
+table.rt td{border-bottom:1px solid var(--line);padding:9px 8px;vertical-align:top;font-variant-numeric:tabular-nums}
+table.rt td small{color:var(--muted)}
+.rufs{display:block;font:500 11px var(--mono);color:var(--muted)}
+.ca{color:var(--a);font-weight:700}.cb{color:var(--b);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <a class="logo-dr" href="./" aria-label="Diego Reis · Análise eleitoral · voltar à apuração">
+      <svg class="dr-mark" viewBox="0 0 120 120" aria-hidden="true">
+        <defs>
+          <mask id="dr-cut"><rect width="120" height="120" fill="#fff"/><path d="M-4 46 H44 V30 L74 60 L44 90 V74 H-4 Z" fill="#000"/></mask>
+          <linearGradient id="dr-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0465e"/><stop offset="1" stop-color="#d6203d"/></linearGradient>
+        </defs>
+        <path mask="url(#dr-cut)" fill="url(#dr-g)" d="M24 8 H58 A52 52 0 0 1 58 112 H24 Q12 112 12 100 V20 Q12 8 24 8 Z"/>
+      </svg>
+      <div class="dr-words"><div class="dr-name">Diego Reis</div><div class="dr-tag">Análise eleitoral</div></div>
+    </a>
+  </div>
+
+  <nav class="tabs" aria-label="Páginas do site">
+    <a class="tabs-logo" href="./" aria-label="Diego Reis, início" tabindex="-1"><svg viewBox="0 0 120 120" width="26" height="26" aria-hidden="true"><defs><mask id="dr-cut-mini"><rect width="120" height="120" fill="#fff"/><path d="M-4 46 H44 V30 L74 60 L44 90 V74 H-4 Z" fill="#000"/></mask></defs><path mask="url(#dr-cut-mini)" fill="#e23350" d="M24 8 H58 A52 52 0 0 1 58 112 H24 Q12 112 12 100 V20 Q12 8 24 8 Z"/></svg><span>Diego Reis</span></a>
+    <a href="./">Apuração ao vivo</a>
+    <a href="analise.html">1º × 2º turno</a>
+    <a href="graficos.html">Gráficos</a>
+    <a href="pesquisas.html">Projeção</a>
+    <a href="governador.html">Governador</a>
+    <a href="viradas.html">Viradas</a>
+    <a href="regioes.html" aria-current="page">Regiões</a>
+  </nav>
+
+  <header>
+    <div class="kick">Presidente da República · 2º turno · 25 out 2026</div>
+    <h1>Resultado por região</h1>
+    <p class="lede">Lula × Flávio Bolsonaro nas 5 regiões do Brasil, somando os estados de cada uma com os dados oficiais do TSE. Atualiza sozinho a cada 60 segundos.</p>
+    <div class="updline" style="margin-top:12px"><span id="rupd">carregando os dados do TSE…</span></div>
+  </header>
+
+  <section class="card" id="rres">
+    <div><div class="label">Brasil por região</div><h2>Quem lidera em cada região</h2></div>
+    <div class="rgrid" id="rgrid"><div class="note">Carregando…</div></div>
+    <div class="rleg"><span><i class="la"></i>Lula (PT · 13)</span><span><i class="lb"></i>Flávio Bolsonaro (PL · 22)</span><span class="rnota">▲▼ variação em pontos percentuais em relação ao 1º turno na mesma região</span></div>
+  </section>
+
+  <section class="card" id="rtab">
+    <div><div class="label">Resumo</div><h2>Tabela por região</h2></div>
+    <div class="rtab-box"><table class="rt"><thead><tr><th>Região</th><th>Lula</th><th>Flávio</th><th>Diferença</th><th>Seções apuradas</th><th>Votos válidos</th></tr></thead><tbody id="rtbody"></tbody></table></div>
+    <p class="note" style="margin:0">Regiões: Norte (AC, AM, AP, PA, RO, RR, TO) · Nordeste (AL, BA, CE, MA, PB, PE, PI, RN, SE) · Centro-Oeste (DF, GO, MS, MT) · Sudeste (ES, MG, RJ, SP) · Sul (PR, RS, SC). Percentual sobre os votos válidos apurados; "seções apuradas" é a soma das seções totalizadas dos estados da região. O exterior não entra em nenhuma região. Dados oficiais do TSE.</p>
+  </section>
+
+  <footer>
+    <div class="footer-me" data-contato><span class="nm">Diego R. S. Lima</span><span class="role">Cientista e Engenheiro Computacional · Especialista em análise de metadados, gráficos e análises políticas e econômicas</span><div class="me"><a class="wa" href="https://wa.me/5586998096932?text=Ol%C3%A1%2C%20Diego%21%20Vim%20pelo%20site%20das%20elei%C3%A7%C3%B5es." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 20l1.3-3.9A8 8 0 1 1 8.2 19z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M9 9.5c.3 1.9 2.4 4.1 4.6 4.7l1.1-1.2 1.6.8c-.2 1-1.1 1.7-2.2 1.6C11 15 8.8 12.7 8.5 10.6c-.1-1 .6-1.9 1.6-2.1l.8 1.6z"/></svg>WhatsApp (86) 99809-6932</a><a class="ig" href="https://www.instagram.com/diegosousa1998/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.3" fill="currentColor"/></svg>Instagram @diegosousa1998</a></div></div>
+    <span>Fonte: arquivos públicos de divulgação do Tribunal Superior Eleitoral (resultados.tse.jus.br), eleições 6257 (1º turno) e 6258 (2º turno). Localização das cidades: base aberta Municípios Brasileiros (licença MIT). Site independente.</span>
+  </footer>
+</div>
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n||0).toLocaleString("pt-BR");
+const p1=n=>Number(n).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:2})+"%";
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const num=s=>Number(String(s??"0").replace(",","."))||0;
+/* ===== Conexão com o TSE =====
+   Modo normal: dados oficiais (resultados.tse.jus.br).
+   Modo de teste: abra a página com ?teste=simulado para usar os arquivos do simulado oficial do TSE.
+   Primeiro tenta direto no TSE; se o navegador bloquear (CORS), usa as rotas /tse/ e /tse-sim/ do próprio site (arquivo _redirects). */
+const TESTE=/[?&]teste=simulado\b/.test(location.search);
+const ROUTES={"https://resultados.tse.jus.br":"/tse","https://resultados-sim.tse.jus.br":"/tse-sim"};
+const BASE= TESTE ? "https://resultados-sim.tse.jus.br/simulado/simulado2026/ele2026" : "https://resultados.tse.jus.br/oficial/ele2026";
+const E1=TESTE?"22409":"6257", E2=TESTE?"22410":"6258", G1=TESTE?"22411":"6259", G2=TESTE?"22412":"6260";
+const OPEN_AT= TESTE ? 0 : Date.UTC(2026,9,25,19,55);   // 2º turno divulgado a partir das 17h de Brasília de 25/10
+const open2=()=>Date.now()>=OPEN_AT;
+let viaProxy=false; try{ viaProxy=sessionStorage.getItem("tse-proxy")==="1"; }catch(e){}
+const canProxy=location.protocol.startsWith("http");
+const viaRoute=u=>{ for(const h in ROUTES) if(u.startsWith(h)) return ROUTES[h]+u.slice(h.length); return u; };
+const isTSE=u=>Object.keys(ROUTES).some(h=>u.startsWith(h));
+async function tseFetch(u){
+  if(viaProxy&&canProxy) return fetch(viaRoute(u),{cache:"no-cache"});
+  try{ return await fetch(u,{cache:"no-cache"}); }
+  catch(e){
+    if(!canProxy||!isTSE(u)) throw e;
+    viaProxy=true; try{ sessionStorage.setItem("tse-proxy","1"); }catch(_){}
+    return fetch(viaRoute(u),{cache:"no-cache"});
+  }
+}
+async function getJSON(u){ try{ const r=await tseFetch(u); if(!r.ok) return null; return await r.json(); }catch(e){ return null; } }
+const pad=n=>String(n).padStart(6,"0");
+const url=(ele,abr,cargo="0001")=>`${BASE}/${ele}/dados/${abr.slice(0,2)}/${abr}-c${cargo}-e${pad(ele)}-u.json`;
+const _SMALL=new Set(["de","da","do","das","dos","e"]);
+const nameCase=s=>{ s=String(s||""); if(s!==s.toUpperCase()) return s; return s.toLowerCase().split(" ").map((w,i)=>i&&_SMALL.has(w)?w:w.charAt(0).toUpperCase()+w.slice(1)).join(" "); };
+const REG=[["Norte",["ac","am","ap","pa","ro","rr","to"]],["Nordeste",["al","ba","ce","ma","pb","pe","pi","rn","se"]],["Centro-Oeste",["df","go","ms","mt"]],["Sudeste",["es","mg","rj","sp"]],["Sul",["pr","rs","sc"]]];
+function soma(j){ const o={L:0,F:0,vv:0,st:0,s:0}; if(!j) return o; const s=j.s||{}, v=j.v||{};
+  o.st=+(s.st||0); o.s=+(s.s||0); o.vv=+(v.vv||0);
+  ((j.carg||[])[0]?.agr||[]).forEach(g=>(g.par||[]).forEach(p=>(p.cand||[]).forEach(c=>{ if(String(c.n)==="13") o.L=+(c.vap||0); if(String(c.n)==="22") o.F=+(c.vap||0); })));
+  return o; }
+let t1={};   // 1º turno por estado (não muda)
+async function carregar(){
+  const ufs=REG.flatMap(r=>r[1]);
+  if(!Object.keys(t1).length){ const r1=await Promise.all(ufs.map(u=>getJSON(url(E1,u)))); ufs.forEach((u,i)=>{ t1[u]=soma(r1[i]); }); }
+  const r2= open2() ? await Promise.all(ufs.map(u=>getJSON(url(E2,u)))) : ufs.map(()=>null);
+  const t2={}; ufs.forEach((u,i)=>{ t2[u]=soma(r2[i]); });
+  const linhas=REG.map(([nome,us])=>{ const a={L:0,F:0,vv:0,st:0,s:0}, b={L:0,F:0,vv:0};
+    us.forEach(u=>{ const x=t2[u], y=t1[u]; a.L+=x.L; a.F+=x.F; a.vv+=x.vv; a.st+=x.st; a.s+=x.s; b.L+=y.L; b.F+=y.F; b.vv+=y.vv; });
+    const tot=a.L+a.F, pL=tot?100*a.L/tot:null, pF=tot?100*a.F/tot:null;
+    const q1L=b.vv?100*b.L/b.vv:null, q1F=b.vv?100*b.F/b.vv:null;
+    return {nome,us,L:a.L,F:a.F,vv:a.vv,pst:a.s?100*a.st/a.s:0,pL,pF,q1L,q1F}; });
+  render(linhas);
+  const ok=linhas.some(l=>l.L+l.F>0);
+  $("rupd").innerHTML= ok ? `atualizado às <b>${new Date().toLocaleTimeString("pt-BR")}</b> · próxima em 60 s` : (open2()?"aguardando os primeiros votos do TSE":"o 2º turno é divulgado a partir das 17h de 25/10");
+}
+const dl=(v,cls)=>v==null?"":`<span class="rdl ${v>=0?"up":"down"}">${v>=0?"▲":"▼"} ${Math.abs(v).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})} p.p.</span>`;
+function render(ls){
+  $("rgrid").innerHTML=ls.map(l=>{ const tem=l.pL!=null, lid=tem?(l.pL>l.pF?"a":l.pF>l.pL?"b":""):"";
+    return `<div class="rcard ${lid}"><div class="rcab"><h3>${esc(l.nome)}</h3><span class="rpst">${tem?p1(l.pst)+" apurado":"aguardando"}</span></div>
+      <div class="rlin a"><span class="rn">Lula</span><b>${tem?p1(l.pL):"—"}</b>${tem?dl(l.pL-(100*l.q1L/(l.q1L+l.q1F)||0)):""}</div>
+      <div class="rlin b"><span class="rn">Flávio</span><b>${tem?p1(l.pF):"—"}</b>${tem?dl(l.pF-(100*l.q1F/(l.q1L+l.q1F)||0)):""}</div>
+      <div class="rbar"><i class="a" style="width:${tem?l.pL:50}%"></i><i class="b" style="width:${tem?l.pF:50}%"></i></div>
+      <div class="rpe">${tem?`${lid==="a"?"Lula":"Flávio"} à frente por <b>${p1(Math.abs(l.pL-l.pF))}</b> · ${fmt(Math.abs(l.L-l.F))} votos`:"sem votos apurados ainda"}</div>
+      <div class="rq1">1º turno: Lula ${l.q1L!=null?p1(l.q1L):"—"} · Flávio ${l.q1F!=null?p1(l.q1F):"—"}</div></div>`; }).join("");
+  $("rtbody").innerHTML=ls.map(l=>{ const tem=l.pL!=null; return `<tr><td><b>${esc(l.nome)}</b><span class="rufs">${l.us.map(u=>u.toUpperCase()).join(" · ")}</span></td>
+    <td class="ca">${tem?p1(l.pL):"—"}<br><small>${fmt(l.L)}</small></td><td class="cb">${tem?p1(l.pF):"—"}<br><small>${fmt(l.F)}</small></td>
+    <td>${tem?`<span class="${l.pL>l.pF?"ca":"cb"}">${p1(Math.abs(l.pL-l.pF))}</span>`:"—"}</td><td>${p1(l.pst)}</td><td>${fmt(l.vv)}</td></tr>`; }).join("");
+}
+testBanner();
+carregar(); setInterval(()=>{ if(!document.hidden) carregar(); },60000);
+function testBanner(){ if(!TESTE) return; const b=document.createElement("div"); b.className="testbar"; b.textContent="MODO DE TESTE · dados do simulado oficial do TSE, não são resultados reais"; document.body.prepend(b); }
+})();
+</script>
+<script>(function(){var t=document.querySelector('.tabs'),c=t&&t.querySelector('[aria-current]');if(c&&t.scrollWidth>t.clientWidth)t.scrollLeft=c.offsetLeft-(t.clientWidth-c.offsetWidth)/2;})();</script>
+<script>(function(){var t=document.querySelector('.tabs');if(!t||!('IntersectionObserver' in window))return;var s=document.createElement('div');s.style.cssText='height:1px;margin-bottom:-1px';t.parentNode.insertBefore(s,t);new IntersectionObserver(function(e){var st=!e[0].isIntersecting&&e[0].boundingClientRect.top<0;t.classList.toggle('stuck',st);var l=t.querySelector('.tabs-logo');if(l)l.tabIndex=st?0:-1;}).observe(s);})();</script>
+<script>
+/* Marca d'água com a logo do Diego Reis e botão para salvar cada quadro/gráfico como imagem (PNG). */
+(function(){
+  const SEL=".card,.board,.panel,section.evo,.rank,.gov,.gl-card";
+  const dark=()=>window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches;
+  const ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
+  function decorate(){
+    document.querySelectorAll(SEL).forEach(el=>{
+      if(el.matches("[data-noshot]")||(el.parentElement&&el.parentElement.closest(SEL))) return;
+      if(el.querySelector(":scope > .shotbar")) return;
+      el.classList.add("shot-host");
+      const wm=document.createElement("img"); wm.className="wm"; wm.alt=""; wm.setAttribute("aria-hidden","true");
+      wm.src= dark()?"img/diego-reis-logo-escuro.png":"img/diego-reis-logo.png"; el.appendChild(wm);
+      const bar=document.createElement("div"); bar.className="shotbar";
+      const b=document.createElement("button"); b.type="button"; b.className="shotbtn"; b.innerHTML=ICON+"<span>Salvar imagem</span>";
+      b.title="Salvar este quadro como imagem, com a marca Diego Reis"; b.onclick=()=>shoot(el,b);
+      bar.appendChild(b); el.appendChild(bar);
+    });
+  }
+  let q=false; const later=()=>{ if(q) return; q=true; requestAnimationFrame(()=>{ q=false; decorate(); }); };
+  new MutationObserver(later).observe(document.body,{childList:true,subtree:true});
+  decorate();
+  /* html2canvas não entende color-mix()/color(): troca por rgb() já calculado, só na cópia usada para a imagem */
+  const cv=document.createElement("canvas"); cv.width=cv.height=1; const cx=cv.getContext("2d",{willReadFrequently:true});
+  function toRGB(v){ try{ cx.clearRect(0,0,1,1); cx.fillStyle="#000"; cx.fillStyle=v; cx.fillRect(0,0,1,1); const d=cx.getImageData(0,0,1,1).data; return `rgba(${d[0]},${d[1]},${d[2]},${(d[3]/255).toFixed(3)})`; }catch(e){ return "transparent"; } }
+  const PROPS=["color","background-color","border-top-color","border-right-color","border-bottom-color","border-left-color","outline-color","fill","stroke","text-decoration-color","caret-color","column-rule-color"];
+  function sanitize(root){
+    const win=root.ownerDocument.defaultView;
+    [root,...root.querySelectorAll("*")].forEach(n=>{
+      const cs=win.getComputedStyle(n);
+      PROPS.forEach(pr=>{ const v=cs.getPropertyValue(pr); if(v&&/color\(|color-mix|oklab|oklch|lab\(|lch\(/.test(v)) n.style.setProperty(pr,toRGB(v),"important"); });
+      ["box-shadow","text-shadow"].forEach(pr=>{ const v=cs.getPropertyValue(pr); if(v&&/color\(|color-mix|oklab|oklch/.test(v)) n.style.setProperty(pr,"none","important"); });
+      const bi=cs.getPropertyValue("background-image"); if(bi&&/color\(|color-mix|oklab|oklch/.test(bi)) n.style.setProperty("background-image","none","important");
+    });
+  }
+  let lib=null;
+  function load(){ return lib||(lib=new Promise((ok,err)=>{ const s=document.createElement("script"); s.src="js/html2canvas.min.js"; s.onload=()=>ok(window.html2canvas); s.onerror=err; document.head.appendChild(s); })); }
+  async function shoot(el,b){
+    const txt=b.lastChild.textContent; b.disabled=true; b.lastChild.textContent="Gerando…";
+    try{
+      const h2c=await load();
+      const bg=getComputedStyle(el).backgroundColor; const solid=toRGB(bg&&!/rgba\(0, 0, 0, 0\)|transparent/.test(bg)?bg:"#ffffff");
+      const c=await h2c(el,{scale:2,backgroundColor:solid,useCORS:true,logging:false,onclone:(doc,clone)=>sanitize(clone),ignoreElements:n=>n.classList&&n.classList.contains("shotbar")});
+      const F=72, out=document.createElement("canvas"); out.width=c.width; out.height=c.height+F;
+      const g=out.getContext("2d"); g.fillStyle="#0b2f78"; g.fillRect(0,0,out.width,out.height); g.drawImage(c,0,0);
+      g.fillStyle="#ffdf00"; g.fillRect(0,c.height,out.width,6);
+      g.fillStyle="#ffffff"; g.font="700 26px Arial, sans-serif"; g.textBaseline="middle";
+      g.fillText("Diego Reis · Análise eleitoral",24,c.height+F/2+3);
+      g.font="500 22px Arial, sans-serif"; g.textAlign="right";
+      g.fillText("diegoreiseleicoes.com.br · "+new Date().toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}),out.width-24,c.height+F/2+3);
+      const blob=await new Promise(r=>out.toBlob(r,"image/png"));
+      const name="diego-reis-"+(document.title.split("·")[0].trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-")||"grafico")+"-"+Date.now()+".png";
+      const file=new File([blob],name,{type:"image/png"});
+      if(navigator.canShare&&navigator.canShare({files:[file]})&&/Android|iPhone|iPad/i.test(navigator.userAgent)){ try{ await navigator.share({files:[file],title:"Diego Reis · Análise eleitoral"}); }catch(e){} }
+      else { const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1500); }
+      b.lastChild.textContent="Imagem salva ✓"; setTimeout(()=>{ b.lastChild.textContent=txt; },2000);
+    }catch(e){ b.lastChild.textContent="Não foi possível gerar"; setTimeout(()=>{ b.lastChild.textContent=txt; },2500); }
+    finally{ b.disabled=false; }
+  }
+})();
+</script>
+<script src="js/contador.js" defer></script>
+</body>
+</html>
