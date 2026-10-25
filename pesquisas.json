@@ -98,6 +98,18 @@
   ],
   "turno2_principais": [
     {
+      "instituto": "PoderData/AYA",
+      "campo": "23 e 24/10",
+      "divulgacao": "25/10",
+      "lula": 49.0,
+      "flavio": 51.0,
+      "base": "válidos",
+      "entrevistas": 4000,
+      "margem": 1.6,
+      "registro": "BR-02828/2026",
+      "fonte": "https://www.cnnbrasil.com.br/eleicoes/poderdata-aya-flavio-tem-51-dos-votos-validos-no-2o-turno-lula-49-3/"
+    },
+    {
       "instituto": "Datafolha",
       "campo": "23 e 24/10",
       "divulgacao": "24/10",
@@ -146,19 +158,6 @@
       "entrevistas": 2100,
       "margem": 2.15,
       "registro": "BR-03259/2026",
-      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/",
-      "atualizado": "2026-10-24T08:43"
-    },
-    {
-      "instituto": "PoderData/AYA",
-      "campo": "19 a 21/10",
-      "divulgacao": "22/10",
-      "lula": 49.0,
-      "flavio": 51.0,
-      "base": "válidos",
-      "entrevistas": 4000,
-      "margem": 1.6,
-      "registro": "BR-07926/2026",
       "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/",
       "atualizado": "2026-10-24T08:43"
     }
@@ -623,6 +622,17 @@
     ]
   },
   "turno2_todas": [
+    {
+      "instituto": "PoderData/AYA",
+      "campo": "23 e 24/10",
+      "lula": 49.0,
+      "flavio": 51.0,
+      "entrevistas": 4000,
+      "margem": 1.6,
+      "registro": "BR-02828/2026",
+      "fonte": "https://www.cnnbrasil.com.br/eleicoes/poderdata-aya-flavio-tem-51-dos-votos-validos-no-2o-turno-lula-49-3/",
+      "data": "2026-10-25"
+    },
     {
       "instituto": "Veritá",
       "campo": "19 a 23/10",
