@@ -963,7 +963,8 @@ loadHist();
 /* Dados do exterior antes das 17h: parcial dos boletins de urna já publicados (exterior-parcial.json, atualizado à mão).
    Some sozinho quando o TSE começa a divulgação oficial. */
 let extParcial=null;
-fetch("exterior-parcial.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{ extParcial=j; if(lastBR) renderNacional(lastBR); }).catch(()=>{});
+function loadExtParcial(){ fetch("exterior-parcial.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{ if(!j) return; extParcial=j; if(lastBR) renderNacional(lastBR); renderExt(ufCache.zz); }).catch(()=>{}); }
+loadExtParcial(); setInterval(()=>{ if(!document.hidden&&!(lastBR&&lastBR.ok&&lastBR.pst>0)) loadExtParcial(); },5*60e3);   // a parcial é republicada a cada 30 min até as 17h
 function extParcialHTML(d){
   const j=extParcial; if(!j||!j.paises||!j.paises.length) return "";
   if(d&&d.ok&&d.pst>0) return "";   // a apuração oficial do TSE já começou
@@ -1386,6 +1387,14 @@ setInterval(()=>{
 /* Cartão "Dados do exterior" abaixo do mapa: placar do exterior no 2º turno (TSE, abrangência zz). */
 function renderExt(d){
   const el=$("ext-res"); if(!el) return;
+  if(beforeOpen()||!(d&&d.ok&&d.pst>0)){
+    const j=extParcial, L=j?j.paises.reduce((s,p)=>s+p[1],0):0, F=j?j.paises.reduce((s,p)=>s+p[2],0):0, T=L+F;
+    if(T){ const pl=100*L/T, pf=100*F/T;
+      el.innerHTML=`<b class="a">Lula ${pctTxt(pl)}</b> × <b class="b">Flávio ${pctTxt(pf)}</b> · parcial de ${j.paises.length} países (boletins de urna, ${esc(j.atualizado)}).
+        ${beforeOpen()?`Oficial do TSE a partir das 17h (faltam ${untilOpen()}).`:"Aguardando o TSE publicar o exterior."}
+        <span class="ext-bar" style="margin-top:6px"><i style="width:${pl}%"></i><i style="width:${pf}%"></i></span>`;
+      return; }
+  }
   if(beforeOpen()){ el.textContent=`A divulgação oficial do TSE começa às 17h (horário de Brasília) · faltam ${untilOpen()}.`; return; }
   if(!d||!d.ok||!(d.pst>0)){ el.textContent="Aguardando o TSE publicar os primeiros votos do exterior."; return; }
   const A=d.cands["13"], B=d.cands["22"];

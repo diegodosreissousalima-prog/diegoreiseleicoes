@@ -273,6 +273,7 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
 .shotbtn:hover{border-color:#ffdf00;background:color-mix(in srgb,#ffdf00 18%,var(--surface))}
 .shotbtn:disabled{opacity:.6;cursor:wait}
 .shotbtn svg{width:16px;height:16px}
+.ext-tag{display:inline-block;margin-left:6px;font:700 10px var(--body,inherit);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 7px;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -460,9 +461,21 @@ function rowHTML(nm,d,t,total,key){
     <td class="bar l"><div class="sbar" role="img" aria-label="${esc(NM.a)} ${pct(pa)}, ${esc(NM.b)} ${pct(pb)}"><i class="a" style="width:${pa}%"></i><i class="b" style="width:${pb}%"></i>${t===1?`<i class="o" style="width:${po}%"></i>`:""}</div></td>
     <td>${pct(pa)}${p1a!=null?`<br>${dlt(pa-p1a,"a")}`:""}</td><td>${pct(pb)}${p1b!=null?`<br>${dlt(pb-p1b,"b")}`:""}</td><td>${t===1?pct(po):pct(d.pst)}</td><td>${fmt(vv)}</td></tr>`;
 }
+/* Dados do exterior antes das 17h: parcial dos boletins de urna já publicados (exterior-parcial.json); some com o TSE oficial */
+let extParcial=null;
+fetch("exterior-parcial.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{ extParcial=j; renderTable(2); }).catch(()=>{});
+function extParcialRow(){
+  const j=extParcial; if(!j||!j.paises||!j.paises.length) return "";
+  const a=j.paises.reduce((s,p)=>s+p[1],0), b=j.paises.reduce((s,p)=>s+p[2],0), vv=a+b; if(!vv) return "";
+  const pa=a/vv*100, pb=b/vv*100;
+  return `<tr class="extp-row"><td class="l"><span class="win" style="background:${a>b?"var(--a)":"var(--b)"}"></span>Exterior <span class="ext-tag">Dados do exterior</span></td>
+    <td class="bar l"><div class="sbar" role="img" aria-label="Lula ${pct(pa)}, Flávio ${pct(pb)}"><i class="a" style="width:${pa}%"></i><i class="b" style="width:${pb}%"></i></div></td>
+    <td>${pct(pa)}</td><td>${pct(pb)}</td><td>parcial</td><td>${fmt(vv)}</td></tr>
+    <tr class="extp-row"><td colspan="6" class="l"><div class="msg" style="border:0;font-size:12.5px">Parcial de ${j.paises.length} países onde a votação já terminou, pelos boletins de urna publicados pelo TSE (${esc(j.atualizado)}). Não é resultado oficial: o TSE divulga o exterior a partir das 17h.</div></td></tr>`;
+}
 function renderTable(t){
   const tb=$("tb"+t), sort=$("sort"+t).value;
-  if(t===2&&!open2()){ tb.innerHTML=`<tr><td colspan="6"><div class="msg" style="border:0">O 2º turno começa a ser divulgado no domingo, 25/10, a partir das 17h (horário de Brasília). A tabela aparece sozinha.</div></td></tr>`; return; }
+  if(t===2&&!open2()){ tb.innerHTML=`<tr><td colspan="6"><div class="msg" style="border:0">O 2º turno começa a ser divulgado no domingo, 25/10, a partir das 17h (horário de Brasília). A tabela aparece sozinha.</div></td></tr>`+(cargo!=="g"?extParcialRow():""); return; }
   const rows=stateRows(t,sort);
   if(!rows.length){ tb.innerHTML=`<tr><td colspan="6"><div class="msg" style="border:0">${t===2?"Aguardando os primeiros votos do 2º turno.":"Lendo os dados do TSE…"}</div></td></tr>`; return; }
   if(cargo==="g"){ tb.innerHTML=(gsel&&st[t][gsel]&&st[t][gsel].vv?rowHTML(UFNAME[gsel]+" (estado)",st[t][gsel],t,true,gsel):"")+rows.map(r=>rowHTML(r.nm,r.d,t,false,r.u)).join(""); return; }
