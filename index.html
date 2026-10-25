@@ -98,6 +98,8 @@ h2{font:700 26px/1.1 var(--display);margin:0;text-wrap:balance}
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted);justify-content:center}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.dlt-top{margin-bottom:6px}
+.cand.right .dlt-top{justify-content:flex-end}
 .extp{border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:10px;padding:12px 14px;margin:0 0 14px;display:flex;flex-direction:column;gap:10px}
 .extp-cab{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .extp-st{font:600 12px var(--body);color:var(--muted)}
@@ -783,6 +785,7 @@ function boardHTML(d,{big,areas,scope,t1,prev,ext,parcial}={}){
     <div class="cand ${cls} ${lead===c.n?"lead":""} ${isElected(c)?"won":""}">
       ${photoHTML(c)}
       <div style="min-width:0">
+        ${d.evoExt&&d.evoExt[c.n]!=null?`<div class="dlt-row dlt-top">${dlt(d.evoExt[c.n],cls.split(" ")[0])}<span class="dlt-k">evolução vs 1º turno · mesmos ${d.evoExt.n} países</span></div>`:""}
         <div class="cname">${esc(c.nm)}</div>
         <div class="cparty">${esc(c.party)} · ${esc(c.n)}</div>
         <div class="pct" data-pct="${c.pvap}">${pctTxt(c.pvap)}</div>
@@ -1010,7 +1013,22 @@ function dadosExtParcial(d){
   const x=JSON.parse(JSON.stringify(d));
   x.cands["13"].vap=L; x.cands["13"].pvap=100*L/T; x.cands["22"].vap=F; x.cands["22"].pvap=100*F/T;
   x.vv=T; x.pst=0; x.ok=true; x.parcialExt=true; x.dt=""; x.ht="";
+  x.evoExt=evolucaoExt(j);
   return x;
+}
+/* Evolução geral em relação ao 1º turno, ponderada pelos votos: % no 2º turno nos países com dado do 1º turno
+   menos o % que o candidato teve no 1º turno NESSES MESMOS países (votos ÷ votos válidos de cada país). */
+function evolucaoExt(j){
+  const t1=j.t1||{}, juntos=j.t1_juntos||{}, nome=Object.fromEntries(j.paises.map(p=>[p[0],p]));
+  let L1=0,F1=0,V1=0,L2=0,F2=0,n=0;
+  for(const [k,v] of Object.entries(t1)){
+    if(v.length<4||!v[0]) continue;
+    const ps=(juntos[k]||[k]).map(x=>nome[x]).filter(Boolean); if(!ps.length) continue;
+    L1+=v[2]; F1+=v[3]; V1+=v[2]/(v[0]/100); n++;
+    ps.forEach(p=>{ L2+=p[1]; F2+=p[2]; });
+  }
+  if(!V1||!(L2+F2)) return null;
+  return {"13":100*L2/(L2+F2)-100*L1/V1, "22":100*F2/(L2+F2)-100*F1/V1, n};
 }
 function renderNacional(d,areas){
   const px=dadosExtParcial(d);
