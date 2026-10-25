@@ -773,9 +773,9 @@ function chanceOf(d,areas){
   return {a:pr.probA*100,b:pr.probB*100,need,tot};
 }
 const chanceTxt=v=>v>99.9?">99,9%":v<0.1?"<0,1%":v.toLocaleString("pt-BR",{maximumFractionDigits:1})+"%";
-function boardHTML(d,{big,areas,scope,t1,prev,ext}={}){
+function boardHTML(d,{big,areas,scope,t1,prev,ext,parcial}={}){
   const A=d.cands["13"], B=d.cands["22"];
-  const CH= t1 ? null : chanceOf(d,areas);
+  const CH= t1||parcial ? null : chanceOf(d,areas);
   const lead = A.vap===B.vap ? null : (A.vap>B.vap?"13":"22");
   const side=(c,cls)=>`
     <div class="cand ${cls} ${lead===c.n?"lead":""} ${isElected(c)?"won":""}">
@@ -802,6 +802,12 @@ function boardHTML(d,{big,areas,scope,t1,prev,ext}={}){
       <div class="stat"><div class="k">Brancos</div><div class="v">${pctTxt(d.pvb)}</div></div>
       <div class="stat"><div class="k">Nulos</div><div class="v">${pctTxt(d.pvn)}</div></div>
     </div>`;
+  if(parcial){
+    const j=extParcial||{};
+    return `<div class="msg ext"><b>Dados do exterior · parcial (${esc(j.atualizado||"")}).</b> Soma dos boletins de urna já publicados em ${(j.paises||[]).length} países onde a votação terminou. <b>Não é o resultado do Brasil:</b> a divulgação oficial do TSE começa às 17h (horário de Brasília)${beforeOpen()?` · faltam ${untilOpen()}`:""}, e este quadro troca sozinho para os dados oficiais.</div>`+h.replace(/<div class="stat"><div class="k">Seções totalizadas<\/div>.*?<\/div><\/div>/s,`<div class="stat"><div class="k">Países na parcial</div><div class="v">${(j.paises||[]).length}</div></div>`)
+      .replace(/<div class="stat"><div class="k">(Comparecimento|Abstenção|Brancos|Nulos)<\/div><div class="v">[^<]*<\/div><\/div>/g,"")
+      .replace(/começa com os primeiros votos do TSE/g,"só com os votos oficiais do TSE (17h)");
+  }
   if(t1&&ext) return `<div class="msg t1"><b>Dados do exterior · prévia do 1º turno (4/10).</b> Os votos dos brasileiros que votam fora do país no 2º turno são divulgados pelo TSE a partir das 17h (horário de Brasília) de 25/10, junto com os do Brasil. A página atualiza sozinha.</div>`+h;
   if(t1) return `<div class="msg t1"><b>Prévia: resultado do 1º turno (4/10).</b> O 2º turno aparece aqui a partir das 17h de domingo, 25/10, e a página atualiza sozinha.</div>`+h;
   h+=probHTML(project(areas||[d]),scope||"");
@@ -965,7 +971,7 @@ loadHist();
 let extParcial=null;
 function loadExtParcial(){ fetch("exterior-parcial.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{ if(!j) return; extParcial=j; if(lastBR) renderNacional(lastBR); renderExt(ufCache.zz); }).catch(()=>{}); }
 loadExtParcial(); setInterval(()=>{ if(!document.hidden&&!(lastBR&&lastBR.ok&&lastBR.pst>0)) loadExtParcial(); },5*60e3);   // a parcial é republicada a cada 30 min até as 17h
-function extParcialHTML(d){
+function extParcialHTML(d,compacto){
   const j=extParcial; if(!j||!j.paises||!j.paises.length) return "";
   if(d&&d.ok&&d.pst>0) return "";   // a apuração oficial do TSE já começou
   const L=j.paises.reduce((s,p)=>s+p[1],0), F=j.paises.reduce((s,p)=>s+p[2],0), T=L+F; if(!T) return "";
@@ -973,6 +979,9 @@ function extParcialHTML(d){
   const pc=v=>v.toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
   const lin=j.paises.slice().sort((a,b)=>(b[1]+b[2])-(a[1]+a[2])).map(p=>{ const t=p[1]+p[2];
     return `<tr><td>${esc(p[0])}</td><td class="n a">${fmt(p[1])} <span>${pc(100*p[1]/t)}</span></td><td class="n b">${fmt(p[2])} <span>${pc(100*p[2]/t)}</span></td></tr>`; }).join("");
+  if(compacto) return `<div class="extp" style="margin-top:14px">
+    <details class="extp-det"><summary>Dados do exterior por país (${j.paises.length} países · ${esc(j.atualizado)})</summary><table><thead><tr><th>País</th><th class="n">Lula</th><th class="n">Flávio</th></tr></thead><tbody>${lin}</tbody></table>
+      <p class="extp-nota">Fonte: ${esc(j.fonte)}. ${(j.links||[]).map(l=>`<a href="${esc(l[1])}" target="_blank" rel="noopener">${esc(l[0])}</a>`).join(" · ")}</p></details></div>`;
   return `<div class="extp">
     <div class="extp-cab"><span class="ext-tag">Dados do exterior</span><span class="extp-st">parcial · ${esc(j.atualizado)}</span></div>
     <div class="extp-res">
@@ -985,8 +994,20 @@ function extParcialHTML(d){
       <p class="extp-nota">${(j.links||[]).map(l=>`<a href="${esc(l[1])}" target="_blank" rel="noopener">${esc(l[0])}</a>`).join(" · ")}</p></details>
   </div>`;
 }
+/* Antes do TSE abrir, o quadro principal mostra a parcial do exterior (rotulada) no lugar dos zeros */
+function dadosExtParcial(d){
+  const j=extParcial; if(!j||!j.paises||!j.paises.length||(d&&d.ok&&d.pst>0)) return null;
+  const L=j.paises.reduce((s,p)=>s+p[1],0), F=j.paises.reduce((s,p)=>s+p[2],0), T=L+F; if(!T) return null;
+  const x=JSON.parse(JSON.stringify(d));
+  x.cands["13"].vap=L; x.cands["13"].pvap=100*L/T; x.cands["22"].vap=F; x.cands["22"].pvap=100*F/T;
+  x.vv=T; x.pst=0; x.ok=true; x.parcialExt=true; x.dt=""; x.ht="";
+  return x;
+}
 function renderNacional(d,areas){
-  $("nacional").innerHTML=`<div class="label">Brasil</div>`+extParcialHTML(d)+boardHTML(d,{big:true,areas:areas||[d],scope:"no Brasil",prev:prevOf("br",d)});
+  const px=dadosExtParcial(d);
+  $("nacional").innerHTML= px
+    ? `<div class="label">Exterior · parcial <span class="ext-tag" style="margin-left:6px">Dados do exterior</span></div>`+boardHTML(px,{big:true,parcial:true})+extParcialHTML(d,true)
+    : `<div class="label">Brasil</div>`+extParcialHTML(d)+boardHTML(d,{big:true,areas:areas||[d],scope:"no Brasil",prev:prevOf("br",d)});
   animateBoard($("nacional"),"br");
   $("lg-a").textContent=d.cands["13"].nm; $("lg-b").textContent=d.cands["22"].nm;
   checkElected(d);
