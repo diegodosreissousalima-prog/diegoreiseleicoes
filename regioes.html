@@ -484,7 +484,7 @@ async function carregar(){
     us.forEach(u=>{ const x=t2[u], y=t1[u]; a.L+=x.L; a.F+=x.F; a.vv+=x.vv; a.st+=x.st; a.s+=x.s; b.L+=y.L; b.F+=y.F; b.vv+=y.vv; });
     const tot=a.L+a.F, pL=tot?100*a.L/tot:null, pF=tot?100*a.F/tot:null;
     const q1L=b.vv?100*b.L/b.vv:null, q1F=b.vv?100*b.F/b.vv:null;
-    return {nome,us,L:a.L,F:a.F,vv:a.vv,pst:a.s?100*a.st/a.s:0,pL,pF,q1L,q1F}; });
+    return {nome,us,L:a.L,F:a.F,vv:a.L+a.F,pst:a.s?100*a.st/a.s:0,pL,pF,q1L,q1F}; });
   render(linhas);
   const ok=linhas.some(l=>l.L+l.F>0);
   $("rupd").innerHTML= ok ? `atualizado às <b>${new Date().toLocaleTimeString("pt-BR")}</b> · próxima em 60 s` : (open2()?"aguardando os primeiros votos do TSE":"o 2º turno é divulgado a partir das 17h de 25/10");
