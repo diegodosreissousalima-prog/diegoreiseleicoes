@@ -381,6 +381,11 @@ table.rt td{border-bottom:1px solid var(--line);padding:9px 8px;vertical-align:t
 table.rt td small{color:var(--muted)}
 .rufs{display:block;font:500 11px var(--mono);color:var(--muted)}
 .ca{color:var(--a);font-weight:700}.cb{color:var(--b);font-weight:700}
+
+.rpos{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:22px;border-radius:99px;background:#6b7280;color:#fff;font:700 12px var(--body)}
+.rpos.p1{background:#16a34a}
+.rpos:empty{display:none}
+.rv{flex-basis:100%;font:500 11.5px var(--mono);color:var(--muted);margin-left:36px}
 </style>
 </head>
 <body>
@@ -419,7 +424,7 @@ table.rt td small{color:var(--muted)}
   <section class="card" id="rres">
     <div><div class="label">Brasil por região</div><h2>Quem lidera em cada região</h2></div>
     <div class="rgrid" id="rgrid"><div class="note">Carregando…</div></div>
-    <div class="rleg"><span><i class="la"></i>Lula (PT · 13)</span><span><i class="lb"></i>Flávio Bolsonaro (PL · 22)</span><span class="rnota">▲▼ variação em pontos percentuais em relação ao 1º turno na mesma região</span></div>
+    <div class="rleg"><span><i class="la"></i>Lula (PT · 13)</span><span><i class="lb"></i>Flávio Bolsonaro (PL · 22)</span><span class="rnota">▲▼ quanto cada um subiu ou caiu, em pontos percentuais dos votos válidos, em relação ao 1º turno na mesma região · 1º e 2º lugar mudam sozinhos conforme a apuração</span></div>
   </section>
 
   <section class="card" id="rtab">
@@ -477,13 +482,16 @@ function soma(j){ const o={L:0,F:0,vv:0,st:0,s:0}; if(!j) return o; const s=j.s|
 let t1={};   // 1º turno por estado (não muda)
 async function carregar(){
   const ufs=REG.flatMap(r=>r[1]);
-  if(!Object.keys(t1).length){ const r1=await Promise.all(ufs.map(u=>getJSON(url(E1,u)))); ufs.forEach((u,i)=>{ t1[u]=soma(r1[i]); }); }
+  // 1º turno: busca só os estados que ainda não vieram (se a 1ª tentativa falhar, tenta de novo na próxima atualização)
+  const falta1=ufs.filter(u=>!t1[u]||!(t1[u].L+t1[u].F));
+  if(falta1.length){ const r1=await Promise.all(falta1.map(u=>getJSON(url(E1,u)))); falta1.forEach((u,i)=>{ const x=soma(r1[i]); if(x.L+x.F) t1[u]=x; }); }
   const r2= open2() ? await Promise.all(ufs.map(u=>getJSON(url(E2,u)))) : ufs.map(()=>null);
   const t2={}; ufs.forEach((u,i)=>{ t2[u]=soma(r2[i]); });
   const linhas=REG.map(([nome,us])=>{ const a={L:0,F:0,vv:0,st:0,s:0}, b={L:0,F:0,vv:0};
-    us.forEach(u=>{ const x=t2[u], y=t1[u]; a.L+=x.L; a.F+=x.F; a.vv+=x.vv; a.st+=x.st; a.s+=x.s; b.L+=y.L; b.F+=y.F; b.vv+=y.vv; });
+    let t1ok=true;
+    us.forEach(u=>{ const x=t2[u], y=t1[u]||{L:0,F:0,vv:0}; if(!(y.L+y.F)) t1ok=false; a.L+=x.L; a.F+=x.F; a.vv+=x.vv; a.st+=x.st; a.s+=x.s; b.L+=y.L; b.F+=y.F; b.vv+=y.vv; });
     const tot=a.L+a.F, pL=tot?100*a.L/tot:null, pF=tot?100*a.F/tot:null;
-    const q1L=b.vv?100*b.L/b.vv:null, q1F=b.vv?100*b.F/b.vv:null;
+    const q1L=t1ok&&b.vv?100*b.L/b.vv:null, q1F=t1ok&&b.vv?100*b.F/b.vv:null;
     return {nome,us,L:a.L,F:a.F,vv:a.L+a.F,pst:a.s?100*a.st/a.s:0,pL,pF,q1L,q1F}; });
   render(linhas);
   const ok=linhas.some(l=>l.L+l.F>0);
@@ -491,13 +499,17 @@ async function carregar(){
 }
 const dl=(v,cls)=>v==null?"":`<span class="rdl ${v>=0?"up":"down"}">${v>=0?"▲":"▼"} ${Math.abs(v).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})} p.p.</span>`;
 function render(ls){
-  $("rgrid").innerHTML=ls.map(l=>{ const tem=l.pL!=null, lid=tem?(l.pL>l.pF?"a":l.pF>l.pL?"b":""):"";
+  $("rgrid").innerHTML=ls.map(l=>{ const tem=l.pL!=null;
+    const cs=[{k:"a",nm:"Lula",p:l.pL,v:l.L,p1:l.q1L},{k:"b",nm:"Flávio",p:l.pF,v:l.F,p1:l.q1F}];
+    if(tem) cs.sort((x,y)=>y.p-x.p);   // quem está em 1º fica em cima
+    const lid=tem&&cs[0].p!==cs[1].p?cs[0].k:"";
+    const linha=(c,pos)=>`<div class="rlin ${c.k}"><span class="rpos ${pos===1&&tem?"p1":""}">${tem?pos+"º":""}</span><span class="rn">${c.nm}</span><b>${tem?p1(c.p):"—"}</b>
+      ${tem&&c.p1!=null?dl(c.p-c.p1):""}<span class="rv">${tem?fmt(c.v)+" votos":""}</span></div>`;
     return `<div class="rcard ${lid}"><div class="rcab"><h3>${esc(l.nome)}</h3><span class="rpst">${tem?p1(l.pst)+" apurado":"aguardando"}</span></div>
-      <div class="rlin a"><span class="rn">Lula</span><b>${tem?p1(l.pL):"—"}</b>${tem?dl(l.pL-(100*l.q1L/(l.q1L+l.q1F)||0)):""}</div>
-      <div class="rlin b"><span class="rn">Flávio</span><b>${tem?p1(l.pF):"—"}</b>${tem?dl(l.pF-(100*l.q1F/(l.q1L+l.q1F)||0)):""}</div>
+      ${linha(cs[0],1)}${linha(cs[1],2)}
       <div class="rbar"><i class="a" style="width:${tem?l.pL:50}%"></i><i class="b" style="width:${tem?l.pF:50}%"></i></div>
-      <div class="rpe">${tem?`${lid==="a"?"Lula":"Flávio"} à frente por <b>${p1(Math.abs(l.pL-l.pF))}</b> · ${fmt(Math.abs(l.L-l.F))} votos`:"sem votos apurados ainda"}</div>
-      <div class="rq1">1º turno: Lula ${l.q1L!=null?p1(l.q1L):"—"} · Flávio ${l.q1F!=null?p1(l.q1F):"—"}</div></div>`; }).join("");
+      <div class="rpe">${tem?`<b>${lid==="a"?"Lula":"Flávio"}</b> à frente por <b>${p1(Math.abs(l.pL-l.pF))}</b> · ${fmt(Math.abs(l.L-l.F))} votos`:"sem votos apurados ainda"}</div>
+      <div class="rq1">1º turno: Lula ${l.q1L!=null?p1(l.q1L):"carregando…"} · Flávio ${l.q1F!=null?p1(l.q1F):"carregando…"}</div></div>`; }).join("");
   $("rtbody").innerHTML=ls.map(l=>{ const tem=l.pL!=null; return `<tr><td><b>${esc(l.nome)}</b><span class="rufs">${l.us.map(u=>u.toUpperCase()).join(" · ")}</span></td>
     <td class="ca">${tem?p1(l.pL):"—"}<br><small>${fmt(l.L)}</small></td><td class="cb">${tem?p1(l.pF):"—"}<br><small>${fmt(l.F)}</small></td>
     <td>${tem?`<span class="${l.pL>l.pF?"ca":"cb"}">${p1(Math.abs(l.pL-l.pF))}</span>`:"—"}</td><td>${p1(l.pst)}</td><td>${fmt(l.vv)}</td></tr>`; }).join("");
