@@ -477,9 +477,10 @@ function renderTable(t){
   const tb=$("tb"+t), sort=$("sort"+t).value;
   if(t===2&&!open2()){ tb.innerHTML=`<tr><td colspan="6"><div class="msg" style="border:0">O 2º turno começa a ser divulgado no domingo, 25/10, a partir das 17h (horário de Brasília). A tabela aparece sozinha.</div></td></tr>`+(cargo!=="g"?extParcialRow():""); return; }
   const rows=stateRows(t,sort);
-  if(!rows.length){ tb.innerHTML=`<tr><td colspan="6"><div class="msg" style="border:0">${t===2?"Aguardando os primeiros votos do 2º turno.":"Lendo os dados do TSE…"}</div></td></tr>`; return; }
+  const parcialAinda=t===2&&cargo!=="g"&&Date.now()<Date.UTC(2026,9,25,20,15)&&!(st[2].zz&&st[2].zz.vv);  // parcial do exterior até 17h15 ou até o TSE publicar o exterior
+  if(!rows.length){ tb.innerHTML=`<tr><td colspan="6"><div class="msg" style="border:0">${t===2?"Aguardando os primeiros votos do 2º turno.":"Lendo os dados do TSE…"}</div></td></tr>`+(parcialAinda?extParcialRow():""); return; }
   if(cargo==="g"){ tb.innerHTML=(gsel&&st[t][gsel]&&st[t][gsel].vv?rowHTML(UFNAME[gsel]+" (estado)",st[t][gsel],t,true,gsel):"")+rows.map(r=>rowHTML(r.nm,r.d,t,false,r.u)).join(""); return; }
-  tb.innerHTML=(st[t].br&&st[t].br.vv?rowHTML("Brasil",st[t].br,t,true,"br"):"")+rows.map(r=>rowHTML(r.nm,r.d,t,false,r.u)).join("")+(st[t].zz&&st[t].zz.vv?rowHTML("Exterior",st[t].zz,t,false,"zz"):"");
+  tb.innerHTML=(st[t].br&&st[t].br.vv?rowHTML("Brasil",st[t].br,t,true,"br"):"")+rows.map(r=>rowHTML(r.nm,r.d,t,false,r.u)).join("")+(st[t].zz&&st[t].zz.vv?rowHTML("Exterior",st[t].zz,t,false,"zz"):(parcialAinda?extParcialRow():""));
 }
 let gTok=0;
 async function loadStatesGov(t){

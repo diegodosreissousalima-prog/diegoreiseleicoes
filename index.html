@@ -974,11 +974,14 @@ loadHist();
 /* Dados do exterior antes das 17h: parcial dos boletins de urna já publicados (exterior-parcial.json, atualizado à mão).
    Some sozinho quando o TSE começa a divulgação oficial. */
 let extParcial=null;
+/* a parcial do exterior fica na tela até 17h15; antes disso, se o TSE já tiver votos (pst>0), troca na hora */
+var PARCIAL_ATE=Date.UTC(2026,9,25,20,15);
+function tseVale(d){ return !!(d&&d.ok&&d.pst>0) || (typeof TESTE!=="undefined"&&TESTE) || Date.now()>=PARCIAL_ATE; }
 function loadExtParcial(){ fetch("exterior-parcial.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{ if(!j) return; extParcial=j; if(lastBR) renderNacional(lastBR); renderExt(ufCache.zz); }).catch(()=>{}); }
 loadExtParcial(); setInterval(()=>{ if(!document.hidden&&!(lastBR&&lastBR.ok&&lastBR.pst>0)) loadExtParcial(); },5*60e3);   // a parcial é republicada a cada 30 min até as 17h
 function extParcialHTML(d,compacto){
   const j=extParcial; if(!j||!j.paises||!j.paises.length) return "";
-  if(d&&d.ok&&d.pst>0) return "";   // a apuração oficial do TSE já começou
+  if(tseVale(d)) return "";   // a apuração oficial do TSE já começou (ou já passou das 17h15)
   const L=j.paises.reduce((s,p)=>s+p[1],0), F=j.paises.reduce((s,p)=>s+p[2],0), T=L+F; if(!T) return "";
   const pl=100*L/T, pf=100*F/T, nl=j.paises.filter(p=>p[1]>p[2]).length, nf=j.paises.filter(p=>p[2]>p[1]).length;
   const pc=v=>v.toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
@@ -1008,7 +1011,7 @@ function extParcialHTML(d,compacto){
 }
 /* Antes do TSE abrir, o quadro principal mostra a parcial do exterior (rotulada) no lugar dos zeros */
 function dadosExtParcial(d){
-  const j=extParcial; if(!j||!j.paises||!j.paises.length||(d&&d.ok&&d.pst>0)) return null;
+  const j=extParcial; if(!j||!j.paises||!j.paises.length||tseVale(d)) return null;
   const L=j.paises.reduce((s,p)=>s+p[1],0), F=j.paises.reduce((s,p)=>s+p[2],0), T=L+F; if(!T) return null;
   const x=JSON.parse(JSON.stringify(d));
   x.cands["13"].vap=L; x.cands["13"].pvap=100*L/T; x.cands["22"].vap=F; x.cands["22"].pvap=100*F/T;
@@ -1435,7 +1438,7 @@ setInterval(()=>{
 /* Cartão "Dados do exterior" abaixo do mapa: placar do exterior no 2º turno (TSE, abrangência zz). */
 function renderExt(d){
   const el=$("ext-res"); if(!el) return;
-  if(beforeOpen()||!(d&&d.ok&&d.pst>0)){
+  if(beforeOpen()||!tseVale(d)){
     const j=extParcial, L=j?j.paises.reduce((s,p)=>s+p[1],0):0, F=j?j.paises.reduce((s,p)=>s+p[2],0):0, T=L+F;
     if(T){ const pl=100*L/T, pf=100*F/T;
       el.innerHTML=`<b class="a">Lula ${pctTxt(pl)}</b> × <b class="b">Flávio ${pctTxt(pf)}</b> · parcial de ${j.paises.length} países (boletins de urna, ${esc(j.atualizado)}).
