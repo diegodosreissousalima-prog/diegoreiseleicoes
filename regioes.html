@@ -471,7 +471,7 @@ const _SMALL=new Set(["de","da","do","das","dos","e"]);
 const nameCase=s=>{ s=String(s||""); if(s!==s.toUpperCase()) return s; return s.toLowerCase().split(" ").map((w,i)=>i&&_SMALL.has(w)?w:w.charAt(0).toUpperCase()+w.slice(1)).join(" "); };
 const REG=[["Norte",["ac","am","ap","pa","ro","rr","to"]],["Nordeste",["al","ba","ce","ma","pb","pe","pi","rn","se"]],["Centro-Oeste",["df","go","ms","mt"]],["Sudeste",["es","mg","rj","sp"]],["Sul",["pr","rs","sc"]]];
 function soma(j){ const o={L:0,F:0,vv:0,st:0,s:0}; if(!j) return o; const s=j.s||{}, v=j.v||{};
-  o.st=+(s.st||0); o.s=+(s.s||0); o.vv=+(v.vv||0);
+  o.st=+(s.st||0); o.s=+(s.ts||0);   // st = seções totalizadas, ts = total de seções o.vv=+(v.vv||0);
   ((j.carg||[])[0]?.agr||[]).forEach(g=>(g.par||[]).forEach(p=>(p.cand||[]).forEach(c=>{ if(String(c.n)==="13") o.L=+(c.vap||0); if(String(c.n)==="22") o.F=+(c.vap||0); })));
   return o; }
 let t1={};   // 1º turno por estado (não muda)
