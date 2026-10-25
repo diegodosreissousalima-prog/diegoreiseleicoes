@@ -807,7 +807,7 @@ function boardHTML(d,{big,areas,scope,t1,prev,ext,parcial}={}){
   // diferença no centro: pontos percentuais e votos entre os dois (só quando já há votos)
   const dif= big&&(A.vap+B.vap)>0 ? (()=>{ const pp=Math.abs(wa-wb), dv=Math.abs(A.vap-B.vap), L=lead==="13"?A:lead==="22"?B:null;
     return `<div class="difc ${lead==="13"?"a":lead==="22"?"b":""}" aria-label="Diferença entre os candidatos"><span class="k">Diferença</span>
-      <b>${pp.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})} p.p.</b><span class="dv">${fmt(dv)} votos</span>
+      <b>${pp.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})}%</b><span class="dv">${fmt(dv)} votos</span>
       <span class="ld">${L?esc(L.nm.split(" ")[0])+" à frente":"empate"}</span></div>`; })() : "";
   let h=`<div class="cands${dif?" com-dif":""}">${side(A,"a")}${dif}${side(B,"b right")}</div>
     <div class="bar" role="img" aria-label="${esc(A.nm)} ${pctTxt(wa)}, ${esc(B.nm)} ${pctTxt(wb)}">
