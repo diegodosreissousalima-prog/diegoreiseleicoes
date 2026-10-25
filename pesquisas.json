@@ -1,5 +1,5 @@
 {
-  "atualizado_em": "2026-10-24",
+  "atualizado_em": "2026-10-25",
   "nota": "Percentuais de votos válidos. Quando o instituto divulgou só votos totais, o válido foi calculado excluindo brancos, nulos e indecisos (marcado como calculado).",
   "resultado_1t": {
     "lula": 45.16,
@@ -165,6 +165,66 @@
   ],
   "turno2_outros": [
     {
+      "divulgacao": "24/10",
+      "base": "válidos",
+      "instituto": "Futura/100% Cidades",
+      "campo": "23 e 24/10",
+      "lula": 49.9,
+      "flavio": 50.1,
+      "entrevistas": 2000,
+      "margem": 2.2,
+      "registro": "BR-09726/2026",
+      "fonte": "https://jornalgrandebahia.com.br/2026/10/eleicoes-2026-11-pesquisas-divulgadas-neste-sabado-mostram-disputa-apertada-entre-flavio-bolsonaro-e-lula/"
+    },
+    {
+      "divulgacao": "24/10",
+      "base": "válidos",
+      "instituto": "Veritá",
+      "campo": "19 a 23/10",
+      "lula": 48.44,
+      "flavio": 51.56,
+      "entrevistas": 15554,
+      "margem": 1.0,
+      "registro": "BR-03181/2026",
+      "fonte": "https://jornalgrandebahia.com.br/2026/10/eleicoes-2026-11-pesquisas-divulgadas-neste-sabado-mostram-disputa-apertada-entre-flavio-bolsonaro-e-lula/"
+    },
+    {
+      "divulgacao": "24/10",
+      "base": "válidos",
+      "instituto": "Palver",
+      "campo": "22 a 24/10",
+      "lula": 49.5,
+      "flavio": 50.5,
+      "entrevistas": 5000,
+      "margem": 2.2,
+      "registro": "BR-01794/2026",
+      "fonte": "https://exame.com/brasil/pesquisa-para-presidente-palver-flavio-bolsonaro-tem-50-e-lula-49-no-2o-turno/"
+    },
+    {
+      "divulgacao": "24/10",
+      "base": "válidos",
+      "instituto": "Brazil Economy/Colectta",
+      "campo": "23/10",
+      "lula": 50.3,
+      "flavio": 49.7,
+      "entrevistas": 3000,
+      "margem": 2.0,
+      "registro": "BR-05601/2026",
+      "fonte": "https://jornalgrandebahia.com.br/2026/10/eleicoes-2026-11-pesquisas-divulgadas-neste-sabado-mostram-disputa-apertada-entre-flavio-bolsonaro-e-lula/"
+    },
+    {
+      "divulgacao": "24/10",
+      "base": "válidos",
+      "instituto": "Instituto França",
+      "campo": "21 a 23/10",
+      "lula": 48.6,
+      "flavio": 51.4,
+      "entrevistas": 1537,
+      "margem": 2.5,
+      "registro": "BR-04863/2026",
+      "fonte": "https://jornalgrandebahia.com.br/2026/10/eleicoes-2026-11-pesquisas-divulgadas-neste-sabado-mostram-disputa-apertada-entre-flavio-bolsonaro-e-lula/"
+    },
+    {
       "instituto": "Gerp",
       "campo": "22 a 24/10",
       "divulgacao": "24/10",
@@ -204,32 +264,6 @@
       "atualizado": "2026-10-24T20:44"
     },
     {
-      "instituto": "Futura Inteligência",
-      "campo": "19 e 20/10",
-      "divulgacao": "21/10",
-      "lula": 48.9,
-      "flavio": 51.1,
-      "base": "válidos",
-      "registro": "BR-06614/2026",
-      "fonte": "https://bznoticias.com.br/noticia/pesquisas-que-acertaram-a-ordem-no-1o-turno-mantem-flavio-a-frente",
-      "entrevistas": 2000,
-      "margem": 2.2,
-      "atualizado": "2026-10-23T19:22"
-    },
-    {
-      "instituto": "Veritá",
-      "campo": "18 a 22/10",
-      "divulgacao": "23/10",
-      "lula": 48.7,
-      "flavio": 51.3,
-      "base": "válidos",
-      "registro": "BR-06070/2026",
-      "fonte": "https://transmissaopolitica.com.br/politica-nacional/2026/10/23/pesquisa-verita-flavio-lula-23-outubro/",
-      "entrevistas": 15554,
-      "margem": 1.0,
-      "atualizado": "2026-10-24T08:43"
-    },
-    {
       "instituto": "Real Time Big Data",
       "campo": "19 a 22/10",
       "divulgacao": "23/10",
@@ -239,19 +273,6 @@
       "entrevistas": 2000,
       "margem": 2.0,
       "registro": "BR-09670/2026",
-      "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/",
-      "atualizado": "2026-10-24T08:43"
-    },
-    {
-      "instituto": "Palver",
-      "campo": "16 a 20/10",
-      "divulgacao": "21/10",
-      "lula": 49.0,
-      "flavio": 51.0,
-      "base": "válidos (recalculado pelo Poder360, sem indecisos e brancos/nulos)",
-      "entrevistas": 5000,
-      "margem": 2.4,
-      "registro": "BR-04612/2026",
       "fonte": "https://www.poder360.com.br/poder-eleicoes-2026/saiba-como-estao-lula-e-flavio-nas-pesquisas-a-2-dias-da-eleicao/",
       "atualizado": "2026-10-24T08:43"
     }
@@ -388,6 +409,18 @@
             "margem": 2.0,
             "registro": "DF-00368/2026",
             "fonte": "https://www.gazetadopovo.com.br/eleicoes/2026/pesquisa-eleitoral-2026/quaest-governador-distrito-federal-outubro-2026-vespera-segundo-turno/"
+          },
+          {
+            "base": "válidos",
+            "divulgacao": "24/10",
+            "instituto": "AtlasIntel",
+            "campo": "18 a 23/10",
+            "a": 57.9,
+            "b": 42.1,
+            "entrevistas": 1807,
+            "margem": 2.0,
+            "registro": "DF-08658/2026",
+            "fonte": "https://gazetadopovo.com.br/eleicoes/2026/pesquisa-eleitoral-2026/altasintel-governador-distrito-federal-outubro-2026-vespera-segundo-turno"
           },
           {
             "instituto": "Real Time Big Data",
@@ -591,6 +624,17 @@
   },
   "turno2_todas": [
     {
+      "instituto": "Veritá",
+      "campo": "19 a 23/10",
+      "lula": 48.44,
+      "flavio": 51.56,
+      "entrevistas": 15554,
+      "margem": 1.0,
+      "registro": "BR-03181/2026",
+      "fonte": "https://jornalgrandebahia.com.br/2026/10/eleicoes-2026-11-pesquisas-divulgadas-neste-sabado-mostram-disputa-apertada-entre-flavio-bolsonaro-e-lula/",
+      "data": "2026-10-24"
+    },
+    {
       "instituto": "Quaest",
       "campo": "23 e 24/10",
       "lula": 49.0,
@@ -603,6 +647,29 @@
       "atualizado": "2026-10-24T20:44"
     },
     {
+      "instituto": "Palver",
+      "campo": "22 a 24/10",
+      "lula": 49.5,
+      "flavio": 50.5,
+      "entrevistas": 5000,
+      "margem": 2.2,
+      "registro": "BR-01794/2026",
+      "nota": "válidos calculados a partir do total (49% × 50%)",
+      "fonte": "https://exame.com/brasil/pesquisa-para-presidente-palver-flavio-bolsonaro-tem-50-e-lula-49-no-2o-turno/",
+      "data": "2026-10-24"
+    },
+    {
+      "instituto": "Instituto França",
+      "campo": "21 a 23/10",
+      "lula": 48.6,
+      "flavio": 51.4,
+      "entrevistas": 1537,
+      "margem": 2.5,
+      "registro": "BR-04863/2026",
+      "fonte": "https://jornalgrandebahia.com.br/2026/10/eleicoes-2026-11-pesquisas-divulgadas-neste-sabado-mostram-disputa-apertada-entre-flavio-bolsonaro-e-lula/",
+      "data": "2026-10-24"
+    },
+    {
       "instituto": "Gerp",
       "campo": "22 a 24/10",
       "lula": 48.0,
@@ -613,6 +680,17 @@
       "fonte": "https://jovempan.com.br/politica/flavio-x-lula-o-que-dizem-as-pesquisas-divulgadas-na-vespera-do-2o-turno/",
       "data": "2026-10-24",
       "atualizado": "2026-10-24T20:44"
+    },
+    {
+      "instituto": "Futura/100% Cidades",
+      "campo": "23 e 24/10",
+      "lula": 49.9,
+      "flavio": 50.1,
+      "entrevistas": 2000,
+      "margem": 2.2,
+      "registro": "BR-09726/2026",
+      "fonte": "https://jornalgrandebahia.com.br/2026/10/eleicoes-2026-11-pesquisas-divulgadas-neste-sabado-mostram-disputa-apertada-entre-flavio-bolsonaro-e-lula/",
+      "data": "2026-10-24"
     },
     {
       "instituto": "Datafolha",
@@ -637,6 +715,17 @@
       "fonte": "https://www.opovo.com.br/noticias/politica/eleicoes/2026/10/24/pesquisa-cnt-mda-flavio-507-e-lula-493-de-votos-validos.html",
       "data": "2026-10-24",
       "atualizado": "2026-10-24T20:44"
+    },
+    {
+      "instituto": "Brazil Economy/Colectta",
+      "campo": "23/10",
+      "lula": 50.3,
+      "flavio": 49.7,
+      "entrevistas": 3000,
+      "margem": 2.0,
+      "registro": "BR-05601/2026",
+      "fonte": "https://jornalgrandebahia.com.br/2026/10/eleicoes-2026-11-pesquisas-divulgadas-neste-sabado-mostram-disputa-apertada-entre-flavio-bolsonaro-e-lula/",
+      "data": "2026-10-24"
     },
     {
       "instituto": "BTG/Nexus",
