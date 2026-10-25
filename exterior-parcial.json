@@ -1,7 +1,11 @@
 {
- "atualizado": "25/10/2026 14h29",
- "fonte": "Boletins de urna do TSE já publicados no exterior (até 14h15), compilados pela CNN Brasil",
+ "atualizado": "25/10/2026 14h54",
+ "fonte": "Boletins de urna do TSE já publicados no exterior (até 14h54), compilados por Congresso em Foco e CNN Brasil; Alemanha, Itália, Portugal, Turquia e Índia ainda parciais",
  "links": [
+  [
+   "Congresso em Foco",
+   "https://www.congressoemfoco.com.br/noticia/123603/primeiras-urnas-sao-apuradas-no-exterior-acompanhe-os-resultados"
+  ],
   [
    "CNN Brasil",
    "https://www.cnnbrasil.com.br/internacional/eleicoes-2026-exterior-boletins-urna-flavio-lula/"
@@ -16,6 +20,11 @@
    "Japão",
    7098,
    28538
+  ],
+  [
+   "Alemanha",
+   12024,
+   2718
   ],
   [
    "Espanha",
@@ -46,6 +55,11 @@
    "Bélgica",
    3064,
    2154
+  ],
+  [
+   "Itália",
+   3198,
+   1738
   ],
   [
    "Líbano",
@@ -118,6 +132,11 @@
    117
   ],
   [
+   "Portugal",
+   328,
+   136
+  ],
+  [
    "África do Sul",
    186,
    256
@@ -173,6 +192,11 @@
    33
   ],
   [
+   "Turquia",
+   98,
+   29
+  ],
+  [
    "Síria",
    106,
    11
@@ -191,6 +215,11 @@
    "Malásia",
    41,
    44
+  ],
+  [
+   "Senegal",
+   59,
+   22
   ],
   [
    "Arábia Saudita",
@@ -213,6 +242,11 @@
    39
   ],
   [
+   "Romênia",
+   40,
+   25
+  ],
+  [
    "Eslováquia",
    47,
    14
@@ -233,6 +267,11 @@
    13
   ],
   [
+   "Índia",
+   25,
+   23
+  ],
+  [
    "Quênia",
    29,
    16
@@ -241,6 +280,11 @@
    "Indonésia",
    15,
    23
+  ],
+  [
+   "Marrocos",
+   31,
+   6
   ]
  ],
  "t1": {
