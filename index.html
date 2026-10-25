@@ -98,6 +98,22 @@ h2{font:700 26px/1.1 var(--display);margin:0;text-wrap:balance}
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted);justify-content:center}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.extp{border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:10px;padding:12px 14px;margin:0 0 14px;display:flex;flex-direction:column;gap:10px}
+.extp-cab{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.extp-st{font:600 12px var(--body);color:var(--muted)}
+.extp-res{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.extp-res>div{display:flex;flex-direction:column;gap:2px}
+.extp-res .b{text-align:right}
+.extp-res b{font:700 15px var(--body)}
+.extp-p{font:800 30px/1.1 var(--body)}
+.extp-res .a .extp-p{color:var(--a)} .extp-res .b .extp-p{color:var(--b)}
+.extp-v{font-size:12.5px;color:var(--muted)}
+.extp-nota{margin:0;font-size:12.5px;color:var(--muted);line-height:1.45}
+.extp-det summary{cursor:pointer;font:600 13px var(--body)}
+.extp-det table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.extp-det td,.extp-det th{padding:5px 6px;border-bottom:1px solid var(--line);text-align:left}
+.extp-det .n{text-align:right;white-space:nowrap} .extp-det td.a{color:var(--a)} .extp-det td.b{color:var(--b)}
+.extp-det td span{color:var(--muted);font-size:11.5px}
 .ext-card{align-self:stretch;display:flex;flex-direction:column;gap:5px;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:10px;padding:10px 12px;margin:10px 0 4px;font:500 13px var(--body);cursor:pointer}
 .ext-card:hover{border-color:var(--muted)}
 .ext-tag{align-self:flex-start;font:700 10.5px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 8px}
@@ -944,8 +960,32 @@ function renderChart(){
 let _rz; addEventListener("resize",()=>{ clearTimeout(_rz); _rz=setTimeout(renderChart,200); });
 loadHist();
 
+/* Dados do exterior antes das 17h: parcial dos boletins de urna já publicados (exterior-parcial.json, atualizado à mão).
+   Some sozinho quando o TSE começa a divulgação oficial. */
+let extParcial=null;
+fetch("exterior-parcial.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{ extParcial=j; if(lastBR) renderNacional(lastBR); }).catch(()=>{});
+function extParcialHTML(d){
+  const j=extParcial; if(!j||!j.paises||!j.paises.length) return "";
+  if(d&&d.ok&&d.pst>0) return "";   // a apuração oficial do TSE já começou
+  const L=j.paises.reduce((s,p)=>s+p[1],0), F=j.paises.reduce((s,p)=>s+p[2],0), T=L+F; if(!T) return "";
+  const pl=100*L/T, pf=100*F/T, nl=j.paises.filter(p=>p[1]>p[2]).length, nf=j.paises.filter(p=>p[2]>p[1]).length;
+  const pc=v=>v.toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
+  const lin=j.paises.slice().sort((a,b)=>(b[1]+b[2])-(a[1]+a[2])).map(p=>{ const t=p[1]+p[2];
+    return `<tr><td>${esc(p[0])}</td><td class="n a">${fmt(p[1])} <span>${pc(100*p[1]/t)}</span></td><td class="n b">${fmt(p[2])} <span>${pc(100*p[2]/t)}</span></td></tr>`; }).join("");
+  return `<div class="extp">
+    <div class="extp-cab"><span class="ext-tag">Dados do exterior</span><span class="extp-st">parcial · ${esc(j.atualizado)}</span></div>
+    <div class="extp-res">
+      <div class="a"><b>Lula</b><span class="extp-p">${pc(pl)}</span><span class="extp-v">${fmt(L)} votos · lidera em ${nl} países</span></div>
+      <div class="b"><b>Flávio Bolsonaro</b><span class="extp-p">${pc(pf)}</span><span class="extp-v">${fmt(F)} votos · lidera em ${nf} países</span></div>
+    </div>
+    <div class="ext-bar" style="height:8px"><i style="width:${pl}%"></i><i style="width:${pf}%"></i></div>
+    <p class="extp-nota">Soma de ${j.paises.length} países onde a votação já terminou (Ásia, Oceania e Oriente Médio), pelos boletins de urna publicados pelo TSE. <b>Não é o resultado do exterior nem do Brasil</b>: a divulgação oficial do TSE começa às 17h (horário de Brasília). Fonte: ${esc(j.fonte)}.</p>
+    <details class="extp-det"><summary>Ver por país</summary><table><thead><tr><th>País</th><th class="n">Lula</th><th class="n">Flávio</th></tr></thead><tbody>${lin}</tbody></table>
+      <p class="extp-nota">${(j.links||[]).map(l=>`<a href="${esc(l[1])}" target="_blank" rel="noopener">${esc(l[0])}</a>`).join(" · ")}</p></details>
+  </div>`;
+}
 function renderNacional(d,areas){
-  $("nacional").innerHTML=`<div class="label">Brasil</div>`+boardHTML(d,{big:true,areas:areas||[d],scope:"no Brasil",prev:prevOf("br",d)});
+  $("nacional").innerHTML=`<div class="label">Brasil</div>`+extParcialHTML(d)+boardHTML(d,{big:true,areas:areas||[d],scope:"no Brasil",prev:prevOf("br",d)});
   animateBoard($("nacional"),"br");
   $("lg-a").textContent=d.cands["13"].nm; $("lg-b").textContent=d.cands["22"].nm;
   checkElected(d);

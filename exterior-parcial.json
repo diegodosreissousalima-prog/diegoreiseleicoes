@@ -1,0 +1,14 @@
+{
+  "atualizado": "25/10/2026 11h54",
+  "fonte": "Boletins de urna do TSE já publicados no exterior, compilados pela BBC News Brasil (via Terra), Exame e Mix Vale",
+  "links": [
+    ["BBC News Brasil / Terra", "https://www.terra.com.br/noticias/brasil/voto-no-exterior-veja-os-resultados-por-pais-e-a-apuracao-de-lula-x-flavio-no-2-turno-das-eleicoes-2026,aae0e93358687b5353bbc9149d1316e7v48izs4z.html"],
+    ["Exame", "https://exame.com/brasil/lula-ou-flavio-bolsonaro-quem-esta-ganhando-no-exterior-no-2o-turno-das-eleicoes/"]
+  ],
+  "paises": [
+    ["Japão", 7098, 28538], ["Austrália", 6017, 3465], ["Emirados Árabes Unidos", 643, 772], ["Nova Zelândia", 418, 101],
+    ["China", 375, 134], ["Singapura", 213, 121], ["Coreia do Sul", 148, 82], ["Hong Kong", 127, 133], ["Síria", 106, 11],
+    ["Turquia", 98, 29], ["Taiwan", 94, 130], ["Egito", 60, 16], ["Tailândia", 56, 60], ["Arábia Saudita", 49, 31],
+    ["Malásia", 41, 44], ["Filipinas", 27, 39], ["Indonésia", 15, 23]
+  ]
+}
