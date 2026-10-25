@@ -61,6 +61,14 @@ button:focus-visible,input:focus-visible,.tile:focus-visible,li button:focus-vis
 .label{font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .cands{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .cand{display:flex;gap:14px;align-items:center;min-width:0}
+.cands.com-dif{grid-template-columns:1fr auto 1fr;align-items:center}
+.difc{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px;padding:12px 16px;border-radius:14px;background:#f3f4f6;border:1px solid #e5e7eb;min-width:120px}
+.difc .k{font:600 11px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:#6b7280}
+.difc b{font:800 30px/1.05 var(--display);color:#111827}
+.difc.a b{color:#c62828}.difc.b b{color:#2f5bd3}
+.difc .dv{font:600 13px var(--mono,monospace);color:#374151}
+.difc .ld{font:700 12px var(--body);color:#fff;background:#6b7280;border-radius:99px;padding:3px 10px;margin-top:4px}
+.difc.a .ld{background:#c62828}.difc.b .ld{background:#2f5bd3}
 .cand.right{flex-direction:row-reverse;text-align:right}
 .photo{width:clamp(64px,12vw,104px);aspect-ratio:3/4;max-width:100%;border-radius:10px;object-fit:cover;flex:none;background:var(--empty);
   display:grid;place-items:center;font:700 28px var(--display);color:var(--muted);border:3px solid transparent}
@@ -366,7 +374,7 @@ details.check summary{cursor:pointer;font-weight:600}
 .tabs a{text-decoration:none;font:700 14px var(--body);padding:9px 16px;border-radius:999px;color:var(--on-page);border:1px solid color-mix(in srgb,var(--on-page) 35%,transparent)}
 .tabs a:hover{background:color-mix(in srgb,var(--on-page) 12%,transparent)}
 .tabs a[aria-current="page"]{background:#ffdf00;color:#1b2a12;border-color:#ffdf00}
-.hide-sm{display:inline} @media (max-width:520px){.hide-sm{display:none}.cands{grid-template-columns:1fr}.cand.right{flex-direction:row;text-align:left}}
+.hide-sm{display:inline} @media (max-width:520px){.hide-sm{display:none}.cands{grid-template-columns:1fr}.cand.right{flex-direction:row;text-align:left}.cands.com-dif{grid-template-columns:1fr}.difc{flex-direction:row;flex-wrap:wrap;gap:4px 10px;justify-content:center}.difc b{font-size:22px}.difc .ld{margin-top:0}}
 .testbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:#b3261e;color:#fff;text-align:center;font:700 13px var(--body);padding:8px 12px;letter-spacing:.04em;margin:-20px calc(-1*max(16px,env(safe-area-inset-left,0px))) 12px}
 
 /* contato-fila */
@@ -795,7 +803,12 @@ function boardHTML(d,{big,areas,scope,t1,prev,ext,parcial}={}){
       </div>
     </div>`;
   const wa=A.pvap, wb=B.pvap;
-  let h=`<div class="cands">${side(A,"a")}${side(B,"b right")}</div>
+  // diferença no centro: pontos percentuais e votos entre os dois (só quando já há votos)
+  const dif= big&&(A.vap+B.vap)>0 ? (()=>{ const pp=Math.abs(wa-wb), dv=Math.abs(A.vap-B.vap), L=lead==="13"?A:lead==="22"?B:null;
+    return `<div class="difc ${lead==="13"?"a":lead==="22"?"b":""}" aria-label="Diferença entre os candidatos"><span class="k">Diferença</span>
+      <b>${pp.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})} p.p.</b><span class="dv">${fmt(dv)} votos</span>
+      <span class="ld">${L?esc(L.nm.split(" ")[0])+" à frente":"empate"}</span></div>`; })() : "";
+  let h=`<div class="cands${dif?" com-dif":""}">${side(A,"a")}${dif}${side(B,"b right")}</div>
     <div class="bar" role="img" aria-label="${esc(A.nm)} ${pctTxt(wa)}, ${esc(B.nm)} ${pctTxt(wb)}">
       <span class="sa" data-w="${wa}" style="width:${wa}%"></span><span class="sb" data-w="${wb}" style="width:${wb}%"></span><i class="mid"></i></div>`;
   h+=`<div class="stats">
