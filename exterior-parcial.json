@@ -1,14 +1,14 @@
 {
- "atualizado": "25/10/2026 14h54",
- "fonte": "Boletins de urna do TSE já publicados no exterior (até 14h54), compilados por Congresso em Foco e CNN Brasil; Alemanha, Itália, Portugal, Turquia e Índia ainda parciais",
+ "atualizado": "25/10/2026 15h36",
+ "fonte": "Boletins de urna do TSE já publicados no exterior (até 15h36), compilados por CNN Brasil, Metrópoles e BBC/Terra; Alemanha, Itália e Portugal ainda parciais",
  "links": [
-  [
-   "Congresso em Foco",
-   "https://www.congressoemfoco.com.br/noticia/123603/primeiras-urnas-sao-apuradas-no-exterior-acompanhe-os-resultados"
-  ],
   [
    "CNN Brasil",
    "https://www.cnnbrasil.com.br/internacional/eleicoes-2026-exterior-boletins-urna-flavio-lula/"
+  ],
+  [
+   "Metrópoles",
+   "https://www.metropoles.com/mundo/votacao-no-exterior-apuracao-2o-turno-flavio-lula"
   ],
   [
    "BBC News Brasil / Terra",
@@ -22,14 +22,24 @@
    28538
   ],
   [
+   "Portugal",
+   20844,
+   13818
+  ],
+  [
    "Alemanha",
-   12024,
-   2718
+   16549,
+   4374
   ],
   [
    "Espanha",
    9293,
    4289
+  ],
+  [
+   "Itália",
+   7921,
+   5283
   ],
   [
    "França",
@@ -47,6 +57,11 @@
    3465
   ],
   [
+   "Irlanda",
+   7194,
+   1776
+  ],
+  [
    "Países Baixos",
    5578,
    1383
@@ -55,11 +70,6 @@
    "Bélgica",
    3064,
    2154
-  ],
-  [
-   "Itália",
-   3198,
-   1738
   ],
   [
    "Líbano",
@@ -102,6 +112,11 @@
    699
   ],
   [
+   "Reino Unido",
+   658,
+   176
+  ],
+  [
    "Jordânia",
    725,
    76
@@ -130,11 +145,6 @@
    "Hungria",
    355,
    117
-  ],
-  [
-   "Portugal",
-   328,
-   136
   ],
   [
    "África do Sul",
@@ -232,6 +242,11 @@
    17
   ],
   [
+   "Cabo Verde",
+   48,
+   29
+  ],
+  [
    "Egito",
    60,
    16
@@ -262,14 +277,14 @@
    25
   ],
   [
-   "Sérvia",
-   35,
-   13
-  ],
-  [
    "Índia",
    25,
    23
+  ],
+  [
+   "Sérvia",
+   35,
+   13
   ],
   [
    "Quênia",
