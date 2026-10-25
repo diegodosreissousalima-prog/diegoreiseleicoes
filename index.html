@@ -98,6 +98,14 @@ h2{font:700 26px/1.1 var(--display);margin:0;text-wrap:balance}
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted);justify-content:center}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.ext-card{align-self:stretch;display:flex;flex-direction:column;gap:5px;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:10px;padding:10px 12px;margin:10px 0 4px;font:500 13px var(--body);cursor:pointer}
+.ext-card:hover{border-color:var(--muted)}
+.ext-tag{align-self:flex-start;font:700 10.5px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 8px}
+.ext-tit{font:700 14px var(--body)}
+.ext-res{color:var(--muted);font-size:12.5px;line-height:1.4}
+.ext-res b.a{color:var(--a)} .ext-res b.b{color:var(--b)}
+.ext-bar{display:flex;height:6px;border-radius:4px;overflow:hidden;background:var(--empty)}
+.ext-bar i:first-child{background:var(--a)} .ext-bar i:last-child{background:var(--b)}
 .exterior{align-self:center;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;padding:6px 12px;font:600 13px var(--body);cursor:pointer}
 .mini .cands{gap:10px}
 .mini .photo{width:48px;font-size:18px}
@@ -123,6 +131,7 @@ input[type=search]{width:100%;font:16px var(--body);padding:10px 12px;border:1px
 @media (max-width:560px){.chance{display:flex;width:100%;gap:2px 6px;padding:6px 10px}.chance .cv{font-size:18px}.chance .ck{font-size:10px}.chance .cs{flex-basis:100%}}
 .msg.t1{border:1px solid #e0b400;background:color-mix(in srgb,#ffdf00 14%,transparent);color:inherit;margin-bottom:12px}
 .msg.err{color:var(--live);border-color:var(--live)}
+.msg.ext{border:1px solid var(--line);border-left:3px solid var(--muted);margin-bottom:12px;color:inherit}
 footer{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
 footer a{color:inherit}
 .brand{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--fg);padding-bottom:10px}
@@ -511,7 +520,11 @@ body:has(.testbar) .tabs{top:calc(34px + env(safe-area-inset-top,0px))}
       <div class="label">Brasil por estado</div>
       <div id="shape"></div>
       <div class="map" id="map"></div>
-      <button class="exterior" data-uf="zz">Votos no exterior</button>
+      <button class="ext-card" data-uf="zz" id="ext-card" aria-label="Ver os votos no exterior">
+        <span class="ext-tag">Dados do exterior</span>
+        <span class="ext-tit">Votos no exterior · 2º turno</span>
+        <span class="ext-res" id="ext-res">A divulgação oficial do TSE começa às 17h (horário de Brasília).</span>
+      </button>
       <div class="legend">
         <span><i style="background:var(--a)"></i><span id="lg-a">Candidato 13</span></span>
         <span><i style="background:var(--b)"></i><span id="lg-b">Candidato 22</span></span>
@@ -744,7 +757,7 @@ function chanceOf(d,areas){
   return {a:pr.probA*100,b:pr.probB*100,need,tot};
 }
 const chanceTxt=v=>v>99.9?">99,9%":v<0.1?"<0,1%":v.toLocaleString("pt-BR",{maximumFractionDigits:1})+"%";
-function boardHTML(d,{big,areas,scope,t1,prev}={}){
+function boardHTML(d,{big,areas,scope,t1,prev,ext}={}){
   const A=d.cands["13"], B=d.cands["22"];
   const CH= t1 ? null : chanceOf(d,areas);
   const lead = A.vap===B.vap ? null : (A.vap>B.vap?"13":"22");
@@ -773,8 +786,10 @@ function boardHTML(d,{big,areas,scope,t1,prev}={}){
       <div class="stat"><div class="k">Brancos</div><div class="v">${pctTxt(d.pvb)}</div></div>
       <div class="stat"><div class="k">Nulos</div><div class="v">${pctTxt(d.pvn)}</div></div>
     </div>`;
+  if(t1&&ext) return `<div class="msg t1"><b>Dados do exterior · prévia do 1º turno (4/10).</b> Os votos dos brasileiros que votam fora do país no 2º turno são divulgados pelo TSE a partir das 17h (horário de Brasília) de 25/10, junto com os do Brasil. A página atualiza sozinha.</div>`+h;
   if(t1) return `<div class="msg t1"><b>Prévia: resultado do 1º turno (4/10).</b> O 2º turno aparece aqui a partir das 17h de domingo, 25/10, e a página atualiza sozinha.</div>`+h;
   h+=probHTML(project(areas||[d]),scope||"");
+  if(ext) h=`<div class="msg ext"><b>Dados do exterior · 2º turno.</b> Votos dos brasileiros que votam fora do país, somados ao resultado nacional pelo TSE.</div>`+h;
   if(!d.ok) h=`<div class="msg">O TSE ainda não publicou este resultado. A divulgação começa após as 17h (horário de Brasília) do dia 25/10. A página vai atualizar sozinha.</div>`+h;
   else if(d.dt) h+=`<div class="votes">Atualizado pelo TSE em ${esc(d.dt)} às ${esc(d.ht)}${d.and==="f"?" · totalização final":""}</div>`;
   return h;
@@ -1125,14 +1140,14 @@ function renderMunList(){
 async function showUF(uf){
   selUF=uf; selMun=null; $("mun-board").innerHTML=""; $("mun-q").value=""; $("rank-q").value=""; closeRankList();
   markSel(uf);
-  $("uf-title").textContent=UFNAME[uf]||uf.toUpperCase();
+  $("uf-title").textContent= uf==="zz" ? "Exterior · dados do exterior" : (UFNAME[uf]||uf.toUpperCase());
   try{ history.replaceState(null,"","#"+uf); }catch(e){}
   const d=ufCache[uf]||parse(await safeGet(urlRes(uf)));
   ufCache[uf]=d; curMun=null; renderUpd(); renderCheck();
   const d1= !d.ok&&beforeOpen() ? await get1(uf) : null;
   if(selUF!==uf) return;
   const p1= d.ok ? await get1(uf) : null; if(selUF!==uf) return;
-  $("uf-board").innerHTML= d1 ? boardHTML(d1,{t1:true}) : boardHTML(d,{scope:"no estado",prev:p1}); animateBoard($("uf-board"),"uf"+uf);
+  $("uf-board").innerHTML= d1 ? boardHTML(d1,{t1:true,ext:uf==="zz"}) : boardHTML(d,{scope:uf==="zz"?"no exterior":"no estado",prev:p1,ext:uf==="zz"}); animateBoard($("uf-board"),"uf"+uf);
   $("f-uf").value=uf;
   await loadCfg(); renderMunList(); fillMunSelect();
   loadRanking();
@@ -1328,6 +1343,16 @@ setInterval(()=>{
   if(Date.now()-rank.lastRun>=every) loadRanking(true);
 },30000);
 
+/* Cartão "Dados do exterior" abaixo do mapa: placar do exterior no 2º turno (TSE, abrangência zz). */
+function renderExt(d){
+  const el=$("ext-res"); if(!el) return;
+  if(beforeOpen()){ el.textContent=`A divulgação oficial do TSE começa às 17h (horário de Brasília) · faltam ${untilOpen()}.`; return; }
+  if(!d||!d.ok||!(d.pst>0)){ el.textContent="Aguardando o TSE publicar os primeiros votos do exterior."; return; }
+  const A=d.cands["13"], B=d.cands["22"];
+  el.innerHTML=`<b class="a">${esc(A.nm.split(" ")[0])} ${pctTxt(A.pvap)}</b> × <b class="b">${esc(B.nm.split(" ")[0])} ${pctTxt(B.pvap)}</b>
+    · ${fmt(d.vv)} votos válidos · ${pctTxt(d.pst)} das seções${d.ht?` · TSE ${esc(d.ht.slice(0,5))}`:""}
+    <span class="ext-bar" style="margin-top:6px"><i style="width:${A.pvap}%"></i><i style="width:${B.pvap}%"></i></span>`;
+}
 async function safeGet(u){ if(beforeOpen()&&!/-cm\.json$/.test(u)) return null; try{ return await getJSON(u);}catch(e){ setErr(); return null; } }
 
 let hadErr=false;
@@ -1344,7 +1369,7 @@ document.addEventListener("visibilitychange",()=>{ if(!document.hidden&&!beforeO
 async function cycle(){
   if(beforeOpen()){
     const empty=parse(null); lastBR=empty; renderNacional(empty); renderUpd();
-    $("stamp").textContent=`resultados a partir das 17h de domingo (faltam ${untilOpen()})`;
+    $("stamp").textContent=`resultados a partir das 17h de domingo (faltam ${untilOpen()})`; renderExt(null);
     nextAt=Date.now()+POLL; lastCheckAt=new Date().toLocaleTimeString("pt-BR"); return;
   }
   if(document.hidden){ nextAt=Date.now()+POLL; return; }   // aba em segundo plano: não consulta (economiza tráfego)
@@ -1361,7 +1386,8 @@ async function cycle(){
     }
     const areas=all.map(u=>ufCache[u]).filter(d=>d&&d.ok);
     renderNacional(br, areas.length===all.length ? areas : [br]);
-    if(selUF){ $("uf-board").innerHTML=boardHTML(ufCache[selUF],{scope:"no estado",prev:prevOf(selUF,ufCache[selUF])}); animateBoard($("uf-board"),"uf"+selUF); if(selMun) await showMun(selMun);
+    renderExt(ufCache.zz);
+    if(selUF){ $("uf-board").innerHTML=boardHTML(ufCache[selUF],{scope:selUF==="zz"?"no exterior":"no estado",prev:prevOf(selUF,ufCache[selUF]),ext:selUF==="zz"}); animateBoard($("uf-board"),"uf"+selUF); if(selMun) await showMun(selMun);
     }
     if(rank.key!==rankKey()||(!rank.doneAt&&!rank.loading)) loadRanking();
   } finally {
