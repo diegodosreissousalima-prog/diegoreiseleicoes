@@ -114,6 +114,8 @@ h2{font:700 26px/1.1 var(--display);margin:0;text-wrap:balance}
 .extp-det td,.extp-det th{padding:5px 6px;border-bottom:1px solid var(--line);text-align:left}
 .extp-det .n{text-align:right;white-space:nowrap} .extp-det td.a{color:var(--a)} .extp-det td.b{color:var(--b)}
 .extp-det td span{color:var(--muted);font-size:11.5px}
+.extp-det td .dlt{font-size:11.5px}
+.extp-sd{display:block;font-size:11px;color:var(--muted)}
 .ext-card{align-self:stretch;display:flex;flex-direction:column;gap:5px;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:10px;padding:10px 12px;margin:10px 0 4px;font:500 13px var(--body);cursor:pointer}
 .ext-card:hover{border-color:var(--muted)}
 .ext-tag{align-self:flex-start;font:700 10.5px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 8px}
@@ -977,11 +979,18 @@ function extParcialHTML(d,compacto){
   const L=j.paises.reduce((s,p)=>s+p[1],0), F=j.paises.reduce((s,p)=>s+p[2],0), T=L+F; if(!T) return "";
   const pl=100*L/T, pf=100*F/T, nl=j.paises.filter(p=>p[1]>p[2]).length, nf=j.paises.filter(p=>p[2]>p[1]).length;
   const pc=v=>v.toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
-  const lin=j.paises.slice().sort((a,b)=>(b[1]+b[2])-(a[1]+a[2])).map(p=>{ const t=p[1]+p[2];
-    return `<tr><td>${esc(p[0])}</td><td class="n a">${fmt(p[1])} <span>${pc(100*p[1]/t)}</span></td><td class="n b">${fmt(p[2])} <span>${pc(100*p[2]/t)}</span></td></tr>`; }).join("");
+  /* seta de evolução por país em relação ao 1º turno (pontos percentuais); China comparada com China + Hong Kong,
+     porque no 1º turno o TSE somou os dois */
+  const t1=j.t1||{}, juntos=j.t1_juntos||{}, porNome=Object.fromEntries(j.paises.map(p=>[p[0],p]));
+  const evo=p=>{ const r=t1[p[0]]; if(!r) return null; let a=p[1], b=p[2];
+    (juntos[p[0]]||[]).filter(n=>n!==p[0]).forEach(n=>{ const q=porNome[n]; if(q){ a+=q[1]; b+=q[2]; } });
+    const t=a+b; return t ? [100*a/t-r[0], 100*b/t-r[1]] : null; };
+  const lin=j.paises.slice().sort((a,b)=>(b[1]+b[2])-(a[1]+a[2])).map(p=>{ const t=p[1]+p[2], e=evo(p);
+    const sem=juntos.China&&juntos.China.includes(p[0])&&p[0]!=="China" ? `<span class="extp-sd">no 1º turno, somado à China</span>` : (!e?`<span class="extp-sd">sem dado do 1º turno</span>`:"");
+    return `<tr><td>${esc(p[0])}${sem}</td><td class="n a">${fmt(p[1])} <span>${pc(100*p[1]/t)}</span>${e?`<br>${dlt(e[0],"a")}`:""}</td><td class="n b">${fmt(p[2])} <span>${pc(100*p[2]/t)}</span>${e?`<br>${dlt(e[1],"b")}`:""}</td></tr>`; }).join("");
   if(compacto) return `<div class="extp" style="margin-top:14px">
     <details class="extp-det"><summary>Dados do exterior por país (${j.paises.length} países · ${esc(j.atualizado)})</summary><table><thead><tr><th>País</th><th class="n">Lula</th><th class="n">Flávio</th></tr></thead><tbody>${lin}</tbody></table>
-      <p class="extp-nota">Fonte: ${esc(j.fonte)}. ${(j.links||[]).map(l=>`<a href="${esc(l[1])}" target="_blank" rel="noopener">${esc(l[0])}</a>`).join(" · ")}</p></details></div>`;
+      <p class="extp-nota">▲▼ variação em pontos percentuais em relação ao 1º turno (4/10) no mesmo país; no 1º turno havia outros candidatos, por isso os dois tendem a subir. Fonte: ${esc(j.fonte)}${j.t1_fonte?`; 1º turno: <a href="${esc(j.t1_fonte[1])}" target="_blank" rel="noopener">${esc(j.t1_fonte[0])}</a>`:""}. ${(j.links||[]).map(l=>`<a href="${esc(l[1])}" target="_blank" rel="noopener">${esc(l[0])}</a>`).join(" · ")}</p></details></div>`;
   return `<div class="extp">
     <div class="extp-cab"><span class="ext-tag">Dados do exterior</span><span class="extp-st">parcial · ${esc(j.atualizado)}</span></div>
     <div class="extp-res">
