@@ -1,6 +1,6 @@
 {
- "atualizado": "25/10/2026 13h14",
- "fonte": "Boletins de urna do TSE já publicados no exterior (até 13h14), compilados pela CNN Brasil",
+ "atualizado": "25/10/2026 14h29",
+ "fonte": "Boletins de urna do TSE já publicados no exterior (até 14h15), compilados pela CNN Brasil",
  "links": [
   [
    "CNN Brasil",
@@ -18,9 +18,34 @@
    28538
   ],
   [
+   "Espanha",
+   9293,
+   4289
+  ],
+  [
+   "França",
+   10676,
+   2039
+  ],
+  [
+   "Suíça",
+   7089,
+   5419
+  ],
+  [
    "Austrália",
    6017,
    3465
+  ],
+  [
+   "Países Baixos",
+   5578,
+   1383
+  ],
+  [
+   "Bélgica",
+   3064,
+   2154
   ],
   [
    "Líbano",
@@ -28,9 +53,29 @@
    1276
   ],
   [
+   "Suécia",
+   2127,
+   591
+  ],
+  [
+   "Dinamarca",
+   1383,
+   243
+  ],
+  [
+   "Áustria",
+   1178,
+   393
+  ],
+  [
    "Emirados Árabes Unidos",
    643,
    772
+  ],
+  [
+   "Noruega",
+   820,
+   248
   ],
   [
    "Palestina",
@@ -68,9 +113,24 @@
    134
   ],
   [
+   "Hungria",
+   355,
+   117
+  ],
+  [
    "África do Sul",
    186,
    256
+  ],
+  [
+   "Tchéquia",
+   304,
+   86
+  ],
+  [
+   "Polônia",
+   268,
+   89
   ],
   [
    "Catar",
@@ -81,6 +141,11 @@
    "Singapura",
    213,
    121
+  ],
+  [
+   "Angola",
+   167,
+   118
   ],
   [
    "Hong Kong",
@@ -118,6 +183,11 @@
    60
   ],
   [
+   "Eslovênia",
+   67,
+   28
+  ],
+  [
    "Malásia",
    41,
    44
@@ -143,9 +213,24 @@
    39
   ],
   [
+   "Eslováquia",
+   47,
+   14
+  ],
+  [
+   "Croácia",
+   31,
+   26
+  ],
+  [
    "Chipre",
    29,
    25
+  ],
+  [
+   "Sérvia",
+   35,
+   13
   ],
   [
    "Quênia",
