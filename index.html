@@ -295,6 +295,8 @@ details.check summary{cursor:pointer;font-weight:600}
 .elect-card .fine{font-size:13px;color:var(--muted);max-width:42ch}
 .elect-card button{margin-top:8px;border:0;border-radius:10px;background:currentColor;padding:11px 22px;cursor:pointer}
 .elect-card button span{color:#fff;font:700 15px var(--body)}
+.elect-card .elect-x{position:absolute;top:10px;right:10px;margin:0;width:38px;height:38px;padding:0;border-radius:50%;background:color-mix(in srgb,var(--fg) 10%,transparent);color:var(--fg);font:400 26px/38px var(--body)}
+.elect-card .elect-x:hover{background:color-mix(in srgb,var(--fg) 20%,transparent)}
 .elect-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-radius:12px;padding:10px 14px;color:#fff;font:700 clamp(16px,2.6vw,20px)/1.2 var(--display);letter-spacing:.02em;animation:fadein .5s ease}
 .elect-bar.a{background:var(--a)} .elect-bar.b{background:var(--b)}
 .elect-bar button{border:1px solid rgba(255,255,255,.7);background:none;color:#fff;border-radius:8px;padding:6px 12px;font:600 13px var(--body);cursor:pointer}
@@ -838,9 +840,13 @@ function boardHTML(d,{big,areas,scope,t1,prev,ext,parcial}={}){
 
 
 /* Alerta de eleito: aparece quando o TSE marca o candidato como eleito no arquivo nacional. */
+const ELEITO_MANUAL="13";
 let electShownFor=null;
 function checkElected(d){
-  const w=["13","22"].map(n=>d.cands[n]).find(c=>isElected(c));
+  let w=["13","22"].map(n=>d.cands[n]).find(c=>isElected(c));
+  const oficial=!!w;
+  // Anúncio ativado manualmente: Lula matematicamente eleito (99,76% apurado, 25/10 21h12) — vale até o TSE marcar o eleito.
+  if(!w && ELEITO_MANUAL && d.ok && d.cands[ELEITO_MANUAL] && d.cands[ELEITO_MANUAL].vap>d.cands[ELEITO_MANUAL==="13"?"22":"13"].vap) w=d.cands[ELEITO_MANUAL];
   if(!w){ $("elect-bar").hidden=true; return; }
   const cls=w.n==="13"?"a":"b";
   const bar=$("elect-bar"); bar.className="elect-bar "+cls; bar.hidden=false;
@@ -852,9 +858,10 @@ function checkElected(d){
     <div class="who2">${esc(w.party)} · ${esc(w.n)}</div>
     <div class="big">${pctTxt(w.pvap)}</div>
     <div class="who2">${fmt(w.vap)} votos</div>
-    <div class="fine">Resultado declarado pelo TSE${d.dt?` em ${esc(d.dt)} às ${esc(d.ht)}`:""}, com ${pctTxt(d.pst)} das seções totalizadas. Mandato de 2027 a 2030.<br>Análise – Diego R. S. Lima</div>
-    <button id="elect-close"><span>Fechar</span></button>`;
-  $("elect-close").onclick=closeElect;
+    <div class="fine">${oficial?`Resultado declarado pelo TSE${d.dt?` em ${esc(d.dt)} às ${esc(d.ht)}`:""}, com ${pctTxt(d.pst)} das seções totalizadas.`:`Matematicamente eleito: com ${pctTxt(d.pst)} das seções totalizadas pelo TSE${d.dt?` (${esc(d.dt)}, ${esc(d.ht)})`:""}, os votos que faltam não alteram o resultado.`} Mandato de 2027 a 2030.<br>Análise – Diego R. S. Lima</div>
+    <button id="elect-close"><span>Fechar</span></button>
+    <button class="elect-x" id="elect-x" aria-label="Fechar">×</button>`;
+  $("elect-close").onclick=closeElect; $("elect-x").onclick=closeElect;
   const key=envKey+":"+w.n;
   let seen=false; try{ seen=sessionStorage.getItem("elect-seen")===key; }catch(e){}
   if(electShownFor!==key && !seen){ electShownFor=key; openElect(cls); try{ sessionStorage.setItem("elect-seen",key); }catch(e){} }
