@@ -391,7 +391,7 @@ $('copyRes').addEventListener('click',()=>copy(demText(),'toast1'));
 $('copyMem').addEventListener('click',()=>copy(memText(),'toast2'));
 
 document.querySelectorAll('input[name=regime], #idx, #jur, #dataCalc, #hOn, #hPct, #custas, #multa, #hExec, #noDefl')
-  .forEach(el=>el.addEventListener(el.type==='number'||el.type==='date'?'input':'change', compute));
+  .forEach(el=>el.addEventListener(el.type==='number'||el.type==='date'||el.type==='text'?'input':'change', compute));
 
 // data final padrão: 1º dia do mês seguinte ao último IPCA publicado
 (()=>{ const n = lastMonth('ipca')+1; $('dataCalc').value = `${Math.floor(n/12)}-${String(n%12+1).padStart(2,'0')}-01`; })();
