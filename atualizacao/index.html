@@ -150,6 +150,7 @@ footer{color:var(--muted);font-size:12.5px;max-width:95ch;display:flex;flex-dire
         <div class="lbl" style="margin-bottom:8px">Acréscimos</div>
         <div class="checks">
           <label class="check"><input type="checkbox" id="hOn" checked> Honorários de sucumbência de <input type="number" id="hPct" value="10" min="0" max="30" step="0.5">% sobre a condenação atualizada</label>
+          <label class="check">Custas processuais de R$ <input id="custas" inputmode="decimal" placeholder="0,00" style="width:120px"> (somadas sem correção, fora da base dos honorários)</label>
           <label class="check"><input type="checkbox" id="multa"> Multa de 10% (art. 523, § 1º, CPC)</label>
           <label class="check"><input type="checkbox" id="hExec"> Honorários de 10% do cumprimento (art. 523, § 1º, CPC)</label>
           <label class="check"><input type="checkbox" id="noDefl"> Desconsiderar índices negativos (deflação)</label>
@@ -304,15 +305,17 @@ function compute(){
   const sum = k => res.reduce((a,r)=>a+r[k],0);
   const sub = sum('tot');
   const h = $('hOn').checked ? sub*(parseFloat($('hPct').value)||0)/100 : 0;
-  const base523 = sub + h;
+  const custas = parseMoney($('custas').value||0);
+  const base523 = sub + h + custas;
   const multa = $('multa').checked ? base523*0.10 : 0;
   const hE = $('hExec').checked ? base523*0.10 : 0;
-  const total = sub + h + multa + hE;
+  const total = sub + h + custas + multa + hE;
 
   let html = '<thead><tr><th>Parcela</th><th>Original</th><th>Correção</th><th>Juros</th><th>Atualizado</th></tr></thead><tbody>';
   res.forEach(r=>{ html += `<tr><td>${esc(r.desc)}</td><td>${brl(r.V)}</td><td>${brl(r.corr)}</td><td>${brl(r.J)}</td><td>${brl(r.tot)}</td></tr>`; });
   html += `<tr class="sum"><td>Condenação atualizada</td><td>${brl(sum('V'))}</td><td>${brl(sum('corr'))}</td><td>${brl(sum('J'))}</td><td>${brl(sub)}</td></tr>`;
   if (h) html += `<tr><td>Honorários de sucumbência (${$('hPct').value}%)</td><td></td><td></td><td></td><td>${brl(h)}</td></tr>`;
+  if (custas) html += `<tr><td>Custas processuais</td><td></td><td></td><td></td><td>${brl(custas)}</td></tr>`;
   if (multa) html += `<tr><td>Multa art. 523 (10%)</td><td></td><td></td><td></td><td>${brl(multa)}</td></tr>`;
   if (hE) html += `<tr><td>Honorários art. 523 (10%)</td><td></td><td></td><td></td><td>${brl(hE)}</td></tr>`;
   html += `<tr class="grand"><td>Total devido</td><td></td><td></td><td></td><td>${brl(total)}</td></tr></tbody>`;
@@ -340,7 +343,7 @@ function compute(){
   if (rows.some(r=>!parseDate(r.jDesde)) && regime!=='custom') av.push('Parcela sem data de juros: calculada só com correção.');
   $('avisos').innerHTML = av.map(a=>`<div class="notice">${a}</div>`).join('');
 
-  last = {res, sub, h, multa, hE, total, dc, crit, endIdx};
+  last = {res, sub, h, custas, multa, hE, total, dc, crit, endIdx};
   renderMemSelect();
 }
 
@@ -364,6 +367,7 @@ function demText(){
   L.res.forEach(r=>lines.push(`${r.desc}: original ${brl(r.V)}; correção ${brl(r.corr)}; juros ${brl(r.J)}; atualizado ${brl(r.tot)}`));
   lines.push(`Condenação atualizada: ${brl(L.sub)}`);
   if (L.h) lines.push(`Honorários de sucumbência (${$('hPct').value}%): ${brl(L.h)}`);
+  if (L.custas) lines.push(`Custas processuais: ${brl(L.custas)}`);
   if (L.multa) lines.push(`Multa do art. 523, § 1º, CPC (10%): ${brl(L.multa)}`);
   if (L.hE) lines.push(`Honorários do art. 523, § 1º, CPC (10%): ${brl(L.hE)}`);
   lines.push(`TOTAL DEVIDO: ${brl(L.total)}`);
@@ -386,7 +390,7 @@ function copy(text, toastId){
 $('copyRes').addEventListener('click',()=>copy(demText(),'toast1'));
 $('copyMem').addEventListener('click',()=>copy(memText(),'toast2'));
 
-document.querySelectorAll('input[name=regime], #idx, #jur, #dataCalc, #hOn, #hPct, #multa, #hExec, #noDefl')
+document.querySelectorAll('input[name=regime], #idx, #jur, #dataCalc, #hOn, #hPct, #custas, #multa, #hExec, #noDefl')
   .forEach(el=>el.addEventListener(el.type==='number'||el.type==='date'?'input':'change', compute));
 
 // data final padrão: 1º dia do mês seguinte ao último IPCA publicado
